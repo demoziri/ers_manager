@@ -273,7 +273,7 @@
                     <option value="e">딸</option>
                     <option value="etc">기타</option>
                   </select>
-                  <input type="text" name="relation" id="relInput" style="width:60px;" />
+                  <input type="text" name="relation" id="relInput" style="width:60px;display:none;" data-name="1"/>
                 </td>
                 <td>
                   <select name="phone" id="">
@@ -329,26 +329,42 @@
           $('#modalBox3').modal('show');
           alert("뭐냐1");
           
-          
-          
-          
-          var s =  $("#cPhone").html();
-          $("#addPhoneBtn").on('click', function addPhone_go() {
-         		 $("#cPhone").append(s);
-         		 return;
-         	  alert(s);
-           });
-           
           //입력박스 숨어있다가
-          $("#relInput").hide();
           $("#rel").change(function() {
             //기타를 선택하면 등장
+            
             if ($("#rel").val() == "etc") {
               $("#relInput").show();
             } else {
               $("#relInput").hide();
             }
           });
+          
+          var s =  $("#cPhone").html();
+		  var increaseNum = 1;
+          
+          $("#addPhoneBtn").on('click', function addPhone_go() {
+       		     if($("#cPhone").children().length > 2){
+	         	 	alert("비상연락망은 3개까지 등록가능합니다.");
+	         	 	$("#cPhone").append('');
+	         	 	return false;	
+       		     }else{
+       		    	 increaseNum = increaseNum + 1;
+       		    	 var increaseNum = $("#cPhone").find("#relInput");
+       		    	 var num = increaseNum.attr('data-name');
+       		    	 alert('data-name :' +num);
+       		    	 
+	         		 //s.find("input[name='relation']").attr("data-name",iNum+1);
+	         		 $("#cPhone",).append(s);
+       		    	 $("#relInput").attr("data-name",num);
+       		    	 num+=1;
+	         		 // var x = s.find("input[name='relation']").attr("data-name");
+	         		
+	         		 
+       		     }
+           });
+           
+          
         });
       }
     });
