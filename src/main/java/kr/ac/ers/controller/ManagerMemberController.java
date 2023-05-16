@@ -28,5 +28,18 @@ public class ManagerMemberController {
 		return "manager/member/regist2";
 	}
 	
+	@GetMapping("/modify")
+	public String modifyForm() {
+		return "manager/member/modify";
+	}
+	
+	@GetMapping("/reDetail")
+	public String reportDetail() {
+		return "manager/member/memReport";
+	}
+	
+	
+	
+	
 	
 }

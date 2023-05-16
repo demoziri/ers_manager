@@ -71,7 +71,7 @@
                 </tr>
               </table>
               <div >
-                <button type="button" class="btn btn-warning btn-sm my-1" style="float:right;color:white;">정보 수정</button>
+                <button type="button" onclick="memModifyForm_go();" class="btn btn-warning btn-sm my-1" style="float:right;color:white;">정보 수정</button>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
                 </tr>
                 <thead>
                 <tbody style="overflow:auto;">
-                  <tr>
+                  <tr onclick="memReport_go();">
                     <td>2034</td>
                     <td>고객면담</td>
                     <td>2023-05-10</td>

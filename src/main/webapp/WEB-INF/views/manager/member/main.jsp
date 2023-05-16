@@ -117,7 +117,7 @@
     <div class="col-7">
       <div class="card card-body" style="border:2px dotted gray;height:400px;">
         <div style="position:relative;">
-          <span class="fs-3" style="border-bottom:2px solid gray;">대상자 정보</span>
+          <span class="fs-3 mem_title" style="border-bottom:2px solid gray;">대상자 정보</span>
           <button type="button" class="btn btn-success" id="reg-btn" style="position:absolute;bottom:0;right:0;" onclick="registForm_go();">신규 대상자 등록</button>
         </div>
         <div class="row" id="memDetail" style="height:100%;margin-top:5px;background-color:#dfdfdf;">
@@ -164,8 +164,9 @@
           &ensp;
           <span style="font-weight:bold;color:#4191B3">-</span>
         </div>
-        <div style="height:100%;width:100%;background-color:#dfdfdf;">
-
+        <div id="memReport_detail" style="height:100%;width:100%;background-color:#dfdfdf;">
+        	
+			<!-- 보고서 상세가 여기로 오겠지 -->
         </div>
       </div>
     </div>
@@ -249,7 +250,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title mx-auto" id="staticBackdropLabel">비상연락망</h4>
-        <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;" >+추가</button>
+        <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button>
       </div>
       <div class="modal-body">
         <form action="" id="form">
@@ -262,18 +263,18 @@
               </tr>
             </thead>
             <tbody id="cPhone">
-              <tr id="cPhone_list">
+              <tr id="cPhone_list" data-name="1">
                 <td>
                   <input type="text" name="name" style="width:70px;" />
                 </td>
                 <td>
                   <select name="relation" id="rel">
                     <option value="">선택</option>
-                    <option value="d">아들</option>
-                    <option value="e">딸</option>
+                    <option value="">아들</option>
+                    <option value="">딸</option>
                     <option value="etc">기타</option>
                   </select>
-                  <input type="text" name="relation" id="relInput" style="width:60px;display:none;" data-name="1"/>
+                  <input type="text" name="relation" id="relInput" style="width:60px;display:none;" />
                 </td>
                 <td>
                   <select name="phone" id="">
@@ -320,56 +321,44 @@
       success: function(data) {
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(data);
+        $(".mem_title").html("<span class='regist_text'>대상자 정보(등록)</span>");
         $("#reList").html('');
         $("#reList").append('<div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf">대상자를 선택해주세요.</div>');
+        $("#memReport_detail").html('');
+        $("#memReport_detail").append('<div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf">-</div>');
         $("#reg-btn").hide();
+        
         
         // modal open(비상연락망)
         $('#openRegPhoneModal').on('click', function() {
           $('#modalBox3').modal('show');
           alert("뭐냐1");
-          
           //입력박스 숨어있다가
           $("#rel").change(function() {
             //기타를 선택하면 등장
-            
             if ($("#rel").val() == "etc") {
               $("#relInput").show();
             } else {
               $("#relInput").hide();
             }
           });
-          
-          var s =  $("#cPhone").html();
-		  var increaseNum = 1;
-          
+          var s = $("#cPhone").html();
+          var num = 2;
           $("#addPhoneBtn").on('click', function addPhone_go() {
-       		     if($("#cPhone").children().length > 2){
-	         	 	alert("비상연락망은 3개까지 등록가능합니다.");
-	         	 	$("#cPhone").append('');
-	         	 	return false;	
-       		     }else{
-       		    	 increaseNum = increaseNum + 1;
-       		    	 var increaseNum = $("#cPhone").find("#relInput");
-       		    	 var num = increaseNum.attr('data-name');
-       		    	 alert('data-name :' +num);
-       		    	 
-	         		 //s.find("input[name='relation']").attr("data-name",iNum+1);
-	         		 $("#cPhone",).append(s);
-       		    	 $("#relInput").attr("data-name",num);
-       		    	 num+=1;
-	         		 // var x = s.find("input[name='relation']").attr("data-name");
-	         		
-	         		 
-       		     }
-           });
-           
-          
+            if ($("#cPhone").children().length > 2) {
+              alert("비상연락망은 3개까지 등록가능합니다.");
+              $("#cPhone").append('');
+              return false;
+            } else {
+              $("#cPhone").find("#cPhone_list").attr("data-name", num);
+              $("#cPhone").append(s);
+              num++;
+            }
+          });
         });
       }
     });
   }
-  
   // 대상자 상세화면 호출
   function memDetail_go() {
     $.ajax({
@@ -382,6 +371,7 @@
         // 대상자 상세
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(e);
+        $(".mem_title").html("<span class='regist_text'>대상자 정보</span>");
         // 대상자 관련 보고서 리스트
         $("#reList").css('background-color', "");
         $("#reList").html(f);
@@ -406,6 +396,19 @@
         });
       }
     });
+  }
+  // 대상자 정보 수정화면 호출
+  function memModifyForm_go() {
+    $.ajax({
+      url: "modify",
+      type: "get",
+      datatype: "html",
+      success: function(data) {
+        $("#memDetail").css('background-color', "");
+        $("#memDetail").html(data);
+        $(".mem_title").html("<span class='regist_text'>대상자 정보(수정)</span>");
+      }
+    })
   }
 
   function picture_go() {
@@ -443,6 +446,32 @@
     form.find('[name="checkUpload"]').val(0);
     $('#inputFileName').val(picture.files[0].name);
   }
+  
+  
+  function memReport_go() {
+	  $.ajax({
+		  url:"reDetail",
+		  type:"get",
+		  datatype:"html",
+		  success:function(data){
+			  $("#memReport_detail").css('background-color', "");
+		      $("#memReport_detail").html(data);
+		      
+		  }
+	  })
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </script>
 
 <%@include file="../common/foot.jspf" %>
