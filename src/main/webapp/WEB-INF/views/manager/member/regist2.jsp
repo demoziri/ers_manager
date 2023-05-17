@@ -56,6 +56,24 @@
         -<input type="text" name="phone" style="width:50px;" />
       </td>
     </tr>
+     <tr>
+      <th>고위험도</th>
+      <td>
+        <select name="caution">
+          <option value="">선택</option>
+          <option value="Y">Y</option>
+          <option value="N">N</option>
+        </select>
+      </td>
+      <th>성별</th>
+      <td>
+      	<select name="gender">
+          <option value="">선택</option>
+          <option value="남">남</option>
+          <option value="여">여</option>
+        </select>
+      </td>
+    </tr>
     <tr>
       <th>구</th>
       <td>
@@ -81,18 +99,7 @@
         <input type="text" name="address" style="width:100%;" />
       </td>
     </tr>
-    <tr>
-      <th>고위험도</th>
-      <td>
-        <select name="caution">
-          <option value="">선택</option>
-          <option value="Y">Y</option>
-          <option value="N">N</option>
-        </select>
-      </td>
-      <th>상태</th>
-      <td>서비스 이용중</td>
-    </tr>
+   
     <tr>
       <th>
         <button class="btn btn-danger btn-sm" type="button" id="openRegPhoneModal">비상연락망</button>

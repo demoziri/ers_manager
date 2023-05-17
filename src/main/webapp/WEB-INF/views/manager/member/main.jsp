@@ -144,8 +144,10 @@
             <option value="">서비스취소</option>
             <option value="">악성대상자신고</option>
             <option value="">응급보고서</option>
+            <option value="">장기부재신청</option>
+            <option value="">건강상태</option>
           </select>
-          &ensp;기간&nbsp;<input type="date" />&nbsp;-&nbsp;<input type="date" />
+          &ensp;기간&nbsp;<input type="date" style="width:120px;"/>&nbsp;-&nbsp;<input type="date" style="width:120px;" />
           <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
         </div>
         <div id="reList" style="background-color:#dfdfdf;height: 100%;width: 100%;margin-top: 5px;overflow-x: hidden;overflow: scroll;overflow-x: hidden;">
@@ -191,20 +193,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="height:100px;vertical-align:middle;">
+            <tr id="lsupp" style="height:100px;vertical-align:middle;">
               <td>
-                <input type="checkbox" />
+                <input type="checkbox" value="야야야"/>
               </td>
               <td>
                 <div id="pictureView" class="manPicture mt-1" data-id="${member.id }" style="border: 1px solid green; height: 80px; width: 60px; margin: 0 auto;"></div>
               </td>
-              <td>이정호 / 남 / 27 </td>
+              <td >이정호 / 남 / 27 </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning">배정</button>
+        <button type="button" id="reg_lsupp" class="btn btn-warning">배정</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
       </div>
     </div>
@@ -342,6 +344,7 @@
               $("#relInput").hide();
             }
           });
+          
           var s = $("#cPhone").html();
           var num = 2;
           $("#addPhoneBtn").on('click', function addPhone_go() {
@@ -359,6 +362,7 @@
       }
     });
   }
+  
   // 대상자 상세화면 호출
   function memDetail_go() {
     $.ajax({
@@ -381,7 +385,16 @@
         // modal open(생활지원사)
         $('#openModalBtn').on('click', function() {
           $('#modalBox').modal('show');
+          
+           $("#reg_lsupp").on('click', function() {
+        	  var check = $("#lsupp").find('input:checked').val();
+        	  alert(check);
+        	  alert('뭔디');
+        	  $('#modalBox').modal('hide'); 
+          });
         });
+           
+           
         // modal close
         $('#closeModalBtn').on('click', function() {
           $('#modalBox').modal('hide');

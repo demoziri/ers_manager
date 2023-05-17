@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("ers/manager/member")
 public class ManagerMemberController {
 	
-	@GetMapping("ers/manager/main")
-	public String main() {
-		return "manager/main";
-	}
 	
 	@GetMapping("/main")
 	public String memberMain() {

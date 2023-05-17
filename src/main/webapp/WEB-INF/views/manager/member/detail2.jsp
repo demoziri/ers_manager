@@ -96,11 +96,13 @@
               <option value="">서비스취소</option>
               <option value="">악성대상자신고</option>
               <option value="">응급보고서</option>
+              <option value="">장기부재신청</option>
+              <option value="">건강상태</option>
             </select>
             &ensp;기간&nbsp;<input type="date" />&nbsp;-&nbsp;<input type="date" />
             <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
           </div>
-          <div  id="re_List">
+          <div id="re_List">
           
             <table class="table table-bordered  text-center re_table">
               <thead style="background-color:#dfdfdf;position:sticky;top:0;">
