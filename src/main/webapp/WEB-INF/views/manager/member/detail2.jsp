@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                   <th>고위험도</th>
-                  <td>Y</td>
+                  <td>${member.caution }</td>
                   <th>상태</th>
                   <td>서비스 이용중</td>
                 </tr>

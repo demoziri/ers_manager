@@ -195,13 +195,7 @@
             </tr>
           </thead>
           <tbody id="ecallList">
-          <c:forEach items="${ecallList }" var="ecall">
-            <tr>
-              <td>${ecall.name }</td>
-              <td>${ecall.relation }</td>
-              <td>${ecall.phone }</td>
-            </tr>
-           </c:forEach>
+          
           </tbody>
         </table>
       </div>
@@ -294,9 +288,9 @@
 <script type="text/x-handlebars-template" id="ecall-list-template">
 {{#each .}}
      <tr>
-      <td>${name }</td>
-      <td>${relation }</td>
-      <td>${phone }</td>
+      <td>{{name}}</td>
+      <td>{{relation}}</td>
+      <td>{{phone}}</td>
      </tr>
 {{/each}}
 </script> 
@@ -441,9 +435,10 @@
               type:"get",
               datatype:"json",
               success:function(data){
-            	  alert(data);
+            	  
             	  let template = Handlebars.compile($('#ecall-list-template').html());
   				  let html = template(data);
+  				  
   				  $('#ecallList').html(html);
               }
           })

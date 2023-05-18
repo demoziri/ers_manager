@@ -70,7 +70,7 @@ public class ManagerMemberController {
 	public List<EcallVO> ecallList(String id, Model model) {
 		List<EcallVO> ecallList = ecallService.getEcallList(id);
 		model.addAttribute("ecallList",ecallList);
-		
+		System.out.println("대상자id:"+id);
 		return ecallList;
 	}
 	
@@ -78,6 +78,7 @@ public class ManagerMemberController {
 	@ResponseBody
 	@GetMapping("/dongList")
 	public List<AddressVO> dongList(String gu, Model model) {
+		
 		List<AddressVO> dongList = addressService.getDongList(gu);
 		model.addAttribute("dongList",dongList);
 		

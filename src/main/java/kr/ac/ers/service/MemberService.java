@@ -24,8 +24,7 @@ public class MemberService {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
-		System.out.println("start : " + cri.getStartRowNum());
-		System.out.println("per : " + cri.getPerPageNum());
+		
 		List<MemberVO> memberList = memberMapper.selectMemberList(cri,rowbounds);
 		dataMap.put("memberList", memberList);
 		
