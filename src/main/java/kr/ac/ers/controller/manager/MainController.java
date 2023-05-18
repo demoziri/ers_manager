@@ -1,4 +1,4 @@
-package kr.ac.ers.controller;
+package kr.ac.ers.controller.manager;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ public class MainController {
 	
 	@GetMapping("/main/index")
 	public String root(Model model) {
-		List<MemberVO> memberlist = memberService.getMemberList();
-		model.addAttribute("memberlist", memberlist);
+		//List<MemberVO> memberlist = memberService.getMemberList();
+		//model.addAttribute("memberlist", memberlist);
 		return "main/index";
 	}
 	

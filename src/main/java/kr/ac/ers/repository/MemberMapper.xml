@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="kr.ac.ers.repository.MemberMapper">
+
+	<sql id="search">	
+		<if test="memType != null and memType != ''.toString() ">
+			and memType=#{memType}			
+		</if>
+		<if test="gu != null and gu != ''.toString() ">
+			and substr(address,7,9) like '%'||#{gu}||'%'		
+		</if>
+		<if test="dong != null and dong != ''.toString()">
+			and substr(address,INSTR(address,' ',INSTR(address, ' '))+1,INSTR(address, ' ', 1, 2))	like '%'||#{dong}||'%'		
+		</if>
+		<if test="name != null and name != ''.toString()">
+			and name like '%'||#{name}||'%'			
+		</if>			
+	</sql>	
+	
 	<select id="selectMemberList" resultType="MemberVO">
 		select * from member
+		where id is not null
+		<include refid="search"/>
 	</select>
+	
+	<select id="selectSearchMemberListCount" resultType="Integer">
+		select
+		count(*) 
+		from member
+		where id is not null
+		<include refid="search" />
+		order by regDate desc
+	</select>
+	
+	
+	<select id="selectMemberById" parameterType="String" resultType="MemberVO">
+		select * from member
+		where id=#{id}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

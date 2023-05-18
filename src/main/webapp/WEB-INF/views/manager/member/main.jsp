@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle" value="대상자 관리" />
 <%@include file="../common/head.jspf" %>
+
+<c:set var="memberList" value="${dataMap.memberList }"/>
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${pageMaker.cri }"/>
+
 
 <style>
   .mem_table>tbody>tr:hover {
@@ -22,28 +28,29 @@
           <span class="fs-3" style="border-bottom:2px solid gray;">대상자 목록</span>
         </div>
         <div>
-          <select name="memType" id="" style="height:100%;">
-            <option value="" selected>대상자구분</option>
-            <option value="">독거노인</option>
-            <option value="">장애인</option>
+          <select name="memType" style="height:100%;">
+            <option value="" ${cri.memType eq '' ? 'selected' : ""}>대상자구분</option>
+            <option value="독거노인" ${cri.memType eq '독거노인' ? 'selected' : ""}>독거노인</option>
+            <option value="장애인" ${cri.memType eq '장애인' ? 'selected' : ""}>장애인</option>
           </select>
-          <select name="gu" id="" style="height:100%;width:100px;">
-            <option value="" selected>지역구</option>
-            <option value="">중구</option>
-            <option value="">동구</option>
-            <option value="">서구</option>
-            <option value="">대덕구</option>
-            <option value="">유성구</option>
+          <select name="gu" onchange="dongList_go(this.value)" style="height:100%;width:100px;">
+            <option value="" ${cri.gu eq 'selected' ? 'selected' : ""}>지역구</option>
+            <option value="중구" ${cri.gu eq '중구' ? 'selected' : ""}>중구</option>
+            <option value="동구" ${cri.gu eq '동구' ? 'selected' : ""}>동구</option>
+            <option value="서구" ${cri.gu eq '서구' ? 'selected' : ""}>서구</option>
+            <option value="대덕구" ${cri.gu eq '대덕구' ? 'selected' : ""}>대덕구</option>
+            <option value="유성구" ${cri.gu eq '유성구' ? 'selected' : ""}>유성구</option>
           </select>
-          <select name="dong" id="" style="height:100%;width:100px;">
+          <select id="dongList" name="dong"  style="height:100%;width:100px;">
             <option value="" selected>동</option>
           </select>
-          <input type="text" placeholder="이름" style="width:100px;" />
-          <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
+          <input type="text"  name="name"  value="${cri.name }" placeholder="이름" style="width:100px;" />
+          <button  onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
         </div>
         <div>
           <table class="table table-bordered border-2 mt-1 text-center mem_table">
             <thead style="background-color:#dfdfdf;">
+            
               <tr>
                 <th>대상자구분</th>
                 <th>대상자명</th>
@@ -53,62 +60,21 @@
               </tr>
               <thead>
               <tbody class="table-group-divider">
-                <tr onclick="memDetail_go();">
-                  <td>독거노인</td>
-                  <td>김미미</td>
-                  <td>2023.05.10</td>
+              <c:forEach var="member" items="${memberList }">
+              <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate"/>
+                <tr onclick="memDetail_go(${member.id});">
+                  <td>${member.memType }</td>
+                  <td>${member.name }</td>
+                  <td style="font-size:0.9rem;">${regDate }</td>
                   <td>미설치</td>
                   <td>미배정</td>
                 </tr>
-                <tr>
-                  <td>독거노인</td>
-                  <td>김미미</td>
-                  <td>2023.05.10</td>
-                  <td>미설치</td>
-                  <td>미배정</td>
-                </tr>
-                <tr>
-                  <td>독거노인</td>
-                  <td>김미미</td>
-                  <td>2023.05.10</td>
-                  <td>미설치</td>
-                  <td>미배정</td>
-                </tr>
-                <tr>
-                  <td>독거노인</td>
-                  <td>김미미</td>
-                  <td>2023.05.10</td>
-                  <td>미설치</td>
-                  <td>미배정</td>
-                </tr>
-                <tr>
-                  <td>독거노인</td>
-                  <td>김미미</td>
-                  <td>2023.05.10</td>
-                  <td>미설치</td>
-                  <td>미배정</td>
-                </tr>
+                </c:forEach>
               </tbody>
           </table>
         </div>
 
-        <nav>
-          <ul class="pagination" style="justify-content: center;">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+         <%@ include file="/WEB-INF/views/manager/module/pagination.jsp" %>
 
       </div>
       <!-- 대상자 목록 끝-->
@@ -228,12 +194,14 @@
               <th class="th-3">연락처</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="ecallList">
+          <c:forEach items="${ecallList }" var="ecall">
             <tr>
-              <td>이름이름</td>
-              <td>아들</td>
-              <td>010-1234-1234</td>
+              <td>${ecall.name }</td>
+              <td>${ecall.relation }</td>
+              <td>${ecall.phone }</td>
             </tr>
+           </c:forEach>
           </tbody>
         </table>
       </div>
@@ -244,6 +212,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- 비상연락망 등록 모달 -->
 
@@ -313,7 +282,64 @@
   <input type="hidden" name="checkUpload" value="0" />
 </form>
 
+
+
+<script type="text/x-handlebars-template" id="dong-list-template">
+	<option value="" selected="selected">전체</option>
+{{#each .}}
+	<option value="{{dongName}}">{{dongName}}</option>
+{{/each}}
+</script> 
+
+<script type="text/x-handlebars-template" id="ecall-list-template">
+{{#each .}}
+     <tr>
+      <td>${name }</td>
+      <td>${relation }</td>
+      <td>${phone }</td>
+     </tr>
+{{/each}}
+</script> 
+
+
+
+
 <script>
+
+	function dongList_go(gu) {
+
+		$.ajax({
+			url:"dongList?gu="+gu,
+			type:"get",
+			success:function(data){
+				let template = Handlebars.compile($('#dong-list-template').html());
+				let html = template(data);
+				$('#dongList').html(html);
+			}	
+		});
+	}
+
+	function list_go(page,url) {
+		
+		if(!url) url="main"; 
+		
+		var page = $("form#jobForm input[name='page']").val(page);
+		var memType = $("form#jobForm input[name='memType']").val($('select[name="memType"]').val());
+		var gu = $("form#jobForm input[name='gu']").val($('select[name="gu"]').val());
+		var dong = $("form#jobForm input[name='dong']").val($('select[name="dong"]').val());
+		var name =$("form#jobForm input[name='name']").val($('input[name="name"]').val());
+		
+		
+		$('form#jobForm').attr({
+			action:url,
+			method:'get'
+		}).submit();
+	}
+	
+
+
+
+
   //등록화면 호출
   function registForm_go() {
     $.ajax({
@@ -337,6 +363,7 @@
           alert("뭐냐1");
           //입력박스 숨어있다가
           $("#rel").change(function() {
+        	  
             //기타를 선택하면 등장
             if ($("#rel").val() == "etc") {
               $("#relInput").show();
@@ -364,15 +391,18 @@
   }
   
   // 대상자 상세화면 호출
-  function memDetail_go() {
+  function memDetail_go(id) {
     $.ajax({
-      url: "detail",
+      url: "detail?id="+id,
       type: "get",
-      datatype: "html",
+      datatype: "text",
       success: function(data) {
         var e = $(data).find("#mem_Detail").html();
         var f = $(data).find("#re_List").html();
+        
         // 대상자 상세
+        //$("#lsupport_modal").html(l);
+        
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(e);
         $(".mem_title").html("<span class='regist_text'>대상자 정보</span>");
@@ -394,14 +424,33 @@
           });
         });
            
-           
         // modal close
         $('#closeModalBtn').on('click', function() {
           $('#modalBox').modal('hide');
         });
+        
+        
+        
         // modal open(비상연락망)
         $('#openPhoneModal').on('click', function() {
           $('#modalBox2').modal('show');
+          alert(id);
+		  
+          $.ajax({
+        	  url:"ecall?id="+id,
+              type:"get",
+              datatype:"json",
+              success:function(data){
+            	  alert(data);
+            	  let template = Handlebars.compile($('#ecall-list-template').html());
+  				  let html = template(data);
+  				  $('#ecallList').html(html);
+              }
+          })
+	       
+          
+          
+          
         });
         // modal close
         $('#closeModalBtn').on('click', function() {

@@ -20,7 +20,7 @@
             <div class="col-3 border">
               <div id="pictureView" class="manPicture mt-2" data-id="${member.id }" style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto;"></div>
               <div style="text-align:center;margin-top:10px;">
-                <span class="fs-4">김미미</span><span>님</span>
+                <span class="fs-4">${member.name }</span><span>님</span>
               </div>
             </div>
             <!-- 대상자 상세정보 -->
@@ -28,19 +28,19 @@
               <table class="table table-bordered mb-0 mt-1" style="height:75%;">
                 <tr>
                   <th>대상자 구분</th>
-                  <td>독거노인</td>
+                  <td>${member.id }</td>
                   <th>나이</th>
                   <td>71세</td>
                 </tr>
                 <tr>
                   <th>성별</th>
-                  <td>남</td>
+                  <td>${member.gender }</td>
                   <th>전화번호</th>
-                  <td>010-1234-1234</td>
+                  <td>${member.phone }</td>
                 </tr>
                 <tr>
                   <th>주소</th>
-                  <td colspan="3">대전 서구 괴정동 OOOOO OOOOOO OOOOO</td>
+                  <td colspan="3">${member.address }</td>
                 </tr>
                 <tr>
                   <th>고위험도</th>
@@ -209,6 +209,40 @@
     <!-- 보고서 상세 끝 -->
   </div>
   
+  <div id="modalBox2" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title mx-auto" id="staticBackdropLabel">비상연락망</h4>
+      </div>
+      <div class="modal-body">
+        <table class="modal-table table table-bordered w-100">
+          <thead>
+            <tr>
+              <th class="th-1">이름</th>
+              <th class="th-2">관계</th>
+              <th class="th-3">연락처</th>
+            </tr>
+          </thead>
+          <tbody>
+          <c:forEach items="${ecallList }" var="ecall">
+          
+            <tr>
+              <td>${ecall.name }</td>
+              <td>아들</td>
+              <td>010-1234-1234</td>
+            </tr>
+           </c:forEach>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning">수정</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
  
   
   
