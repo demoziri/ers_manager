@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="pageTitle" value="게시물 내용"/>
-<c:set var="member" value="${dataMap.member }" />
-<c:set var="supporterList" value="${dataMap.supporterList }" />
 	<!-- 대상자 상세정보 -->
       <div class="col-7">
     
@@ -16,6 +14,7 @@
           <div class="row" id="mem_Detail" style="height:100%;margin-top:5px;border:2px solid gray;">
             <!-- 대상자 사진 -->
             
+			
             <div class="col-3 border">
               <div id="pictureView" class="manPicture mt-2" data-id="${member.id }" style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto;"></div>
               <div style="text-align:center;margin-top:10px;">

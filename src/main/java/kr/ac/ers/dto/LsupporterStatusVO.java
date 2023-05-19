@@ -15,6 +15,7 @@ public class LsupporterStatusVO {
 		private String wid;
 		private String pwd;
 		private String email;
+		private String gender;
 		
 
 		public LsupporterStatusVO toLsupporterStatusVO() {

@@ -39,24 +39,25 @@ public class MemberService {
 	}
 	
 	
-	public Map<String,Object> getMemberById(String id) {
-		Map<String,Object> dataMap = new HashMap<String,Object>();
-		List<LsupporterStatusVO> supporterList = memberMapper.selectAssignableLsupporter(id);
-		MemberVO member = memberMapper.selectMemberById(id);
+	public MemberVO getMemberById(String id) {
 		
-		dataMap.put("member", member);
-		dataMap.put("supporterList", supporterList);
-		
-		return dataMap;
+		return memberMapper.selectMemberById(id);
 	}
+	
+	public List<LsupporterStatusVO> getLsuppList(String id){
+		return memberMapper.selectAssignableLsupporter(id);
+	}
+	
 	
 	public MemberVO regist(MemberVO member) {
 		String id = memberMapper.selectMemberSequenceNextValue();
 		member.setId(id);
-		
-		
-		
 		return memberMapper.insertMember(member);
+	}
+	
+	
+	public void registLsupporter(String wid, String id) {
+		memberMapper.updateLsupporter(id, wid);
 	}
 	
 	

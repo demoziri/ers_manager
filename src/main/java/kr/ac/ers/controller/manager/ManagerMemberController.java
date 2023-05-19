@@ -9,15 +9,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.AddressVO;
 import kr.ac.ers.dto.EcallVO;
+import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.service.AddressService;
 import kr.ac.ers.service.EcallService;
 import kr.ac.ers.service.MemberService;
+
 
 @Controller
 @RequestMapping("ers/manager/member")
@@ -46,41 +49,55 @@ public class ManagerMemberController {
 		
 		return mnv;
 	}
-	
-	
-	
 
 	
 	@GetMapping("/detail")
-	public String memberDetail(String id, Model model) {
+	public ModelAndView memberDetail(String id, ModelAndView mnv) {
 		
-		Map<String, Object> member = memberService.getMemberById(id);
+		String url = "manager/member/detail2";
 		
-		List<EcallVO> ecallList = ecallService.getEcallList(id);
+		MemberVO member = memberService.getMemberById(id);
 		
-		model.addAttribute("member", member);
-		model.addAttribute("ecallList",ecallList);
+		mnv.addObject("member", member);
 		
-		return "manager/member/detail2";
+		mnv.setViewName(url);
+		
+		return mnv;
 		
 	}
 	
 	@ResponseBody
 	@GetMapping("/ecall")
-	public List<EcallVO> ecallList(String id, Model model) {
+	public List<EcallVO> ecallList(String id) {
 		List<EcallVO> ecallList = ecallService.getEcallList(id);
-		model.addAttribute("ecallList",ecallList);
-		System.out.println("대상자id:"+id);
 		return ecallList;
 	}
+	
+	@ResponseBody
+	@GetMapping("/regLsupp")
+	public List<LsupporterStatusVO> lsuppList(String id){
+		List<LsupporterStatusVO> lsuppList = memberService.getLsuppList(id);
+		return lsuppList;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/regLsupporter")
+	public void regLsupporter(String id, String wid) {
+		MemberVO member = memberService.getMemberById(id);
+		member.setWid(wid);
+		memberService.registLsupporter(wid, id);
+	}
+	
+	
+	
 	
 	
 	@ResponseBody
 	@GetMapping("/dongList")
-	public List<AddressVO> dongList(String gu, Model model) {
+	public List<AddressVO> dongList(String gu) {
 		
 		List<AddressVO> dongList = addressService.getDongList(gu);
-		model.addAttribute("dongList",dongList);
+		
 		
 		return dongList;
 	}
@@ -94,7 +111,7 @@ public class ManagerMemberController {
 	
 	@GetMapping("/modify")
 	public String modifyForm(String id, Model model) {
-		Map<String, Object> member = memberService.getMemberById(id);
+		MemberVO member = memberService.getMemberById(id);
 		
 		model.addAttribute("member",member);
 		

@@ -15,16 +15,8 @@
               <th class="th-3">정보</th>
             </tr>
           </thead>
-          <tbody>
-            <tr id="lsupp" style="height:100px;vertical-align:middle;">
-              <td>
-                <input type="checkbox" value="야야야"/>
-              </td>
-              <td>
-                <div id="pictureView" class="manPicture mt-1" data-id="${member.id }" style="border: 1px solid green; height: 80px; width: 60px; margin: 0 auto;"></div>
-              </td>
-              <td >이정호 / 남 / 27 </td>
-            </tr>
+          <tbody id="lsuppList">
+            
           </tbody>
         </table>
       </div>

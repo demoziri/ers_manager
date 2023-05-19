@@ -10,8 +10,6 @@
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
 <c:set var="cri" value="${pageMaker.cri }" />
 
-
-
 <style>
   .mem_table>tbody>tr:hover {
     background-color: lightblue;
@@ -71,14 +69,14 @@
                     <td style="font-size:0.9rem;">${regDate }</td>
                     <td>미설치</td>
                     <c:if test="${empty member.wid }">
-	                    <td >
-	                      미배정
-	                    </td>
+                      <td style="color:red;">
+                        미배정
+                      </td>
                     </c:if>
                     <c:if test="${not empty member.wid }">
-	                    <td class="bg-primary">
-	                      미배정
-	                    </td>
+                      <td style="color:blue;">
+                        배정완료
+                      </td>
                     </c:if>
                   </tr>
                 </c:forEach>
@@ -193,16 +191,31 @@
   {{/each}}
 </script>
 
+<script type="text/x-handlebars-template" id="lsupp-list-template">
+  {{#each .}}
+    <tr style="height:100px;vertical-align:middle;">
+      <td>
+        <input type="checkbox" value={{wid}} />
+      </td>
+      <td>
+        <div id="pictureView" class="manPicture mt-1" data-id={{wid}} style="border: 1px solid green; height: 80px; width: 60px; margin: 0 auto;"></div>
+      </td>
+      <td>
+        {{name}} / {{gender}} / {{birth}}
+      </td>
+    </tr>
+  {{/each}}
+</script>
+
 <script>
   function dongList_go(gu) {
     $.ajax({
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
-        alert("되는거 맞지");
+        
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
-        console.log(html);
         $('#dongList').html(html);
       }
     });
@@ -213,24 +226,22 @@
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
-        alert("되는거 맞지");
+       
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
-        console.log(html);
         $('#dongRegList').html(html);
       }
     });
   }
-  
+
   function dongModiList_go(gu) {
     $.ajax({
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
-        alert("되는거 맞지");
+        
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
-        console.log(html);
         $('#dongModiList').html(html);
       }
     });
@@ -248,7 +259,6 @@
       method: 'get'
     }).submit();
   }
-  
   //등록화면 호출
   function registForm_go() {
     $.ajax({
@@ -298,7 +308,6 @@
       }
     });
   }
-  
   // 대상자 상세화면 호출
   function memDetail_go(id) {
     $.ajax({
@@ -306,7 +315,6 @@
       type: "get",
       datatype: "text",
       success: function(data) {
-    	  console.log(data);
         var e = $(data).find("#mem_Detail").html();
         var f = $(data).find("#re_List").html();
         // 대상자 상세
@@ -322,18 +330,43 @@
         // modal open(생활지원사)
         $('#openModalBtn').on('click', function() {
           $('#modalBox').modal('show');
-          $("#reg_lsupp").on('click', function() {
-            var check = $("#lsupp").find('input:checked').val();
-            alert(check);
-            alert('뭔디');
-            $('#modalBox').modal('hide');
+          $.ajax({
+            url: "regLsupp?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function(data) {
+              let template = Handlebars.compile($('#lsupp-list-template').html());
+              let html = template(data);
+              $('#lsuppList').html(html);
+            //배정 버튼 눌렀을 때	
+              $("#reg_lsupp").on('click', function() {
+                var wid = $("#lsuppList").find('input:checked').val();
+                
+                $.ajax({
+                	url:"regLsupporter",
+                	type:"post",
+                	data:{"wid":wid,"id":id},
+                	success:function(){
+                		alert("생활지원사가 배정되었습니다.");
+                		location.reload();
+                	},
+                	 error: function (xhr, status, error) { 
+                		 alert("실패"); 
+                	}
+                });
+                
+                $('#modalBox').modal('hide');
+              });
+            }
+           
           });
+
+            
         });
         // modal close
         $('#closeModalBtn').on('click', function() {
           $('#modalBox').modal('hide');
         });
-        
         // modal open(비상연락망)
         $('#openPhoneModal').on('click', function() {
           $('#modalBox2').modal('show');
@@ -356,10 +389,11 @@
       }
     });
   }
+ 
   // 대상자 정보 수정화면 호출
   function memModifyForm_go(id) {
     $.ajax({
-      url: "modify?id="+id,
+      url: "modify?id=" + id,
       type: "get",
       datatype: "text",
       success: function(data) {

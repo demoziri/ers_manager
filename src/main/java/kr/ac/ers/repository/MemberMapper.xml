@@ -51,11 +51,17 @@
 	</insert>
 	
 	<select id="selectAssignableLsupporter" resultType="LsupporterStatusVO">
-		select m.name as m_name, f.name , f.birth, f.gender
+		select m.name as m_name, f.name , f.birth, f.gender, l.wid
 		from member m, fieldstaff f, lsupporter l
 		where l.wcode=f.wcode and m.lnum=l.lnum and m.id=#{id}
 	</select>
 	
+	
+	<update id="updateLsupporter">
+		update member
+		set wid=#{wid}
+		where id=#{id}
+	</update>
 	
 	
 	

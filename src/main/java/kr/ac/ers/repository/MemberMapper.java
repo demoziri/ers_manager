@@ -23,4 +23,6 @@ public interface MemberMapper {
 	MemberVO insertMember(MemberVO member);
 	
 	List<LsupporterStatusVO> selectAssignableLsupporter(String id);
+	
+	void updateLsupporter(String id, String wid);
 }
