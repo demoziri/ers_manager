@@ -77,19 +77,19 @@
     <tr>
       <th>구</th>
       <td>
-        <select name="gu" id="">
+        <select name="gu" onchange="dongRegList_go(this.value)">
           <option value="">선택</option>
-          <option value="">중구</option>
-          <option value="">서구</option>
-          <option value="">동구</option>
-          <option value="">유성구</option>
-          <option value="">대덕구</option>
+          <option value="중구">중구</option>
+          <option value="서구">서구</option>
+          <option value="동구">동구</option>
+          <option value="유성구">유성구</option>
+          <option value="대덕구">대덕구</option>
         </select>
       </td>
       <th>동</th>
       <td>
-        <select name="dong" id="">
-          <option value="">선택</option>
+        <select id="dongRegList" name="dong" >
+            <option value="" selected>선택</option>
         </select>
       </td>
     </tr>

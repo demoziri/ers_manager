@@ -13,9 +13,12 @@ public interface MemberMapper {
 	
 	MemberVO selectMemberById(String id);
 	
-	
 	int selectSearchMemberListCount(MemberSearchCriteria cri);
 
 	List<MemberVO> selectMemberList(MemberSearchCriteria cri, RowBounds rowbounds);
+	
+	String selectMemberSequenceNextValue();
+	
+	MemberVO insertMember(MemberVO member);
 		
 }

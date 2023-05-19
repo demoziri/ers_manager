@@ -41,4 +41,12 @@ public class MemberService {
 	public MemberVO getMemberById(String id) {
 		return memberMapper.selectMemberById(id);
 	}
+	
+	public MemberVO regist(MemberVO member) {
+		String id = memberMapper.selectMemberSequenceNextValue();
+		member.setId(id);
+		return memberMapper.insertMember(member);
+	}
+	
+	
 }

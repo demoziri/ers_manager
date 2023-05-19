@@ -86,15 +86,18 @@ public class ManagerMemberController {
 	}
 	
 	
-
-	
 	@GetMapping("/regist")
 	public String memberRegist() {
 		return "manager/member/regist2";
 	}
 	
+	
 	@GetMapping("/modify")
-	public String modifyForm() {
+	public String modifyForm(String id, Model model) {
+		MemberVO member = memberService.getMemberById(id);
+		
+		model.addAttribute("member",member);
+		
 		return "manager/member/modify";
 	}
 	

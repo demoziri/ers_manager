@@ -39,7 +39,16 @@
 	</select>
 	
 	
+	<select id="selectMemberSequenceNextValue" resultType="String"> <!-- sequence 뽑아내서 등록 시, 사용? -->
+		select member_seq.nextVal
+		from dual
+	</select>
 	
+	<insert id="insertMember" parameterType="MemberVO">
+		insert into
+		member(id, name, birth, address, phone, gender, picture, wid, caution, memType)
+		values(#{id},#{name},#{birth},#{address},#{phone},#{gender},#{picture},#{wid},#{caution},#{memType})
+	</insert>
 	
 	
 	

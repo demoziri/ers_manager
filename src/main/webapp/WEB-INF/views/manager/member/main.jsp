@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="pageTitle" value="대상자 관리" />
 <%@include file="../common/head.jspf" %>
 
-<c:set var="memberList" value="${dataMap.memberList }"/>
+<c:set var="memberList" value="${dataMap.memberList }" />
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
-<c:set var="cri" value="${pageMaker.cri }"/>
-
+<c:set var="cri" value="${pageMaker.cri }" />
 
 <style>
   .mem_table>tbody>tr:hover {
@@ -29,28 +30,28 @@
         </div>
         <div>
           <select name="memType" style="height:100%;">
-            <option value="" ${cri.memType eq '' ? 'selected' : ""}>대상자구분</option>
-            <option value="독거노인" ${cri.memType eq '독거노인' ? 'selected' : ""}>독거노인</option>
-            <option value="장애인" ${cri.memType eq '장애인' ? 'selected' : ""}>장애인</option>
+            <option value="" ${cri.memType eq '' ? 'selected' : "" }>대상자구분</option>
+            <option value="독거노인" ${cri.memType eq '독거노인' ? 'selected' : "" }>독거노인</option>
+            <option value="장애인" ${cri.memType eq '장애인' ? 'selected' : "" }>장애인</option>
           </select>
           <select name="gu" onchange="dongList_go(this.value)" style="height:100%;width:100px;">
-            <option value="" ${cri.gu eq 'selected' ? 'selected' : ""}>지역구</option>
-            <option value="중구" ${cri.gu eq '중구' ? 'selected' : ""}>중구</option>
-            <option value="동구" ${cri.gu eq '동구' ? 'selected' : ""}>동구</option>
-            <option value="서구" ${cri.gu eq '서구' ? 'selected' : ""}>서구</option>
-            <option value="대덕구" ${cri.gu eq '대덕구' ? 'selected' : ""}>대덕구</option>
-            <option value="유성구" ${cri.gu eq '유성구' ? 'selected' : ""}>유성구</option>
+            <option value="" ${cri.gu eq 'selected' ? 'selected' : "" }>지역구 선택</option>
+            <option value="중구" ${cri.gu eq '중구' ? 'selected' : "" }>중구</option>
+            <option value="동구" ${cri.gu eq '동구' ? 'selected' : "" }>동구</option>
+            <option value="서구" ${cri.gu eq '서구' ? 'selected' : "" }>서구</option>
+            <option value="대덕구" ${cri.gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
+            <option value="유성구" ${cri.gu eq '유성구' ? 'selected' : "" }>유성구</option>
           </select>
-          <select id="dongList" name="dong"  style="height:100%;width:100px;">
-            <option value="" selected>동</option>
+          <select id="dongList" name="dong" style="height:100%;width:100px;">
+            <option value="" selected>동 선택</option>
           </select>
-          <input type="text"  name="name"  value="${cri.name }" placeholder="이름" style="width:100px;" />
-          <button  onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
+          <input type="text" name="name" value="${cri.name }" placeholder="이름" style="width:100px;text-align:center;" />
+          <button onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
         </div>
         <div>
           <table class="table table-bordered border-2 mt-1 text-center mem_table">
             <thead style="background-color:#dfdfdf;">
-            
+
               <tr>
                 <th>대상자구분</th>
                 <th>대상자명</th>
@@ -60,21 +61,30 @@
               </tr>
               <thead>
               <tbody class="table-group-divider">
-              <c:forEach var="member" items="${memberList }">
-              <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate"/>
-                <tr onclick="memDetail_go(${member.id});">
-                  <td>${member.memType }</td>
-                  <td>${member.name }</td>
-                  <td style="font-size:0.9rem;">${regDate }</td>
-                  <td>미설치</td>
-                  <td>미배정</td>
-                </tr>
+                <c:forEach var="member" items="${memberList }">
+                  <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate" />
+                  <tr onclick="memDetail_go(${member.id});">
+                    <td>${member.memType }</td>
+                    <td>${member.name }</td>
+                    <td style="font-size:0.9rem;">${regDate }</td>
+                    <td>미설치</td>
+                    <c:if test="${empty member.wid }">
+	                    <td >
+	                      미배정
+	                    </td>
+                    </c:if>
+                    <c:if test="${not empty member.wid }">
+	                    <td class="bg-primary">
+	                      미배정
+	                    </td>
+                    </c:if>
+                  </tr>
                 </c:forEach>
               </tbody>
           </table>
         </div>
 
-         <%@ include file="/WEB-INF/views/manager/module/pagination.jsp" %>
+        <%@ include file="/WEB-INF/views/manager/module/pagination.jsp" %>
 
       </div>
       <!-- 대상자 목록 끝-->
@@ -113,7 +123,7 @@
             <option value="">장기부재신청</option>
             <option value="">건강상태</option>
           </select>
-          &ensp;기간&nbsp;<input type="date" style="width:120px;"/>&nbsp;-&nbsp;<input type="date" style="width:120px;" />
+          &ensp;기간&nbsp;<input type="date" style="width:120px;" />&nbsp;-&nbsp;<input type="date" style="width:120px;" />
           <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
         </div>
         <div id="reList" style="background-color:#dfdfdf;height: 100%;width: 100%;margin-top: 5px;overflow-x: hidden;overflow: scroll;overflow-x: hidden;">
@@ -133,8 +143,8 @@
           <span style="font-weight:bold;color:#4191B3">-</span>
         </div>
         <div id="memReport_detail" style="height:100%;width:100%;background-color:#dfdfdf;">
-        	
-			<!-- 보고서 상세가 여기로 오겠지 -->
+
+          <!-- 보고서 상세가 여기로 오겠지 -->
         </div>
       </div>
     </div>
@@ -143,125 +153,13 @@
 </div>
 
 <!-- 생활지원사 배정 모달 영역 -->
-<div id="modalBox" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title mx-auto" id="staticBackdropLabel">배정가능한 생활지원사</h4>
-      </div>
-      <div class="modal-body">
-        <table class="modal-table table table-bordered w-100">
-          <thead>
-            <tr>
-              <th class="th-1">선택</th>
-              <th class="th-2">사진</th>
-              <th class="th-3">정보</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id="lsupp" style="height:100px;vertical-align:middle;">
-              <td>
-                <input type="checkbox" value="야야야"/>
-              </td>
-              <td>
-                <div id="pictureView" class="manPicture mt-1" data-id="${member.id }" style="border: 1px solid green; height: 80px; width: 60px; margin: 0 auto;"></div>
-              </td>
-              <td >이정호 / 남 / 27 </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="reg_lsupp" class="btn btn-warning">배정</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="modalBox2" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title mx-auto" id="staticBackdropLabel">비상연락망</h4>
-      </div>
-      <div class="modal-body">
-        <table class="modal-table table table-bordered w-100">
-          <thead>
-            <tr>
-              <th class="th-1">이름</th>
-              <th class="th-2">관계</th>
-              <th class="th-3">연락처</th>
-            </tr>
-          </thead>
-          <tbody id="ecallList">
-          
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning">수정</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+<%@include file="../modal/lsupporterReg.jsp" %>
+<!-- 비상연락망 리스트 모달 -->
+<%@include file="../modal/ecallList.jsp" %>
 <!-- 비상연락망 등록 모달 -->
-
-<div id="modalBox3" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title mx-auto" id="staticBackdropLabel">비상연락망</h4>
-        <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button>
-      </div>
-      <div class="modal-body">
-        <form action="" id="form">
-          <table class="modal-table table table-bordered w-100">
-            <thead>
-              <tr>
-                <th class="th-1">이름</th>
-                <th class="th-2">관계</th>
-                <th class="th-3">연락처</th>
-              </tr>
-            </thead>
-            <tbody id="cPhone">
-              <tr id="cPhone_list" data-name="1">
-                <td>
-                  <input type="text" name="name" style="width:70px;" />
-                </td>
-                <td>
-                  <select name="relation" id="rel">
-                    <option value="">선택</option>
-                    <option value="">아들</option>
-                    <option value="">딸</option>
-                    <option value="etc">기타</option>
-                  </select>
-                  <input type="text" name="relation" id="relInput" style="width:60px;display:none;" />
-                </td>
-                <td>
-                  <select name="phone" id="">
-                    <option value="">선택</option>
-                    <option value="010">010</option>
-                    <option value="042">042</option>
-                  </select>
-                  <input type="text" name="phone" style="width:50px;" />
-                  <input type="text" name="phone" style="width:50px;" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning">등록</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-      </div>
-    </div>
-  </div>
-</div>
+<%@include file="../modal/ecallReg.jsp" %>
+<!-- 비상연락망 수정 모달 -->
+<%@include file="../modal/ecallModify.jsp" %>
 
 </div>
 
@@ -276,64 +174,79 @@
   <input type="hidden" name="checkUpload" value="0" />
 </form>
 
-
-
 <script type="text/x-handlebars-template" id="dong-list-template">
-	<option value="" selected="selected">전체</option>
+  <option value="" selected="selected">동 선택</option>
 {{#each .}}
 	<option value="{{dongName}}">{{dongName}}</option>
 {{/each}}
-</script> 
+</script>
 
 <script type="text/x-handlebars-template" id="ecall-list-template">
-{{#each .}}
-     <tr>
+  {{#each .}}
+    <tr>
       <td>{{name}}</td>
       <td>{{relation}}</td>
       <td>{{phone}}</td>
-     </tr>
-{{/each}}
-</script> 
-
-
-
+    </tr>
+  {{/each}}
+</script>
 
 <script>
+  function dongList_go(gu) {
+    $.ajax({
+      url: "dongList?gu=" + gu,
+      type: "get",
+      success: function(data) {
+        alert("되는거 맞지");
+        let template = Handlebars.compile($('#dong-list-template').html());
+        let html = template(data);
+        console.log(html);
+        $('#dongList').html(html);
+      }
+    });
+  }
 
-	function dongList_go(gu) {
+  function dongRegList_go(gu) {
+    $.ajax({
+      url: "dongList?gu=" + gu,
+      type: "get",
+      success: function(data) {
+        alert("되는거 맞지");
+        let template = Handlebars.compile($('#dong-list-template').html());
+        let html = template(data);
+        console.log(html);
+        $('#dongRegList').html(html);
+      }
+    });
+  }
+  
+  function dongModiList_go(gu) {
+    $.ajax({
+      url: "dongList?gu=" + gu,
+      type: "get",
+      success: function(data) {
+        alert("되는거 맞지");
+        let template = Handlebars.compile($('#dong-list-template').html());
+        let html = template(data);
+        console.log(html);
+        $('#dongModiList').html(html);
+      }
+    });
+  }
 
-		$.ajax({
-			url:"dongList?gu="+gu,
-			type:"get",
-			success:function(data){
-				let template = Handlebars.compile($('#dong-list-template').html());
-				let html = template(data);
-				$('#dongList').html(html);
-			}	
-		});
-	}
-
-	function list_go(page,url) {
-		
-		if(!url) url="main"; 
-		
-		var page = $("form#jobForm input[name='page']").val(page);
-		var memType = $("form#jobForm input[name='memType']").val($('select[name="memType"]').val());
-		var gu = $("form#jobForm input[name='gu']").val($('select[name="gu"]').val());
-		var dong = $("form#jobForm input[name='dong']").val($('select[name="dong"]').val());
-		var name =$("form#jobForm input[name='name']").val($('input[name="name"]').val());
-		
-		
-		$('form#jobForm').attr({
-			action:url,
-			method:'get'
-		}).submit();
-	}
-	
-
-
-
-
+  function list_go(page, url) {
+    if (!url) url = "main";
+    var page = $("form#jobForm input[name='page']").val(page);
+    var memType = $("form#jobForm input[name='memType']").val($('select[name="memType"]').val());
+    var gu = $("form#jobForm input[name='gu']").val($('select[name="gu"]').val());
+    var dong = $("form#jobForm input[name='dong']").val($('select[name="dong"]').val());
+    var name = $("form#jobForm input[name='name']").val($('input[name="name"]').val());
+    $('form#jobForm').attr({
+      action: url,
+      method: 'get'
+    }).submit();
+  }
+  
   //등록화면 호출
   function registForm_go() {
     $.ajax({
@@ -349,15 +262,12 @@
         $("#memReport_detail").html('');
         $("#memReport_detail").append('<div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf">-</div>');
         $("#reg-btn").hide();
-        
-        
         // modal open(비상연락망)
         $('#openRegPhoneModal').on('click', function() {
           $('#modalBox3').modal('show');
           alert("뭐냐1");
           //입력박스 숨어있다가
           $("#rel").change(function() {
-        	  
             //기타를 선택하면 등장
             if ($("#rel").val() == "etc") {
               $("#relInput").show();
@@ -365,7 +275,6 @@
               $("#relInput").hide();
             }
           });
-          
           var s = $("#cPhone").html();
           var num = 2;
           $("#addPhoneBtn").on('click', function addPhone_go() {
@@ -380,6 +289,10 @@
             }
           });
         });
+        // modal close
+        $('#closeModalBtn').on('click', function() {
+          $('#modalBox3').modal('hide');
+        });
       }
     });
   }
@@ -387,16 +300,13 @@
   // 대상자 상세화면 호출
   function memDetail_go(id) {
     $.ajax({
-      url: "detail?id="+id,
+      url: "detail?id=" + id,
       type: "get",
       datatype: "text",
       success: function(data) {
         var e = $(data).find("#mem_Detail").html();
         var f = $(data).find("#re_List").html();
-        
         // 대상자 상세
-        //$("#lsupport_modal").html(l);
-        
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(e);
         $(".mem_title").html("<span class='regist_text'>대상자 정보</span>");
@@ -409,43 +319,32 @@
         // modal open(생활지원사)
         $('#openModalBtn').on('click', function() {
           $('#modalBox').modal('show');
-          
-           $("#reg_lsupp").on('click', function() {
-        	  var check = $("#lsupp").find('input:checked').val();
-        	  alert(check);
-        	  alert('뭔디');
-        	  $('#modalBox').modal('hide'); 
+          $("#reg_lsupp").on('click', function() {
+            var check = $("#lsupp").find('input:checked').val();
+            alert(check);
+            alert('뭔디');
+            $('#modalBox').modal('hide');
           });
         });
-           
         // modal close
         $('#closeModalBtn').on('click', function() {
           $('#modalBox').modal('hide');
         });
         
-        
-        
         // modal open(비상연락망)
         $('#openPhoneModal').on('click', function() {
           $('#modalBox2').modal('show');
           alert(id);
-		  
           $.ajax({
-        	  url:"ecall?id="+id,
-              type:"get",
-              datatype:"json",
-              success:function(data){
-            	  
-            	  let template = Handlebars.compile($('#ecall-list-template').html());
-  				  let html = template(data);
-  				  
-  				  $('#ecallList').html(html);
-              }
+            url: "ecall?id=" + id,
+            type: "get",
+            datatype: "json",
+            success: function(data) {
+              let template = Handlebars.compile($('#ecall-list-template').html());
+              let html = template(data);
+              $('#ecallList').html(html);
+            }
           })
-	       
-          
-          
-          
         });
         // modal close
         $('#closeModalBtn').on('click', function() {
@@ -455,15 +354,20 @@
     });
   }
   // 대상자 정보 수정화면 호출
-  function memModifyForm_go() {
+  function memModifyForm_go(id) {
     $.ajax({
-      url: "modify",
+      url: "modify?id="+id,
       type: "get",
-      datatype: "html",
+      datatype: "text",
       success: function(data) {
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(data);
         $(".mem_title").html("<span class='regist_text'>대상자 정보(수정)</span>");
+        // modal open
+        $('#openModiPhoneModal').on('click', function() {
+          $('#modalBox4').modal('show');
+          alert(id);
+        });
       }
     })
   }
@@ -503,32 +407,18 @@
     form.find('[name="checkUpload"]').val(0);
     $('#inputFileName').val(picture.files[0].name);
   }
-  
-  
+
   function memReport_go() {
-	  $.ajax({
-		  url:"reDetail",
-		  type:"get",
-		  datatype:"html",
-		  success:function(data){
-			  $("#memReport_detail").css('background-color', "");
-		      $("#memReport_detail").html(data);
-		      
-		  }
-	  })
+    $.ajax({
+      url: "reDetail",
+      type: "get",
+      datatype: "html",
+      success: function(data) {
+        $("#memReport_detail").css('background-color', "");
+        $("#memReport_detail").html(data);
+      }
+    })
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </script>
 
 <%@include file="../common/foot.jspf" %>

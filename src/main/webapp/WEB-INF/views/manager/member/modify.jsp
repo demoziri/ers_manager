@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="ko">
@@ -29,56 +32,66 @@
     <tr>
       <th>대상자 구분</th>
       <td>
-        <select name="memType" id="">
-          <option value="" selected>선택</option>
-          <option value="">독거노인</option>
-          <option value="">장애인</option>
-        </select>
+        ${member.memType }
       </td>
       <th>이름</th>
       <td>
-        <input type="text" name="name" />
+        ${member.name }
       </td>
     </tr>
     <tr>
       <th>생년월일</th>
       <td>
-        <input type="date" name="birth" />
+        <c:set value="${member.birth }" var="birth"/>
+        19${fn:substring(birth,0,2) }년
+        ${fn:substring(birth,2,4) }월
+        ${fn:substring(birth,4,6) }일
       </td>
       <th>전화번호</th>
       <td>
+        <c:set value="${member.phone }" var="phone"/>
+        <c:set value="${fn:substring(phone,0,3) }" var="start"/>
+        <c:set value="${fn:substring(phone,4,8) }" var="middle"/>
+        <c:set value="${fn:substring(phone,9,13) }" var="end"/>
+	
         <select name="phone" id="">
-          <option value="">선택</option>
-          <option value="010">010</option>
-          <option value="042">042</option>
+          <option value=""> 선택 </option>
+          <option value="042" ${start eq '042' ? 'selected' : "" }>042</option>
+          <option value="010" ${start eq '010' ? 'selected' : "" }>010</option>
         </select>
-        -<input type="text" name="phone" style="width:50px;" />
-        -<input type="text" name="phone" style="width:50px;" />
+        -<input type="text" name="phone" value="${middle }" style="width:50px;" />
+        -<input type="text" name="phone" value="${end }" style="width:50px;" />
       </td>
     </tr>
     <tr>
       <th>구</th>
       <td>
-        <select name="gu" id="">
-          <option value="">선택</option>
-          <option value="">중구</option>
-          <option value="">서구</option>
-          <option value="">동구</option>
-          <option value="">유성구</option>
-          <option value="">대덕구</option>
+       <c:set value="${member.address }" var="address"/>
+       <c:set value="${fn:split(address,' ')[1]}" var="gu"/>
+       <c:set value="${fn:split(address,' ')[2]}" var="dong"/>
+       <c:set value="${fn:split(address,' ')[3]}" var="detail"/>
+       
+    
+        <select name="gu" onchange="dongModiList_go(this.value)">
+          <option value="" >선택</option>
+          <option value="중구" ${gu eq '중구' ? 'selected' : "" }>중구</option>
+          <option value="서구" ${gu eq '서구' ? 'selected' : "" }>서구</option>
+          <option value="동구" ${gu eq '동구' ? 'selected' : "" }>동구</option>
+          <option value="유성구" ${gu eq '유성구' ? 'selected' : "" }>유성구</option>
+          <option value="대덕구" ${gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
         </select>
       </td>
       <th>동</th>
       <td>
-        <select name="dong" id="">
-          <option value="">선택</option>
+        <select name="dong" id="dongModiList">
+          <option value="${dong}" selected>${dong}</option>
         </select>
       </td>
     </tr>
     <tr>
       <th>상세주소</th>
       <td colspan="3">
-        <input type="text" name="address" style="width:100%;" />
+        <input type="text" name="address" value="${detail }"style="width:100%;" />
       </td>
     </tr>
     <tr>
@@ -86,16 +99,23 @@
       <td>
         <select name="caution">
           <option value="">선택</option>
-          <option value="Y">Y</option>
-          <option value="N">N</option>
+          <option value="Y" ${member.caution eq 'Y' ? 'selected' : "" }>Y</option>
+          <option value="N" ${member.caution eq 'N' ? 'selected' : "" }>N</option>
         </select>
       </td>
       <th>상태</th>
-      <td>서비스 이용중</td>
+      <td>
+        <select name="status">
+          <option value="">선택</option>
+          <option value="1" ${member.status eq '1' ? 'selected' : "" }>서비스 이용중</option>
+          <option value="2" ${member.status eq '2' ? 'selected' : "" }>장기부재</option>
+          <option value="3" ${member.status eq '3' ? 'selected' : "" }>해지</option>
+        </select>
+      </td>
     </tr>
     <tr>
       <th>
-        <button class="btn btn-danger btn-sm" type="button" id="openRegPhoneModal">비상연락망</button>
+        <button class="btn btn-danger btn-sm" type="button" id="openModiPhoneModal">비상연락망</button>
       </th>
       <td>0/3</td>
       <th>신청서</th>
@@ -110,6 +130,7 @@
   </div>
 </div>
 </form>
+
 
 
 </html>

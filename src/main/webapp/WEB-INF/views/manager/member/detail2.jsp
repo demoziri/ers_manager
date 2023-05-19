@@ -53,7 +53,10 @@
                   <td>신청서.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
                   <th>생활지원사</th>
                   <td style="text-align:center;">
+                  <c:if test="${empty member.wid}">
                     <button class="btn btn-primary btn-sm" id="openModalBtn"  style="height:25px;">배정하기</button>
+                  </c:if>
+                  	${member.wid}
                   </td>
                 </tr>
                 <tr>
@@ -71,7 +74,7 @@
                 </tr>
               </table>
               <div >
-                <button type="button" onclick="memModifyForm_go();" class="btn btn-warning btn-sm my-1" style="float:right;color:white;">정보 수정</button>
+                <button type="button" onclick="memModifyForm_go(${member.id });" class="btn btn-warning btn-sm my-1" style="float:right;color:white;">정보 수정</button>
               </div>
             </div>
           </div>
