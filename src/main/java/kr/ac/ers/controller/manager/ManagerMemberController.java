@@ -54,7 +54,7 @@ public class ManagerMemberController {
 	@GetMapping("/detail")
 	public String memberDetail(String id, Model model) {
 		
-		MemberVO member = memberService.getMemberById(id);
+		Map<String, Object> member = memberService.getMemberById(id);
 		
 		List<EcallVO> ecallList = ecallService.getEcallList(id);
 		
@@ -94,7 +94,7 @@ public class ManagerMemberController {
 	
 	@GetMapping("/modify")
 	public String modifyForm(String id, Model model) {
-		MemberVO member = memberService.getMemberById(id);
+		Map<String, Object> member = memberService.getMemberById(id);
 		
 		model.addAttribute("member",member);
 		

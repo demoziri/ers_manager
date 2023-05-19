@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.ac.ers.command.MemberSearchCriteria;
+import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
 
 @Mapper
@@ -20,5 +21,6 @@ public interface MemberMapper {
 	String selectMemberSequenceNextValue();
 	
 	MemberVO insertMember(MemberVO member);
-		
+	
+	List<LsupporterStatusVO> selectAssignableLsupporter(String id);
 }

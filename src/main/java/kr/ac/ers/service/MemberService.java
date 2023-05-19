@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.command.PageMaker;
+import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.repository.MemberMapper;
 
@@ -18,7 +19,7 @@ public class MemberService {
 
 	@Autowired
 	private MemberMapper memberMapper;
-	
+
 	
 	public Map<String,Object> getMemberList(MemberSearchCriteria cri) {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -38,13 +39,23 @@ public class MemberService {
 	}
 	
 	
-	public MemberVO getMemberById(String id) {
-		return memberMapper.selectMemberById(id);
+	public Map<String,Object> getMemberById(String id) {
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<LsupporterStatusVO> supporterList = memberMapper.selectAssignableLsupporter(id);
+		MemberVO member = memberMapper.selectMemberById(id);
+		
+		dataMap.put("member", member);
+		dataMap.put("supporterList", supporterList);
+		
+		return dataMap;
 	}
 	
 	public MemberVO regist(MemberVO member) {
 		String id = memberMapper.selectMemberSequenceNextValue();
 		member.setId(id);
+		
+		
+		
 		return memberMapper.insertMember(member);
 	}
 	

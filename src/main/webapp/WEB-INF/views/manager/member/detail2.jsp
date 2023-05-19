@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="pageTitle" value="게시물 내용"/>
-
-
-
-    
+<c:set var="member" value="${dataMap.member }" />
+<c:set var="supporterList" value="${dataMap.supporterList }" />
 	<!-- 대상자 상세정보 -->
       <div class="col-7">
+    
         <div class="card card-body" style="border:2px dotted gray;height:400px;">
           <div style="position:relative;">
             <span class="fs-3" style="border-bottom:2px solid gray;">대상자 정보</span>

@@ -10,6 +10,8 @@
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
 <c:set var="cri" value="${pageMaker.cri }" />
 
+
+
 <style>
   .mem_table>tbody>tr:hover {
     background-color: lightblue;
@@ -304,6 +306,7 @@
       type: "get",
       datatype: "text",
       success: function(data) {
+    	  console.log(data);
         var e = $(data).find("#mem_Detail").html();
         var f = $(data).find("#re_List").html();
         // 대상자 상세
