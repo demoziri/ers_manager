@@ -26,7 +26,7 @@
               <table class="table table-bordered mb-0 mt-1" style="height:75%;">
                 <tr>
                   <th>대상자 구분</th>
-                  <td>${member.id }</td>
+                  <td>${member.memType }</td>
                   <th>나이</th>
                   <td>71세</td>
                 </tr>
@@ -44,22 +44,30 @@
                   <th>고위험도</th>
                   <td>${member.caution }</td>
                   <th>상태</th>
-                  <td>서비스 이용중</td>
+                  <td>${member.status }</td>
                 </tr>
                 <tr>
                   <th>신청서</th>
                   <td>신청서.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
                   <th>생활지원사</th>
-                  <td style="text-align:center;">
-                  <c:if test="${empty member.wid}">
+                  <td id="lsName" style="text-align:center;">
+                  <c:if test="${empty member.wid && member.machineCk eq 4}">
                     <button class="btn btn-primary btn-sm" id="openModalBtn"  style="height:25px;">배정하기</button>
                   </c:if>
-                  	${member.wid}
+                  <c:if test="${not empty member.wid && member.machineCk ne 4}">
+                    <button class="btn btn-danger btn-sm" id="openModalBtn"  style="height:25px;">배정불가</button>
+                  </c:if>
+                  	${member.w_Name}
                   </td>
                 </tr>
                 <tr>
                   <th>장비설치유무</th>
+                  <c:if test="${member.machineCk eq 4}">
                   <td>설치완료</td>
+                  </c:if>
+                  <c:if test="${member.machineCk ne 4}">
+                  <td>미설치</td>
+                  </c:if>
                   <th></th>
                   <td>
                   </td>

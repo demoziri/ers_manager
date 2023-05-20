@@ -25,4 +25,8 @@ public interface MemberMapper {
 	List<LsupporterStatusVO> selectAssignableLsupporter(String id);
 	
 	void updateLsupporter(String id, String wid);
+	
+	int countMachineCk(String id);
+	
+	String selectLsupporterName(String id);
 }

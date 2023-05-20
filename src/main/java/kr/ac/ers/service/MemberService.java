@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.dto.LsupporterStatusVO;
@@ -27,7 +28,18 @@ public class MemberService {
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
 		
 		List<MemberVO> memberList = memberMapper.selectMemberList(cri,rowbounds);
+		
+		for(MemberVO member : memberList) {
+			String id = member.getId();
+			int count = memberMapper.countMachineCk(id);
+			
+			member.setMachineCk(count);
+		}
+		
 		dataMap.put("memberList", memberList);
+		
+
+		
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -59,6 +71,16 @@ public class MemberService {
 	public void registLsupporter(String wid, String id) {
 		memberMapper.updateLsupporter(id, wid);
 	}
+	
+	public int countMachineCheck(String id) {
+		return memberMapper.countMachineCk(id);
+	}
+
+
+	public String selectLsupporterName(String id) {
+		return memberMapper.selectLsupporterName(id);
+	}
+	
 	
 	
 }

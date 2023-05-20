@@ -63,6 +63,19 @@
 		where id=#{id}
 	</update>
 	
+	<select id="countMachineCk" resultType="Integer">
+		select count(*)
+		from machine
+		where id = #{id}
+	</select>
+	
+	<select id="selectLsupporterName" resultType="String">
+		select f.name
+		from fieldstaff f, lsupporter l, member m
+		where f.wcode = l.wcode and m.wid = l.wid and m.id=#{id} 
+	</select>
+	
+	
 	
 	
 	

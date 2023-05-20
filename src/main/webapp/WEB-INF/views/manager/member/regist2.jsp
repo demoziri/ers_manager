@@ -112,7 +112,7 @@
     </tr>
   </table>
   <div>
-    <button type="button" onclick="" class="btn btn-secondary btn-sm my-1 ms-2" style="float:right;color:white;">취소</button>
+    <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm my-1 ms-2" style="float:right;color:white;">취소</button>
     <button type="button" class="btn btn-success btn-sm my-1" style="float:right;color:white;">등록</button>
   </div>
 </div>

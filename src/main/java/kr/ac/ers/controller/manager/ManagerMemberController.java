@@ -44,6 +44,7 @@ public class ManagerMemberController {
 		
 		Map<String,Object> dataMap = memberService.getMemberList(cri);
 		
+		
 		mnv.addObject("dataMap",dataMap);
 		mnv.setViewName(url);
 		
@@ -58,8 +59,13 @@ public class ManagerMemberController {
 		
 		MemberVO member = memberService.getMemberById(id);
 		
-		mnv.addObject("member", member);
+		int count = memberService.countMachineCheck(id);
+		member.setMachineCk(count);
 		
+		String wName = memberService.selectLsupporterName(id);
+		member.setW_Name(wName);
+		
+		mnv.addObject("member", member);
 		mnv.setViewName(url);
 		
 		return mnv;
@@ -86,6 +92,16 @@ public class ManagerMemberController {
 		MemberVO member = memberService.getMemberById(id);
 		member.setWid(wid);
 		memberService.registLsupporter(wid, id);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/lsuppName")
+	public String lsuppName(String id) {
+		String lsuppName = memberService.selectLsupporterName(id);
+		
+		return lsuppName;
+		
 	}
 	
 	

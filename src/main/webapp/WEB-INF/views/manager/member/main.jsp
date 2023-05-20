@@ -48,7 +48,7 @@
           <input type="text" name="name" value="${cri.name }" placeholder="이름" style="width:100px;text-align:center;" />
           <button onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
         </div>
-        <div>
+        <div id="memList">
           <table class="table table-bordered border-2 mt-1 text-center mem_table">
             <thead style="background-color:#dfdfdf;">
 
@@ -67,7 +67,12 @@
                     <td>${member.memType }</td>
                     <td>${member.name }</td>
                     <td style="font-size:0.9rem;">${regDate }</td>
-                    <td>미설치</td>
+                    <c:if test="${member.machineCk eq 4}">
+                    <td style="color:blue;">설치완료</td>
+                    </c:if>
+                    <c:if test="${member.machineCk ne 4}">
+                    <td style="color:red;">미설치</td>
+                    </c:if>
                     <c:if test="${empty member.wid }">
                       <td style="color:red;">
                         미배정
@@ -346,9 +351,21 @@
                 	url:"regLsupporter",
                 	type:"post",
                 	data:{"wid":wid,"id":id},
-                	success:function(){
-                		alert("생활지원사가 배정되었습니다.");
-                		location.reload();
+                	success:function(data){
+                		alert("생활지원사 배정이 완료되었습니다.");
+                		$("#memList").load(location.href + " #memList");
+                		
+                		$.ajax({
+                			url:"lsuppName",
+                			type:"get",
+                			data:{"id":id},
+                			success:function(data){
+                				$("#lsName").text(data);
+                			},
+                			error: function(){
+                				alert("실패지롱");
+                			}
+                		});
                 	},
                 	 error: function (xhr, status, error) { 
                 		 alert("실패"); 
@@ -358,10 +375,9 @@
                 $('#modalBox').modal('hide');
               });
             }
-           
           });
-
-            
+          		
+         
         });
         // modal close
         $('#closeModalBtn').on('click', function() {
@@ -390,6 +406,9 @@
     });
   }
  
+  
+  
+  
   // 대상자 정보 수정화면 호출
   function memModifyForm_go(id) {
     $.ajax({
