@@ -9,4 +9,9 @@ import kr.ac.ers.dto.EcallVO;
 @Mapper
 public interface EcallMapper {
 	List<EcallVO> selectEcallListById(String id);
+	
+	
+
+	int selectEcallCount(String id);
+	
 }

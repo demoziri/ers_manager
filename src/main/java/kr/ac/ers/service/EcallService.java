@@ -17,4 +17,8 @@ public class EcallService {
 	public List<EcallVO> getEcallList(String id){
 		return ecallMapper.selectEcallListById(id);
 	}
+	
+	public int getEcallCount(String id) {
+		return ecallMapper.selectEcallCount(id);
+	}
 }

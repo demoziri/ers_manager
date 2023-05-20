@@ -6,5 +6,11 @@
 		where id=#{id}
 	</select>
 	
+	<select  id="selectEcallCount" resultType="Integer">
+		select count(*)
+		from ecall
+		where id=#{id}		
+	</select>
+	
 	
 </mapper>

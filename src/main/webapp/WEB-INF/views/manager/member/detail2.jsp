@@ -44,7 +44,15 @@
                   <th>고위험도</th>
                   <td>${member.caution }</td>
                   <th>상태</th>
-                  <td>${member.status }</td>
+                  <c:if test="${member.status eq 1}">
+                  <td>서비스 이용중</td>
+                  </c:if>
+                  <c:if test="${member.status eq 2}">
+                  <td>장기부재</td>
+                  </c:if>
+                  <c:if test="${member.status eq 3}">
+                  <td>해지</td>
+                  </c:if>
                 </tr>
                 <tr>
                   <th>신청서</th>
@@ -76,7 +84,7 @@
                  <th>
                  	<button class="btn btn-danger btn-sm" id="openPhoneModal">비상연락망</button>
                  </th>
-                  <td>3/3</td>
+                  <td><span style="font-weight:bold;">${member.e_count }</span>/3</td>
                 </tr>
               </table>
               <div >

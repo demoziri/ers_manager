@@ -59,11 +59,14 @@ public class ManagerMemberController {
 		
 		MemberVO member = memberService.getMemberById(id);
 		
-		int count = memberService.countMachineCheck(id);
-		member.setMachineCk(count);
+		int machineCount = memberService.countMachineCheck(id);
+		member.setMachineCk(machineCount);
 		
 		String wName = memberService.selectLsupporterName(id);
 		member.setW_Name(wName);
+		
+		int ecallCount = ecallService.getEcallCount(id);
+		member.setE_count(ecallCount);
 		
 		mnv.addObject("member", member);
 		mnv.setViewName(url);
