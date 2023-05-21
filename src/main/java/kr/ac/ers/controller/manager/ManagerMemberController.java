@@ -135,14 +135,15 @@ public class ManagerMemberController {
 	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
 		
 		MemberVO member = registReq.toMemberVO();
-		memberService.regist(member);
 		
 		String id = member.getId();
+		memberService.regist(member);
+		
 		EcallVO ecall = eRegistReq.toEcallVO();
-		System.out.println("id:"+id);
 		
 		ecall.setId(id);
 		ecallService.registEcall(ecall);
+			
 		
 		
 		return member.getId();

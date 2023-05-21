@@ -8,7 +8,7 @@
         <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button>
       </div>
       <div class="modal-body">
-        <form action="" id="form">
+        <form action="" id="ecallForm">
           <table class="modal-table table table-bordered w-100">
             <thead>
               <tr>
@@ -19,6 +19,7 @@
             </thead>
             <tbody id="cPhone">
               <tr id="cPhone_list" data-name="1">
+            
                 <td>
                   <input type="text" name="e_name" style="width:70px;" />
                 </td>
@@ -40,6 +41,7 @@
                   <input type="text" name="e_phone2" style="width:50px;" />
                   <input type="text" name="e_phone3" style="width:50px;" />
                 </td>
+             
               </tr>
               <tr id="cPhone_list" data-name="2">
                 <td>

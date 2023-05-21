@@ -63,7 +63,7 @@
                     <button class="btn btn-primary btn-sm" id="openModalBtn"  style="height:25px;">배정하기</button>
                   </c:if>
                   <c:if test="${empty member.wid && member.machineCk ne 4}">
-                    <button class="btn btn-danger btn-sm" id="openModalBtn"  style="height:25px;">배정불가</button>
+                    <button class="btn btn-danger btn-sm" id=""  style="height:25px;">배정불가</button>
                   </c:if>
                   	${member.w_Name}
                   </td>

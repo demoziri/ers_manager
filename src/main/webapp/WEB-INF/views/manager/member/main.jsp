@@ -68,10 +68,10 @@
                     <td>${member.name }</td>
                     <td style="font-size:0.9rem;">${regDate }</td>
                     <c:if test="${member.machineCk eq 4}">
-                    <td style="color:blue;">설치완료</td>
+                      <td style="color:blue;">설치완료</td>
                     </c:if>
                     <c:if test="${member.machineCk ne 4}">
-                    <td style="color:red;">미설치</td>
+                      <td style="color:red;">미설치</td>
                     </c:if>
                     <c:if test="${empty member.wid }">
                       <td style="color:red;">
@@ -213,36 +213,29 @@
 </script>
 
 <script>
-
-	function regist_go() {
-		$('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
-		
-		var regInfo = $("form[role='form']").serialize();
-		
-		$.ajax({
-			url:"doRegist",
-			type:"post",
-			data:regInfo,
-			success:function(data){
-				alert("등록이 완료되었습니다.");
-				$("#memList").load(location.href + " #memList");
-				memDetail_go(data);
-			},
-			error:function(){
-				alert("실패?");
-			}
-		});
-	}
-	
-	
-
+  function regist_go() {
+    $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
+    var regInfo = $("form[role='form']").serialize();
+    $.ajax({
+      url: "doRegist",
+      type: "post",
+      data: regInfo,
+      success: function(data) {
+        alert("등록이 완료되었습니다.");
+        $("#memList").load(location.href + " #memList");
+        memDetail_go(data);
+      },
+      error: function() {
+        alert("실패?");
+      }
+    });
+  }
 
   function dongList_go(gu) {
     $.ajax({
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
-        
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
         $('#dongList').html(html);
@@ -255,7 +248,6 @@
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
-       
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
         $('#dongRegList').html(html);
@@ -268,7 +260,6 @@
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
-        
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
         $('#dongModiList').html(html);
@@ -288,7 +279,6 @@
       method: 'get'
     }).submit();
   }
-  
   //등록화면 호출
   function registForm_go() {
     $.ajax({
@@ -311,13 +301,28 @@
           //입력박스 숨어있다가
           $("#rel1").change(function() {
             //기타를 선택하면 등장
-            if ($("#rel").val() == "etc") {
-              $("#relInput").show();
+            if ($("#rel1").val() == "etc") {
+              $("#relInput1").show();
             } else {
-              $("#relInput").hide();
+              $("#relInput1").hide();
             }
           });
-          
+          $("#rel2").change(function() {
+            //기타를 선택하면 등장
+            if ($("#rel2").val() == "etc") {
+              $("#relInput2").show();
+            } else {
+              $("#relInput2").hide();
+            }
+          });
+          $("#rel3").change(function() {
+            //기타를 선택하면 등장
+            if ($("#rel3").val() == "etc") {
+              $("#relInput3").show();
+            } else {
+              $("#relInput3").hide();
+            }
+          });
           /* var s = $("#cPhone").html();
           var dataName = $("#cPhone").find("#cPhone_list").attr("data-name");
           var num = 1;
@@ -333,25 +338,32 @@
                 $("#cPhone").append(s);
             }
           }); */
-          
-           
-            $('#regEcallBtn').on('click',function() {
-	          	var eName = $("input[name='e_name']").val();
-	          	var ePhone1 = $("select[name='e_phone1']").val();
-	          	var ePhone2 = $("input[name='e_phone2']").val();
-	          	var ePhone3 = $("input[name='e_phone3']").val();
-	            var relation = $("select[name='relation']").val();
-            	$("input[name='e_Name']").val(eName);
-            	$("input[name='relation']").val(relation);
-            	$("#phone1").val(ePhone1);
-            	$("#phone2").val(ePhone2);
-            	$("#phone3").val(ePhone3);
-            	
-            	alert("비상연락망을 등록했습니다.");
-            	
-            	$('#modalBox3').modal('hide');
-            })
-          
+          $('#regEcallBtn').on('click', function() {
+        	  
+        	var form = $("#ecallForm").serialize();
+        	console.log(form);
+            var eName = $("input[name='e_name']").val();
+            var ePhone1 = $("select[name='e_phone1']").val();
+            var ePhone2 = $("input[name='e_phone2']").val();
+            var ePhone3 = $("input[name='e_phone3']").val();
+            var relation = $("select[name='relation']").val();
+            
+            /* data1 = {
+            		"e_Name":eName,
+            		"e_Phone":ePhone1,
+            		"e_Phone":ePhone2,
+            		"e_Phone":ePhone3,
+            		"relation":relation
+            }
+             */
+            $("input[name='e_Name']").val(eName);
+            $("input[name='relation']").val(relation);
+            $("#phone1").val(ePhone1);
+            $("#phone2").val(ePhone2);
+            $("#phone3").val(ePhone3);
+            alert("비상연락망을 등록했습니다.");
+            $('#modalBox3').modal('hide');
+          })
         });
         // modal close
         $('#closeModalBtn').on('click', function() {
@@ -390,41 +402,41 @@
               let template = Handlebars.compile($('#lsupp-list-template').html());
               let html = template(data);
               $('#lsuppList').html(html);
-            //배정 버튼 눌렀을 때	
+              //배정 버튼 눌렀을 때	
               $("#reg_lsupp").on('click', function() {
                 var wid = $("#lsuppList").find('input:checked').val();
-                
                 $.ajax({
-                	url:"regLsupporter",
-                	type:"post",
-                	data:{"wid":wid,"id":id},
-                	success:function(data){
-                		alert("생활지원사 배정이 완료되었습니다.");
-                		$("#memList").load(location.href + " #memList");
-                		
-                		$.ajax({
-                			url:"lsuppName",
-                			type:"get",
-                			data:{"id":id},
-                			success:function(data){
-                				$("#lsName").text(data);
-                			},
-                			error: function(){
-                				alert("실패지롱");
-                			}
-                		});
-                	},
-                	 error: function (xhr, status, error) { 
-                		 alert("실패"); 
-                	}
+                  url: "regLsupporter",
+                  type: "post",
+                  data: {
+                    "wid": wid,
+                    "id": id
+                  },
+                  success: function(data) {
+                    alert("생활지원사 배정이 완료되었습니다.");
+                    $("#memList").load(location.href + " #memList");
+                    $.ajax({
+                      url: "lsuppName",
+                      type: "get",
+                      data: {
+                        "id": id
+                      },
+                      success: function(data) {
+                        $("#lsName").text(data);
+                      },
+                      error: function() {
+                        alert("실패지롱");
+                      }
+                    });
+                  },
+                  error: function(xhr, status, error) {
+                    alert("실패");
+                  }
                 });
-                
                 $('#modalBox').modal('hide');
               });
             }
           });
-          		
-         
         });
         // modal close
         $('#closeModalBtn').on('click', function() {
@@ -452,10 +464,6 @@
       }
     });
   }
- 
-  
-  
-  
   // 대상자 정보 수정화면 호출
   function memModifyForm_go(id) {
     $.ajax({
