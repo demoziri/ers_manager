@@ -338,30 +338,23 @@
                 $("#cPhone").append(s);
             }
           }); */
+          
           $('#regEcallBtn').on('click', function() {
         	  
-        	var form = $("#ecallForm").serialize();
-        	console.log(form);
             var eName = $("input[name='e_name']").val();
             var ePhone1 = $("select[name='e_phone1']").val();
             var ePhone2 = $("input[name='e_phone2']").val();
             var ePhone3 = $("input[name='e_phone3']").val();
             var relation = $("select[name='relation']").val();
             
-            /* data1 = {
-            		"e_Name":eName,
-            		"e_Phone":ePhone1,
-            		"e_Phone":ePhone2,
-            		"e_Phone":ePhone3,
-            		"relation":relation
-            }
-             */
             $("input[name='e_Name']").val(eName);
             $("input[name='relation']").val(relation);
             $("#phone1").val(ePhone1);
             $("#phone2").val(ePhone2);
             $("#phone3").val(ePhone3);
+            
             alert("비상연락망을 등록했습니다.");
+            
             $('#modalBox3').modal('hide');
           })
         });

@@ -8,7 +8,7 @@
         <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button>
       </div>
       <div class="modal-body">
-        <form action="" id="ecallForm">
+       <form role="form">
           <table class="modal-table table table-bordered w-100">
             <thead>
               <tr>
@@ -18,8 +18,9 @@
               </tr>
             </thead>
             <tbody id="cPhone">
-              <tr id="cPhone_list" data-name="1">
-            
+            <!-- 비상연락망1 -->
+              <tr id="cPhone_list1" data-name="1">
+              
                 <td>
                   <input type="text" name="e_name" style="width:70px;" />
                 </td>
@@ -32,7 +33,7 @@
                   </select>
                   <input type="text" name="relation" id="relInput1" style="width:60px;display:none;" />
                 </td>
-                <td>
+               <td>
                   <select name="e_phone1" id="">
                     <option value="">선택</option>
                     <option value="010">010</option>
@@ -43,7 +44,8 @@
                 </td>
              
               </tr>
-              <tr id="cPhone_list" data-name="2">
+              <!-- 비상연락망2 -->
+              <tr id="cPhone_list2" data-name="2">
                 <td>
                   <input type="text" name="e_name" style="width:70px;" />
                 </td>
@@ -66,7 +68,9 @@
                   <input type="text" name="e_phone3" style="width:50px;" />
                 </td>
               </tr>
-              <tr id="cPhone_list" data-name="3">
+              
+              <!-- 비상연락망3 -->
+              <tr id="cPhone_list3" data-name="3">
                 <td>
                   <input type="text" name="e_name" style="width:70px;" />
                 </td>
@@ -89,9 +93,10 @@
                   <input type="text" name="e_phone3" style="width:50px;" />
                 </td>
               </tr>
+        
             </tbody>
           </table>
-        </form>
+       </form>
       </div>
       <div class="modal-footer">
         <button type="button" id="regEcallBtn" class="btn btn-warning">등록</button>
