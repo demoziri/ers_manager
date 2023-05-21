@@ -61,10 +61,12 @@ public class MemberService {
 	}
 	
 	
-	public void regist(MemberVO member) {
+	public String regist(MemberVO member) {
 		String id = memberMapper.selectMemberSequenceNextValue();
 		member.setId(id);
 		memberMapper.insertMember(member);
+		
+		return id;
 	}
 	
 	
@@ -79,6 +81,11 @@ public class MemberService {
 
 	public String selectLsupporterName(String id) {
 		return memberMapper.selectLsupporterName(id);
+	}
+
+
+	public String getMaxId() {
+		return memberMapper.selectMaxId();
 	}
 	
 	

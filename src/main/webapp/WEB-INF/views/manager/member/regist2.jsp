@@ -114,7 +114,7 @@
   </table>
   <input type="hidden" name="lNum" value=""/>
   <input type="hidden" name="e_Name" value=""/>
-  <input type="hidden" name="relation" value=""/>
+  <input type="hidden" name="relation" value="" id="relation_receive"/>
   <input type="hidden" id="phone1" name="e_Phone" value=""/>
   <input type="hidden" id="phone2" name="e_Phone" value=""/>
   <input type="hidden" id="phone3" name="e_Phone" value=""/>

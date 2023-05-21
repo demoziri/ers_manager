@@ -133,20 +133,24 @@ public class ManagerMemberController {
 	@ResponseBody
 	@PostMapping("/doRegist")
 	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
-		
+		String maxId = memberService.getMaxId();
 		MemberVO member = registReq.toMemberVO();
-		
-		String id = member.getId();
-		memberService.regist(member);
-		
+		String realMaxId = "";
+		MemberVO checkMember = memberService.getMemberById(maxId);
+		if(member.getName().equals(checkMember.getName()) && member.getAddress().equals(checkMember.getAddress())) {
+			realMaxId = checkMember.getId();
+		}else {
+			realMaxId = memberService.regist(member);
+		}
+		System.out.println("realMaxId : " + realMaxId);
 		EcallVO ecall = eRegistReq.toEcallVO();
-		
-		ecall.setId(id);
+		ecall.setId(realMaxId);
+		System.out.println(ecall);
 		ecallService.registEcall(ecall);
 			
 		
 		
-		return member.getId();
+		return realMaxId;
 	}
 	
 	

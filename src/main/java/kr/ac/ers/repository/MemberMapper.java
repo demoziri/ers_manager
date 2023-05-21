@@ -29,6 +29,8 @@ public interface MemberMapper {
 	int countMachineCk(String id);
 	
 	String selectLsupporterName(String id);
+
+	String selectMaxId();
 	
 	
 	

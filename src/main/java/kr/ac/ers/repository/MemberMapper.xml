@@ -78,7 +78,10 @@
 	
 	
 	
-	
+	<select id="selectMaxId" resultType="String">
+		select max(id)
+		from member 
+	</select>
 	
 	
 </mapper>
