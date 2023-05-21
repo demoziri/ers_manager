@@ -13,4 +13,15 @@
 	</select>
 	
 	
+	<insert id="insertEcall" parameterType="EcallVO">
+		insert into
+		ecall(cnum, id, name, relation, phone)
+		values(#{cnum},#{id},#{name},#{relation},#{phone})
+	</insert>
+	
+	<select id="selectEcallSequenceNextValue" resultType="Integer"> <!-- sequence 뽑아내서 등록 시, 사용? -->
+		select ecall_seq.nextVal
+		from dual
+	</select>
+	
 </mapper>

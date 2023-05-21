@@ -113,6 +113,12 @@
     </tr>
   </table>
   <input type="hidden" name="lNum" value=""/>
+  <input type="hidden" name="e_Name" value=""/>
+  <input type="hidden" name="relation" value=""/>
+  <input type="hidden" id="phone1" name="e_Phone" value=""/>
+  <input type="hidden" id="phone2" name="e_Phone" value=""/>
+  <input type="hidden" id="phone3" name="e_Phone" value=""/>
+  
   <div>
     <button type="button" onclick="check_lNum();" class="btn btn-secondary btn-sm my-1 ms-2" style="float:right;color:white;">취소</button>
     <button type="button" onclick="regist_go();" class="btn btn-success btn-sm my-1" style="float:right;color:white;">등록</button>

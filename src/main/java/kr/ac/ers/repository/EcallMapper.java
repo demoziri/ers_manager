@@ -10,8 +10,10 @@ import kr.ac.ers.dto.EcallVO;
 public interface EcallMapper {
 	List<EcallVO> selectEcallListById(String id);
 	
-	
-
 	int selectEcallCount(String id);
+	
+	void insertEcall(EcallVO ecall);
+	
+	int selectEcallSequenceNextValue();
 	
 }

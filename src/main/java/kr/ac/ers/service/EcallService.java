@@ -21,4 +21,10 @@ public class EcallService {
 	public int getEcallCount(String id) {
 		return ecallMapper.selectEcallCount(id);
 	}
+	
+	public void registEcall(EcallVO ecall) {
+		int c_Num = ecallMapper.selectEcallSequenceNextValue();
+		ecall.setCnum(c_Num);
+		ecallMapper.insertEcall(ecall);
+	}
 }

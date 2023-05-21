@@ -309,7 +309,7 @@
           $('#modalBox3').modal('show');
           alert("뭐냐1");
           //입력박스 숨어있다가
-          $("#rel").change(function() {
+          $("#rel1").change(function() {
             //기타를 선택하면 등장
             if ($("#rel").val() == "etc") {
               $("#relInput").show();
@@ -317,19 +317,41 @@
               $("#relInput").hide();
             }
           });
-          var s = $("#cPhone").html();
-          var num = 2;
+          
+          /* var s = $("#cPhone").html();
+          var dataName = $("#cPhone").find("#cPhone_list").attr("data-name");
+          var num = 1;
+          
           $("#addPhoneBtn").on('click', function addPhone_go() {
             if ($("#cPhone").children().length > 2) {
               alert("비상연락망은 3개까지 등록가능합니다.");
               $("#cPhone").append('');
               return false;
             } else {
-              $("#cPhone").find("#cPhone_list").attr("data-name", num);
-              $("#cPhone").append(s);
-              num++;
+                dataName++;
+                $("#cPhone").find("#cPhone_list").attr("data-name", dataName);
+                $("#cPhone").append(s);
             }
-          });
+          }); */
+          
+           
+            $('#regEcallBtn').on('click',function() {
+	          	var eName = $("input[name='e_name']").val();
+	          	var ePhone1 = $("select[name='e_phone1']").val();
+	          	var ePhone2 = $("input[name='e_phone2']").val();
+	          	var ePhone3 = $("input[name='e_phone3']").val();
+	            var relation = $("select[name='relation']").val();
+            	$("input[name='e_Name']").val(eName);
+            	$("input[name='relation']").val(relation);
+            	$("#phone1").val(ePhone1);
+            	$("#phone2").val(ePhone2);
+            	$("#phone3").val(ePhone3);
+            	
+            	alert("비상연락망을 등록했습니다.");
+            	
+            	$('#modalBox3').modal('hide');
+            })
+          
         });
         // modal close
         $('#closeModalBtn').on('click', function() {

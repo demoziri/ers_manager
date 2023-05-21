@@ -11,7 +11,7 @@
 	<input type="hidden" name="memType" value="" />
 	
 </form>
-	
+	<c:if test="${pageMaker.totalCount gt cri.perPageNum }">
 	<nav aria-label="Navigation">
 		<ul class="pagination justify-content-center m-0">
 			<li class="paginate_button page-item ">
@@ -44,3 +44,4 @@
 			
 		</ul>
 	</nav>    
+	</c:if>

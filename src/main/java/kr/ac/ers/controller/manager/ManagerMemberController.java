@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.ac.ers.command.EcallRegistCommand;
 import kr.ac.ers.command.MemberRegistCommand;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.AddressVO;
@@ -80,6 +81,7 @@ public class ManagerMemberController {
 	@GetMapping("/ecall")
 	public List<EcallVO> ecallList(String id) {
 		List<EcallVO> ecallList = ecallService.getEcallList(id);
+		System.out.println("리스트:"+ecallList);
 		return ecallList;
 	}
 	
@@ -130,10 +132,18 @@ public class ManagerMemberController {
 	
 	@ResponseBody
 	@PostMapping("/doRegist")
-	public String memberRegist(MemberRegistCommand registReq) {
+	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
 		
 		MemberVO member = registReq.toMemberVO();
 		memberService.regist(member);
+		
+		String id = member.getId();
+		EcallVO ecall = eRegistReq.toEcallVO();
+		System.out.println("id:"+id);
+		
+		ecall.setId(id);
+		ecallService.registEcall(ecall);
+		
 		
 		return member.getId();
 	}
