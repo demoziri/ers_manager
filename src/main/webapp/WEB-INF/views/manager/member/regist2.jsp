@@ -31,8 +31,8 @@
       <td>
         <select name="memType" id="">
           <option value="" selected>선택</option>
-          <option value="">독거노인</option>
-          <option value="">장애인</option>
+          <option value="독거노인">독거노인</option>
+          <option value="장애인">장애인</option>
         </select>
       </td>
       <th>이름</th>
@@ -77,18 +77,19 @@
     <tr>
       <th>구</th>
       <td>
-        <select name="gu" onchange="dongRegList_go(this.value)">
+      	<input type="hidden" name="address" value="대전광역시" />
+        <select name="address" id="lNum" onchange="dongRegList_go(this.value)">
           <option value="">선택</option>
-          <option value="중구">중구</option>
-          <option value="서구">서구</option>
-          <option value="동구">동구</option>
-          <option value="유성구">유성구</option>
-          <option value="대덕구">대덕구</option>
+          <option value="중구" data-name="L02">중구</option>
+          <option value="서구" data-name="L01">서구</option>
+          <option value="동구" data-name="L03">동구</option>
+          <option value="유성구" data-name="L04">유성구</option>
+          <option value="대덕구" data-name="L05">대덕구</option>
         </select>
       </td>
       <th>동</th>
       <td>
-        <select id="dongRegList" name="dong" >
+        <select id="dongRegList" name="address" >
             <option value="" selected>선택</option>
         </select>
       </td>
@@ -111,9 +112,10 @@
       </td>
     </tr>
   </table>
+  <input type="hidden" name="lNum" value=""/>
   <div>
-    <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm my-1 ms-2" style="float:right;color:white;">취소</button>
-    <button type="button" class="btn btn-success btn-sm my-1" style="float:right;color:white;">등록</button>
+    <button type="button" onclick="check_lNum();" class="btn btn-secondary btn-sm my-1 ms-2" style="float:right;color:white;">취소</button>
+    <button type="button" onclick="regist_go();" class="btn btn-success btn-sm my-1" style="float:right;color:white;">등록</button>
   </div>
 </div>
 </form>

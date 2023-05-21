@@ -21,6 +21,7 @@
 		select * from member
 		where id is not null
 		<include refid="search"/>
+		order by regDate desc
 	</select>
 	
 	<select id="selectSearchMemberListCount" resultType="Integer">
@@ -29,7 +30,7 @@
 		from member
 		where id is not null
 		<include refid="search" />
-		order by regDate desc
+		
 	</select>
 	
 	
@@ -46,8 +47,8 @@
 	
 	<insert id="insertMember" parameterType="MemberVO">
 		insert into
-		member(id, name, birth, address, phone, gender, picture, wid, caution, memType)
-		values(#{id},#{name},#{birth},#{address},#{phone},#{gender},#{picture},#{wid},#{caution},#{memType})
+		member(id, name, birth, address, phone, gender, picture,  caution, memType, lNum)
+		values(#{id},#{name},#{birth},#{address},#{phone},#{gender},#{picture},#{caution},#{memType},#{lNum})
 	</insert>
 	
 	<select id="selectAssignableLsupporter" resultType="LsupporterStatusVO">

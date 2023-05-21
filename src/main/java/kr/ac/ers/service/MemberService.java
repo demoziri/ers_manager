@@ -61,10 +61,10 @@ public class MemberService {
 	}
 	
 	
-	public MemberVO regist(MemberVO member) {
+	public void regist(MemberVO member) {
 		String id = memberMapper.selectMemberSequenceNextValue();
 		member.setId(id);
-		return memberMapper.insertMember(member);
+		memberMapper.insertMember(member);
 	}
 	
 	

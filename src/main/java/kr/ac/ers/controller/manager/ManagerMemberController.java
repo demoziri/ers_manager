@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.ac.ers.command.MemberRegistCommand;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.AddressVO;
 import kr.ac.ers.dto.EcallVO;
@@ -123,9 +124,20 @@ public class ManagerMemberController {
 	
 	
 	@GetMapping("/regist")
-	public String memberRegist() {
+	public String memberRegistForm() {
 		return "manager/member/regist2";
 	}
+	
+	@ResponseBody
+	@PostMapping("/doRegist")
+	public String memberRegist(MemberRegistCommand registReq) {
+		
+		MemberVO member = registReq.toMemberVO();
+		memberService.regist(member);
+		
+		return member.getId();
+	}
+	
 	
 	
 	@GetMapping("/modify")

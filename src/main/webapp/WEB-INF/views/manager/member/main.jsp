@@ -213,6 +213,30 @@
 </script>
 
 <script>
+
+	function regist_go() {
+		$('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
+		
+		var regInfo = $("form[role='form']").serialize();
+		
+		$.ajax({
+			url:"doRegist",
+			type:"post",
+			data:regInfo,
+			success:function(data){
+				alert("등록이 완료되었습니다.");
+				$("#memList").load(location.href + " #memList");
+				memDetail_go(data);
+			},
+			error:function(){
+				alert("실패?");
+			}
+		});
+	}
+	
+	
+
+
   function dongList_go(gu) {
     $.ajax({
       url: "dongList?gu=" + gu,
@@ -264,6 +288,7 @@
       method: 'get'
     }).submit();
   }
+  
   //등록화면 호출
   function registForm_go() {
     $.ajax({

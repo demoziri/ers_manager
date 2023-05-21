@@ -17,34 +17,29 @@ public class MemberRegistCommand {
 	private String picture;
 	private String wid;
 	private String caution;
-	private String afNo;
 	private String memType;
+	private String lNum;
 
 	
 	public MemberVO toMemberVO() {
-		String phone = "";
-		for(String data : this.phone) {
-			phone += data;
-		}
 		
-		String address = "";
-		for(String data : this.address) {
-			address += data;
-		}
+		
+	    String birthStr = birth.substring(2, 4)+birth.substring(5, 7)+birth.substring(8);
+		
 		
 		//MemberVO setting
 		MemberVO member = new MemberVO();
 		member.setId(id);
 		member.setName(name);
-		member.setBirth(birth);
-		member.setAddress(address);
-		member.setPhone(phone);
+		member.setBirth(birthStr);
+		member.setAddress(address[0]+" "+address[1]+" "+address[2]+" "+address[3]);
+		member.setPhone(phone[0]+"-"+phone[1]+"-"+phone[2]);
 		member.setGender(gender);
 		member.setPicture(picture);
 		member.setWid(wid);
 		member.setCaution(caution);
-		member.setAfNo(afNo);
 		member.setMemType(memType);
+		member.setLNum(lNum);
 		
 		return member;
 	}

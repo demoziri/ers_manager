@@ -20,7 +20,7 @@ public interface MemberMapper {
 	
 	String selectMemberSequenceNextValue();
 	
-	MemberVO insertMember(MemberVO member);
+	void insertMember(MemberVO member);
 	
 	List<LsupporterStatusVO> selectAssignableLsupporter(String id);
 	

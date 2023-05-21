@@ -37,5 +37,6 @@ public class MemberVO {
 	private int machineCk; //설치완료:1 미설치:0
 	private String w_Name;
 	private int e_count;
+	private String lNum;
 
 }
