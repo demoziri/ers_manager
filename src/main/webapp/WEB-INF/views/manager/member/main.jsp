@@ -217,45 +217,43 @@
     var member_id = "";
     $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
     var forGubun = 2;
-    if($('#e_name_id_2').val() != null && $('#e_name_id_2').val() != "" ) forGubun+=1;
-    if($('#e_name_id_3').val() != null && $('#e_name_id_3').val() != "" ) forGubun+=1;	
+    if ($('#e_name_id_2').val() != null && $('#e_name_id_2').val() != "") forGubun += 1;
+    if ($('#e_name_id_3').val() != null && $('#e_name_id_3').val() != "") forGubun += 1;
     alert(forGubun);
-    for(var round = 1; round < forGubun; round++){
-  	alert("확인 round : " + round)
-  
-    var eName = $("#e_name_id_"+round+"").val();
-    var ePhone1 = $("#e_phone"+round+"_1").val();
-    var ePhone2 = $("#e_phone"+round+"_2").val();
-    var ePhone3 = $("#e_phone"+round+"_3").val();
-    var relation = $("#rel_"+round+"").val();
-    console.log("rel ? " +relation);
-    $("input[name='e_Name']").val(eName);
-    $("#relation_receive").val(relation);
-    $("#phone1").val(ePhone1);
-    $("#phone2").val(ePhone2);
-    $("#phone3").val(ePhone3);
     
-	    var regInfo = $("form[role='form']").serialize();
-	    $.ajax({
-	      url: "doRegist",
-	      type: "post",
-	      data: regInfo,
-	      success: function(data) {
-	    	console.log("id ?? " + data);
-	        alert("등록이 완료되었습니다.");
-	        member_id = data;
-	        console.log("mem_id : " + member_id);
-	        memDetail_go(member_id);	
-    		$("#memList").load(location.href + " #memList");
-	      },
-	      error: function() {
-	        alert("실패?");
-		    alert(round);	
-		    alert(eName);    
-	      }
-	    });
+    for (var round = 1; round < forGubun; round++) {
+      alert("확인 round : " + round)
+      var eName = $("#e_name_id_" + round + "").val();
+      var ePhone1 = $("#e_phone" + round + "_1").val();
+      var ePhone2 = $("#e_phone" + round + "_2").val();
+      var ePhone3 = $("#e_phone" + round + "_3").val();
+      var relation = $("#rel_" + round + "").val();
+      console.log("rel ? " + relation);
+      $("input[name='e_Name']").val(eName);
+      $("#relation_receive").val(relation);
+      $("#phone1").val(ePhone1);
+      $("#phone2").val(ePhone2);
+      $("#phone3").val(ePhone3);
+      var regInfo = $("form[role='form']").serialize();
+      $.ajax({
+        url: "doRegist",
+        type: "post",
+        data: regInfo,
+        success: function(data) {
+          console.log("id ?? " + data);
+          alert("등록이 완료되었습니다.");
+          member_id = data;
+          console.log("mem_id : " + member_id);
+          memDetail_go(member_id);
+          $("#memList").load(location.href + " #memList");
+        },
+        error: function() {
+          alert("실패?");
+          alert(round);
+          alert(eName);
+        }
+      });
     }
-   
   }
 
   function dongList_go(gu) {
@@ -365,9 +363,8 @@
                 $("#cPhone").append(s);
             }
           }); */
-          
           $('#regEcallBtn').on('click', function() {
-        	  alert("비상연락망을 등록했습니다.");
+            alert("비상연락망을 등록했습니다.");
             $('#modalBox3').modal('hide');
           })
         });

@@ -142,6 +142,7 @@ public class ManagerMemberController {
 		}else {
 			realMaxId = memberService.regist(member);
 		}
+		
 		System.out.println("realMaxId : " + realMaxId);
 		EcallVO ecall = eRegistReq.toEcallVO();
 		ecall.setId(realMaxId);
