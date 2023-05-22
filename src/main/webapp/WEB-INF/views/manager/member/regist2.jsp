@@ -112,6 +112,7 @@
       </td>
     </tr>
   </table>
+  <input type="hidden" name="id" value="${id }" />
   <input type="hidden" name="lNum" value=""/>
   <input type="hidden" name="e_Name" value=""/>
   <input type="hidden" name="relation" value="" id="relation_receive"/>

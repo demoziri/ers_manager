@@ -196,6 +196,34 @@
   {{/each}}
 </script>
 
+<script type="text/x-handlebars-template" id="ecallModi-list-template">
+  {{#each .}}
+    <tr id="cPhone_list" data-name="1">
+      <td>
+        <input type="text" name="name" value="{{name}}" style="width:70px;" />
+      </td>
+      <td>
+        <select name="relation" id="rel">
+          <option value="{{relation}}" 'selected'>{{relation}}</option>
+          <option value="">아들</option>
+          <option value="">딸</option>
+          <option value="etc">기타</option>
+        </select>
+        <input type="text" name="relation" id="relInput" style="width:60px;display:none;" />
+       </td>
+       <td>
+         <select name="phone" id="" >
+           <option value="{{substring1 phone}}" selected>{{substring1 phone}}</option>
+           <option value="010"></option>
+           <option value="042">042</option>
+         </select>
+         <input type="text" value="{{substring2 phone}}" name="phone" style="width:50px;" />
+         <input type="text" value="{{substring3 phone}}" name="phone" style="width:50px;" />
+       </td>
+     </tr>
+  {{/each}}
+</script>
+
 <script type="text/x-handlebars-template" id="lsupp-list-template">
   {{#each .}}
     <tr style="height:100px;vertical-align:middle;">
@@ -454,6 +482,10 @@
             type: "get",
             datatype: "json",
             success: function(data) {
+              if(data.length == 0){
+            	  alert("비상연락망을 등록해주세요.");
+            	  return;
+              }
               let template = Handlebars.compile($('#ecall-list-template').html());
               let html = template(data);
               $('#ecallList').html(html);
@@ -480,6 +512,33 @@
         // modal open
         $('#openModiPhoneModal').on('click', function() {
           $('#modalBox4').modal('show');
+          $.ajax({
+        	  url: "ecall?id=" + id,
+              type: "get",
+              datatype: "json",
+              success:function(data){
+	          	  let template = Handlebars.compile($('#ecallModi-list-template').html());
+	          	  
+	          	 	Handlebars.registerHelper('substring1', function(phone) {
+	             	return phone.substr(0,3);
+	               	    });
+	          	 	
+	          	 	Handlebars.registerHelper('substring2', function(phone) {
+		             	return phone.substr(4,9);
+		                });
+	          	 	
+	          	 	Handlebars.registerHelper('substring3', function(phone) {
+		             	return phone.substr(9);
+		                });
+	          	 	
+	          	 	
+	              let html = template(data);
+	              $('#ecall_Modi').html(html);
+              }
+          });
+          
+         
+          
           alert(id);
         });
       }

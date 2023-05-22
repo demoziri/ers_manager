@@ -1,5 +1,7 @@
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle" value="게시물 내용"/>
 	<!-- 대상자 상세정보 -->
       <div class="col-7">
@@ -28,7 +30,14 @@
                   <th>대상자 구분</th>
                   <td>${member.memType }</td>
                   <th>나이</th>
-                  <td>71세</td>
+                  <c:set var="now" value="<%=new java.util.Date()%>" />
+                  <c:set var="sysYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set> 
+                  <c:set var="memberYear" value="19${member.birth.substring(0,2) }"/>
+                  <fmt:parseNumber value = "${sysYear}" var = "now"/>
+				  <fmt:parseNumber value = "${memberYear}" var = "mem"/>
+                  <td>
+				  	<span style="font-weight:bold;">${now - mem + 1 }</span>세
+                  </td>
                 </tr>
                 <tr>
                   <th>성별</th>

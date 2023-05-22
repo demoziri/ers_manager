@@ -16,13 +16,16 @@
             </tr>
           </thead>
           <tbody id="ecallList">
-          
+          	<tr>
+          	  <td colspan="3">
+          	  등록된 비상연락망이 없습니다. 
+          	  </td>
+          	</tr>
           </tbody>
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning">수정</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>

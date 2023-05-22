@@ -17,36 +17,14 @@
                 <th class="th-3">연락처</th>
               </tr>
             </thead>
-            <tbody id="cPhone">
-              <tr id="cPhone_list" data-name="1">
-                <td>
-                  <input type="text" name="name" style="width:70px;" />
-                </td>
-                <td>
-                  <select name="relation" id="rel">
-                    <option value="">선택</option>
-                    <option value="">아들</option>
-                    <option value="">딸</option>
-                    <option value="etc">기타</option>
-                  </select>
-                  <input type="text" name="relation" id="relInput" style="width:60px;display:none;" />
-                </td>
-                <td>
-                  <select name="phone" id="" >
-                    <option value="">선택</option>
-                    <option value="010">010</option>
-                    <option value="042">042</option>
-                  </select>
-                  <input type="text" name="phone" style="width:50px;" />
-                  <input type="text" name="phone" style="width:50px;" />
-                </td>
-              </tr>
+            <tbody id="ecall_Modi">
+              <!-- template 들어올 자리 -->
             </tbody>
           </table>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning">등록</button>
+        <button type="button" class="btn btn-warning">수정</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
       </div>
     </div>

@@ -80,10 +80,11 @@ public class ManagerMemberController {
 	@ResponseBody
 	@GetMapping("/ecall")
 	public List<EcallVO> ecallList(String id) {
-		List<EcallVO> ecallList = ecallService.getEcallList(id);
+		List<EcallVO> ecallList = ecallService.getEcallList(id);	
 		System.out.println("리스트:"+ecallList);
 		return ecallList;
 	}
+	
 	
 	@ResponseBody
 	@GetMapping("/regLsupp")
@@ -110,48 +111,44 @@ public class ManagerMemberController {
 		
 	}
 	
-	
-	
-	
-	
 	@ResponseBody
 	@GetMapping("/dongList")
 	public List<AddressVO> dongList(String gu) {
 		
 		List<AddressVO> dongList = addressService.getDongList(gu);
 		
-		
 		return dongList;
 	}
 	
 	
 	@GetMapping("/regist")
-	public String memberRegistForm() {
-		return "manager/member/regist2";
+	public ModelAndView memberRegistForm(ModelAndView mnv) {
+		String id = memberService.nextId();
+		String url = "manager/member/regist2";
+		mnv.addObject("id",id);
+		mnv.setViewName(url);
+		
+		return mnv;
 	}
 	
 	@ResponseBody
 	@PostMapping("/doRegist")
 	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
-		String maxId = memberService.getMaxId();
+		
 		MemberVO member = registReq.toMemberVO();
-		String realMaxId = "";
-		MemberVO checkMember = memberService.getMemberById(maxId);
-		if(member.getName().equals(checkMember.getName()) && member.getAddress().equals(checkMember.getAddress())) {
-			realMaxId = checkMember.getId();
+		
+		MemberVO checkMember = memberService.getMemberById(eRegistReq.getId());
+		if(checkMember == null ) {
+			memberService.regist(member);
+			EcallVO ecall = eRegistReq.toEcallVO();
+			ecallService.registEcall(ecall);
+			
 		}else {
-			realMaxId = memberService.regist(member);
+			EcallVO ecall = eRegistReq.toEcallVO();
+			ecallService.registEcall(ecall);
 		}
 		
-		System.out.println("realMaxId : " + realMaxId);
-		EcallVO ecall = eRegistReq.toEcallVO();
-		ecall.setId(realMaxId);
-		System.out.println(ecall);
-		ecallService.registEcall(ecall);
-			
-		
-		
-		return realMaxId;
+		return member.getId();
 	}
 	
 	
@@ -159,11 +156,14 @@ public class ManagerMemberController {
 	@GetMapping("/modify")
 	public String modifyForm(String id, Model model) {
 		MemberVO member = memberService.getMemberById(id);
-		
 		model.addAttribute("member",member);
-		
 		return "manager/member/modify";
 	}
+	
+	
+	
+	
+	
 	
 	
 	
