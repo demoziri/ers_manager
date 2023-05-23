@@ -92,5 +92,11 @@ public class MemberService {
 	}
 	
 	
+	public void modifyMember(MemberVO member) {
+		memberMapper.updateMember(member);
+	}
+	
+	
+	
 	
 }

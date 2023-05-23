@@ -77,11 +77,16 @@
 	</select>
 	
 	
-	
 	<select id="selectMaxId" resultType="String">
 		select max(id)
 		from member 
 	</select>
-	
+
+	<update id="updateMember" parameterType="MemberVO">
+		update member
+		set
+		address=#{address},phone=#{phone},caution=#{caution},status=#{status},lNum=#{lNum}
+		where id=#{id}
+	</update>
 	
 </mapper>

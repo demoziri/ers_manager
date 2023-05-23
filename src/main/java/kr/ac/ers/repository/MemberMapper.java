@@ -32,6 +32,8 @@ public interface MemberMapper {
 
 	String selectMaxId();
 	
+	void updateMember(MemberVO member);
+	
 	
 	
 }

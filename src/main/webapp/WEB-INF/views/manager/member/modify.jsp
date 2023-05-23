@@ -7,7 +7,7 @@
 <html lang="ko">
 
 <!-- 대상자 사진 -->
-<form role="form" class="row pe-0">
+<form role="modiform" class="row pe-0">
 <div class="col-3 border p-0">
   <input type="hidden" name="picture" value="noImage.jpg" />
   <div class="input-group mb-3">
@@ -71,19 +71,19 @@
        <c:set value="${fn:split(address,' ')[2]}" var="dong"/>
        <c:set value="${fn:split(address,' ')[3]}" var="detail"/>
        
-    
-        <select name="gu" onchange="dongModiList_go(this.value)">
+    	<input type="hidden" name="address" value="대전광역시" />
+        <select name="address" id="lNum" onchange="dongModiList_go(this.value)">
           <option value="" >선택</option>
-          <option value="중구" ${gu eq '중구' ? 'selected' : "" }>중구</option>
-          <option value="서구" ${gu eq '서구' ? 'selected' : "" }>서구</option>
-          <option value="동구" ${gu eq '동구' ? 'selected' : "" }>동구</option>
-          <option value="유성구" ${gu eq '유성구' ? 'selected' : "" }>유성구</option>
-          <option value="대덕구" ${gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
+          <option value="중구" data-name="L02" ${gu eq '중구' ? 'selected' : "" }>중구</option>
+          <option value="서구" data-name="L01" ${gu eq '서구' ? 'selected' : "" }>서구</option>
+          <option value="동구" data-name="L03" ${gu eq '동구' ? 'selected' : "" }>동구</option>
+          <option value="유성구" data-name="L04" ${gu eq '유성구' ? 'selected' : "" }>유성구</option>
+          <option value="대덕구" data-name="L05" ${gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
         </select>
       </td>
       <th>동</th>
       <td>
-        <select name="dong" id="dongModiList">
+        <select name="address" id="dongModiList">
           <option value="${dong}" selected>${dong}</option>
         </select>
       </td>
@@ -106,7 +106,7 @@
       <th>상태</th>
       <td>
         <select name="status">
-          <option value="">선택</option>
+          <option value=""></option>
           <option value="1" ${member.status eq '1' ? 'selected' : "" }>서비스 이용중</option>
           <option value="2" ${member.status eq '2' ? 'selected' : "" }>장기부재</option>
           <option value="3" ${member.status eq '3' ? 'selected' : "" }>해지</option>
@@ -117,16 +117,18 @@
       <th>
         <button class="btn btn-danger btn-sm" type="button" id="openModiPhoneModal">비상연락망</button>
       </th>
-      <td>0/3</td>
+      <td><span style="font-weight:bold;">${member.e_count }</span>/3</td>
       <th>신청서</th>
       <td>
         <input type="file" style="width:200px;" />
       </td>
     </tr>
   </table>
+   <input type="hidden" name="id" value="${member.id }" />
+   <input type="hidden" name="lNum" value=""/>
   <div>
     <button type="button" onclick="" class="btn btn-secondary btn-sm my-1 ms-2" style="float:right;color:white;">취소</button>
-    <button type="button" class="btn btn-warning btn-sm my-1" style="float:right;color:white;">수정</button>
+    <button type="button" onclick="modify_go();" class="btn btn-warning btn-sm my-1" style="float:right;color:white;">수정</button>
   </div>
 </div>
 </form>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.ers.command.EcallRegistCommand;
+import kr.ac.ers.command.MemberModifyCommand;
 import kr.ac.ers.command.MemberRegistCommand;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.AddressVO;
@@ -98,6 +99,7 @@ public class ManagerMemberController {
 	public void regLsupporter(String id, String wid) {
 		MemberVO member = memberService.getMemberById(id);
 		member.setWid(wid);
+		member.setStatus("1");
 		memberService.registLsupporter(wid, id);
 	}
 	
@@ -156,16 +158,24 @@ public class ManagerMemberController {
 	@GetMapping("/modify")
 	public String modifyForm(String id, Model model) {
 		MemberVO member = memberService.getMemberById(id);
+		int ecallCount = ecallService.getEcallCount(id);
+		member.setE_count(ecallCount);
 		model.addAttribute("member",member);
+		
 		return "manager/member/modify";
 	}
 	
 	
-	
-	
-	
-	
-	
+	 @ResponseBody
+	 @PostMapping("/doModify") 
+	 public MemberVO memberModify(MemberModifyCommand modifyReq) {
+		 MemberVO member = modifyReq.toMemberVO();
+		 memberService.modifyMember(member);
+		 System.out.println(member.getName());
+		 MemberVO modifiedMember = memberService.getMemberById(modifyReq.getId());
+		 return modifiedMember;
+	 }
+	 
 	
 	@GetMapping("/reDetail")
 	public String reportDetail() {

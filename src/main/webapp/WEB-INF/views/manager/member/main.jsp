@@ -240,6 +240,9 @@
   {{/each}}
 </script>
 
+
+
+
 <script>
   function regist_go() {
     var member_id = "";
@@ -258,6 +261,7 @@
       var relation = $("#rel_" + round + "").val();
       console.log("rel ? " + relation);
       $("input[name='e_Name']").val(eName);
+      
       $("#relation_receive").val(relation);
       $("#phone1").val(ePhone1);
       $("#phone2").val(ePhone2);
@@ -284,6 +288,33 @@
     }
   }
 
+  function modify_go(){
+	  $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
+	  var modiInfo = $("form[role='modiform']").serialize();
+	  $.ajax({
+		  url:"doModify?",
+		  type:"post",
+		  data:modiInfo,
+		  success:function(data){
+			  /* memberDetail_go(id); */
+			  
+			  alert(data.name+"님의 정보를 수정했습니다.");
+			  memDetail_go(data.id);
+	          /* $("#memList").load(location.href + " #memList"); */
+		  },
+		  error:function(){
+			  alert("실패");
+		  }
+		  
+	  });
+  }
+  
+  
+  
+  
+  
+  
+  
   function dongList_go(gu) {
     $.ajax({
       url: "dongList?gu=" + gu,
@@ -530,8 +561,6 @@
 	          	 	Handlebars.registerHelper('substring3', function(phone) {
 		             	return phone.substr(9);
 		                });
-	          	 	
-	          	 	
 	              let html = template(data);
 	              $('#ecall_Modi').html(html);
               }
@@ -580,6 +609,20 @@
     form.find('[name="checkUpload"]').val(0);
     $('#inputFileName').val(picture.files[0].name);
   }
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   function memReport_go() {
     $.ajax({
