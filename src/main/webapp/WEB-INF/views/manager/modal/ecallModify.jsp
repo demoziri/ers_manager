@@ -8,7 +8,7 @@
         <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button>
       </div>
       <div class="modal-body">
-        <form action="" id="form">
+        
           <table class="modal-table table table-bordered w-100">
             <thead>
               <tr>
@@ -21,12 +21,13 @@
               <!-- template 들어올 자리 -->
             </tbody>
           </table>
-        </form>
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning">수정</button>
+        <button type="button" onclick="ecallModi_go();" class="btn btn-warning">수정</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
       </div>
     </div>
   </div>
+  
 </div>

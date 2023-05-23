@@ -200,25 +200,27 @@
   {{#each .}}
     <tr id="cPhone_list" data-name="1">
       <td>
-        <input type="text" name="name" value="{{name}}" style="width:70px;" />
+        <input type="text" name="name" value="{{name}}" style="width:70px;" id="e_name_id_{{cnum}}" />
       </td>
       <td>
-        <select name="relation" id="rel">
+        <select name="relation" id="rel_{{cnum}}">
           <option value="{{relation}}" 'selected'>{{relation}}</option>
-          <option value="">아들</option>
-          <option value="">딸</option>
+          <option value="아들">아들</option>
+          <option value="딸">딸</option>
           <option value="etc">기타</option>
         </select>
         <input type="text" name="relation" id="relInput" style="width:60px;display:none;" />
        </td>
        <td>
-         <select name="phone" id="" >
+         <select name="phone" id="e_phone{{cnum}}_1" >
            <option value="{{substring1 phone}}" selected>{{substring1 phone}}</option>
            <option value="010"></option>
            <option value="042">042</option>
          </select>
-         <input type="text" value="{{substring2 phone}}" name="phone" style="width:50px;" />
-         <input type="text" value="{{substring3 phone}}" name="phone" style="width:50px;" />
+         <input type="text" value="{{substring2 phone}}" name="phone" style="width:50px;" id="e_phone{{cnum}}_2"/>
+         <input type="text" value="{{substring3 phone}}" name="phone" style="width:50px;" id="e_phone{{cnum}}_3"/>
+		 <input id="innerId{{cnum}}" type="hidden" value="{{id}}"/>
+		 <input id="innerCnum{{cnum}}" name="CNUM" type="hidden" value="{{cnum}}"/>
        </td>
      </tr>
   {{/each}}
@@ -259,6 +261,8 @@
       var ePhone2 = $("#e_phone" + round + "_2").val();
       var ePhone3 = $("#e_phone" + round + "_3").val();
       var relation = $("#rel_" + round + "").val();
+     
+      
       console.log("rel ? " + relation);
       $("input[name='e_Name']").val(eName);
       
@@ -296,8 +300,6 @@
 		  type:"post",
 		  data:modiInfo,
 		  success:function(data){
-			  /* memberDetail_go(id); */
-			  
 			  alert(data.name+"님의 정보를 수정했습니다.");
 			  memDetail_go(data.id);
 	          /* $("#memList").load(location.href + " #memList"); */
@@ -305,11 +307,60 @@
 		  error:function(){
 			  alert("실패");
 		  }
-		  
 	  });
   }
   
-  
+  function ecallModi_go() {
+	  var c_num =  $('input[name="CNUM"	]:first').val();
+	  var numC_num = Number(c_num);
+	  var c_num2 = numC_num+1;
+	  var c_num3 = numC_num+2;
+	 
+	  var forGubun = 1;
+	    if ($('#e_name_id_'+c_num + '').val() != null && $('#e_name_id_'+c_num + '').val() != "") 
+	    if ($('#e_name_id_'+c_num2 + '').val() != null && $('#e_name_id_'+c_num2 + '').val() != "") forGubun += 1;
+	    if ($('#e_name_id_'+c_num3 + '').val() != null && $('#e_name_id_'+c_num3 + '').val() != "") forGubun += 1;
+	
+		
+	    for (var round = 0; round < forGubun; round++) {
+	     
+	      var numC_num = Number(c_num);
+	  	
+	      var eName = $("#e_name_id_" + Number(numC_num+round) + "").val();
+	      var ePhone1 = $("#e_phone" + Number(numC_num+round) + "_1").val();
+	      var ePhone2 = $("#e_phone" + Number(numC_num+round) + "_2").val();
+	      var ePhone3 = $("#e_phone" + Number(numC_num+round) + "_3").val();
+	      var relation = $("#rel_" + Number(numC_num+round) + "").val();
+	      var id = $("#innerId"+ Number(numC_num+round) + "").val();
+	      var cnum = $("#innerCnum"+Number(numC_num+round) + "").val();
+	
+	      
+	      $("input[name='id']").val(id);
+	      $("input[name='c_Num']").val(cnum);
+	      $("input[name='e_Name']").val(eName);
+	      $("#relation_receive").val(relation);
+	      $("#phone1").val(ePhone1);
+	      $("#phone2").val(ePhone2);
+	      $("#phone3").val(ePhone3);
+	      
+	      var ecallModiInfo = $("form[role='ecall_modi']").serialize();
+	  
+	  $.ajax({
+		  url:"modifyEcall",
+		  type:"post",
+		  data:ecallModiInfo,
+		  success:function(){
+			  
+		  },
+		  error:function(){
+			  alert("안됨");
+		  }
+	  });
+			  
+     }
+	    alert("성공");
+		  $('#modalBox4').modal('hide');
+  }
   
   
   
@@ -555,7 +606,7 @@
 	               	    });
 	          	 	
 	          	 	Handlebars.registerHelper('substring2', function(phone) {
-		             	return phone.substr(4,9);
+		             	return phone.substr(4,4);
 		                });
 	          	 	
 	          	 	Handlebars.registerHelper('substring3', function(phone) {
@@ -574,6 +625,20 @@
     })
   }
 
+  function memReport_go() {
+	    $.ajax({
+	      url: "reDetail",
+	      type: "get",
+	      datatype: "html",
+	      success: function(data) {
+	        $("#memReport_detail").css('background-color', "");
+	        $("#memReport_detail").html(data);
+	      }
+	    })
+	  }
+  
+  
+  
   function picture_go() {
     //alert("changed file");
     var form = $('form[role="imageForm"]');
@@ -610,31 +675,49 @@
     $('#inputFileName').val(picture.files[0].name);
   }
   
- 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  function upload_go() {
+		//alert("upload btn");
+		if(!$('input[name="pictureFile"]').val()){ //.val() : file 경로
+			alert("사진을 선택하세요.");
+			$('input[name="pictureFile"]').click();
+			return;
+		}
+		
+		if($('input[name="checkUpload"]').val()==1){
+			alert("이미 업로드된 파일입니다.");
+			return;
+		}
+		
+		//var formData = new FormData(document.querySelector('form[role="imageForm"]')); //form태그 객체화 : formdata안에 javascript
+		var formData = new FormData($('form[role="imageForm"]')[0]); //form태그 객체화 : formdata안에 jqery
+		
+		$.ajax({
+			url:"picture.do",
+			data:formData,
+			type:"post",
+			processData:false,
+			contentType:false,
+			success:function(data){
+				//업로드 확인변수 세팅
+				$('input[name="checkUpload"]').val(1);
+				//저장된 파일명 저장
+				$('input#oldFile').val(data); //변경시 삭제될 파일명
+				$('form[role="form"] input[name="picture"]').val(data);
+				alert("사진이 업로드 되었습니다.");
+			},
+			error:function(error){
+				
+			}
+		});
+		
+		//type:post processData:false contentType:false 반드시!! 줘야 formdata 넘어간다.
+		
+	}
+	
 
-  function memReport_go() {
-    $.ajax({
-      url: "reDetail",
-      type: "get",
-      datatype: "html",
-      success: function(data) {
-        $("#memReport_detail").css('background-color', "");
-        $("#memReport_detail").html(data);
-      }
-    })
-  }
+
+ 
 </script>
 
 <%@include file="../common/foot.jspf" %>

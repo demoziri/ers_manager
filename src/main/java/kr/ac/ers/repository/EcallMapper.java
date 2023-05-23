@@ -16,4 +16,6 @@ public interface EcallMapper {
 	
 	int selectEcallSequenceNextValue();
 	
+	void updateEcall(EcallVO ecall);
+	
 }

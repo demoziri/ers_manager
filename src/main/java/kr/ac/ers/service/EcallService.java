@@ -27,4 +27,8 @@ public class EcallService {
 		ecall.setCnum(c_Num);
 		ecallMapper.insertEcall(ecall);
 	}
+	
+	public void modifyEcall(EcallVO ecall) {
+		ecallMapper.updateEcall(ecall);
+	}
 }

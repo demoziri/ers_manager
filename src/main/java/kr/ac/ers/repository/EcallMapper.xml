@@ -24,4 +24,12 @@
 		from dual
 	</select>
 	
+	<update id="updateEcall" parameterType="EcallVO">
+		update ecall
+		set name=#{name},relation=#{relation},phone=#{phone}
+		where id=#{id} and cnum=#{cnum} 
+	</update>
+	
+	
+	
 </mapper>

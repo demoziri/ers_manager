@@ -70,6 +70,9 @@
        <c:set value="${fn:split(address,' ')[1]}" var="gu"/>
        <c:set value="${fn:split(address,' ')[2]}" var="dong"/>
        <c:set value="${fn:split(address,' ')[3]}" var="detail"/>
+       <%-- <c:set value="${fn:indexOf(address, detail }" var="detailIndex"/>
+       <c:set value="${fn:substring(address,'detailIndex' }" var="realDetail"/> --%>
+      
        
     	<input type="hidden" name="address" value="대전광역시" />
         <select name="address" id="lNum" onchange="dongModiList_go(this.value)">
@@ -133,6 +136,13 @@
 </div>
 </form>
 
-
-
+<form role="ecall_modi">
+  	<input type="hidden" name="e_Name" value="" />
+  	<input type="hidden" id="phone1" name="e_Phone" value=""/>
+    <input type="hidden" id="phone2" name="e_Phone" value=""/>
+  	<input type="hidden" id="phone3" name="e_Phone" value=""/>
+  	<input type="hidden" name="id" value="" />
+  	<input type="hidden" name="c_Num" value="" />
+  	<input type="hidden" name="relation" value="" id="relation_receive"/>
+  </form>
 </html>

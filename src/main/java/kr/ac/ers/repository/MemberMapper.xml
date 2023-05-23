@@ -21,6 +21,7 @@
 		select * from member
 		where id is not null
 		<include refid="search"/>
+		
 		order by regDate desc
 	</select>
 	
