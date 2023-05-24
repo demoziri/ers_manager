@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.annotation.Resource;
 import kr.ac.ers.command.EcallModifyCommand;
 import kr.ac.ers.command.EcallRegistCommand;
 import kr.ac.ers.command.MemberModifyCommand;
@@ -38,13 +38,11 @@ import kr.ac.ers.utils.MakeFileName;
 @RequestMapping("ers/manager/member")
 public class ManagerMemberController {
 	
-	@Autowired
-	private MemberService memberService;
+	@Autowired private MemberService memberService;
 	
-	
-	 @Autowired private EcallService ecallService;
+	@Autowired private EcallService ecallService;
 	 
-	 @Autowired private AddressService addressService;
+	@Autowired private AddressService addressService;
 	 
 	
 	@GetMapping("/main")
@@ -156,7 +154,7 @@ public class ManagerMemberController {
 	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
 		
 		MemberVO member = registReq.toMemberVO();
-		
+		System.out.println(member);
 		MemberVO checkMember = memberService.getMemberById(eRegistReq.getId());
 		if(checkMember == null ) {
 			memberService.regist(member);
@@ -171,8 +169,7 @@ public class ManagerMemberController {
 		return member.getId();
 	}
 	
-	
-	@Resource(name = "picturePath")
+	@Value("${picturePath}")
 	private String picturePath;
 	
 	@PostMapping(value = "/picture", produces = "text/plain;charset=utf-8")

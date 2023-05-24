@@ -170,7 +170,7 @@
 
 <!-- picture upload form  -->
 <!-- label for="inputFile" 이름 같게하면 됨 -->
-<form role="imageForm" action="picture.do" method="post" enctype="multipart/form-data">
+<form role="imageForm" action="picture" method="post" enctype="multipart/form-data">
   <!-- enctype안주면 type="file"전송안됨 but,일반적 getparameter안됨 -->
   <input id="inputFile" name="pictureFile" type="file" class="form-control" style="display:none;" onchange="picture_go();">
   <!-- 업로드한 파일명 oldFile -->
@@ -210,19 +210,19 @@
           <option value="etc">기타</option>
         </select>
         <input type="text" name="relation" id="relInput" style="width:60px;display:none;" />
-       </td>
-       <td>
-         <select name="phone" id="e_phone{{cnum}}_1" >
-           <option value="{{substring1 phone}}" selected>{{substring1 phone}}</option>
-           <option value="010"></option>
-           <option value="042">042</option>
-         </select>
-         <input type="text" value="{{substring2 phone}}" name="phone" style="width:50px;" id="e_phone{{cnum}}_2"/>
-         <input type="text" value="{{substring3 phone}}" name="phone" style="width:50px;" id="e_phone{{cnum}}_3"/>
-		 <input id="innerId{{cnum}}" type="hidden" value="{{id}}"/>
-		 <input id="innerCnum{{cnum}}" name="CNUM" type="hidden" value="{{cnum}}"/>
-       </td>
-     </tr>
+      </td>
+      <td>
+        <select name="phone" id="e_phone{{cnum}}_1">
+          <option value="{{substring1 phone}}" selected>{{substring1 phone}}</option>
+          <option value="010"></option>
+          <option value="042">042</option>
+        </select>
+        <input type="text" value="{{substring2 phone}}" name="phone" style="width:50px;" id="e_phone{{cnum}}_2" />
+        <input type="text" value="{{substring3 phone}}" name="phone" style="width:50px;" id="e_phone{{cnum}}_3" />
+        <input id="innerId{{cnum}}" type="hidden" value="{{id}}" />
+        <input id="innerCnum{{cnum}}" name="CNUM" type="hidden" value="{{cnum}}" />
+      </td>
+    </tr>
   {{/each}}
 </script>
 
@@ -242,9 +242,6 @@
   {{/each}}
 </script>
 
-
-
-
 <script>
   function regist_go() {
     var member_id = "";
@@ -253,7 +250,6 @@
     if ($('#e_name_id_2').val() != null && $('#e_name_id_2').val() != "") forGubun += 1;
     if ($('#e_name_id_3').val() != null && $('#e_name_id_3').val() != "") forGubun += 1;
     alert(forGubun);
-    
     for (var round = 1; round < forGubun; round++) {
       alert("확인 round : " + round)
       var eName = $("#e_name_id_" + round + "").val();
@@ -261,11 +257,7 @@
       var ePhone2 = $("#e_phone" + round + "_2").val();
       var ePhone3 = $("#e_phone" + round + "_3").val();
       var relation = $("#rel_" + round + "").val();
-     
-      
-      console.log("rel ? " + relation);
       $("input[name='e_Name']").val(eName);
-      
       $("#relation_receive").val(relation);
       $("#phone1").val(ePhone1);
       $("#phone2").val(ePhone2);
@@ -285,87 +277,69 @@
         },
         error: function() {
           alert("실패?");
-          alert(round);
-          alert(eName);
         }
       });
     }
   }
 
-  function modify_go(){
-	  $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
-	  var modiInfo = $("form[role='modiform']").serialize();
-	  $.ajax({
-		  url:"doModify?",
-		  type:"post",
-		  data:modiInfo,
-		  success:function(data){
-			  alert(data.name+"님의 정보를 수정했습니다.");
-			  memDetail_go(data.id);
-	          /* $("#memList").load(location.href + " #memList"); */
-		  },
-		  error:function(){
-			  alert("실패");
-		  }
-	  });
+  function modify_go() {
+    $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
+    var modiInfo = $("form[role='modiform']").serialize();
+    $.ajax({
+      url: "doModify?",
+      type: "post",
+      data: modiInfo,
+      success: function(data) {
+        alert(data.name + "님의 정보를 수정했습니다.");
+        memDetail_go(data.id);
+        /* $("#memList").load(location.href + " #memList"); */
+      },
+      error: function() {
+        alert("실패");
+      }
+    });
   }
-  
+
   function ecallModi_go() {
-	  var c_num =  $('input[name="CNUM"	]:first').val();
-	  var numC_num = Number(c_num);
-	  var c_num2 = numC_num+1;
-	  var c_num3 = numC_num+2;
-	 
-	  var forGubun = 1;
-	    if ($('#e_name_id_'+c_num + '').val() != null && $('#e_name_id_'+c_num + '').val() != "") 
-	    if ($('#e_name_id_'+c_num2 + '').val() != null && $('#e_name_id_'+c_num2 + '').val() != "") forGubun += 1;
-	    if ($('#e_name_id_'+c_num3 + '').val() != null && $('#e_name_id_'+c_num3 + '').val() != "") forGubun += 1;
-	
-		
-	    for (var round = 0; round < forGubun; round++) {
-	     
-	      var numC_num = Number(c_num);
-	  	
-	      var eName = $("#e_name_id_" + Number(numC_num+round) + "").val();
-	      var ePhone1 = $("#e_phone" + Number(numC_num+round) + "_1").val();
-	      var ePhone2 = $("#e_phone" + Number(numC_num+round) + "_2").val();
-	      var ePhone3 = $("#e_phone" + Number(numC_num+round) + "_3").val();
-	      var relation = $("#rel_" + Number(numC_num+round) + "").val();
-	      var id = $("#innerId"+ Number(numC_num+round) + "").val();
-	      var cnum = $("#innerCnum"+Number(numC_num+round) + "").val();
-	
-	      
-	      $("input[name='id']").val(id);
-	      $("input[name='c_Num']").val(cnum);
-	      $("input[name='e_Name']").val(eName);
-	      $("#relation_receive").val(relation);
-	      $("#phone1").val(ePhone1);
-	      $("#phone2").val(ePhone2);
-	      $("#phone3").val(ePhone3);
-	      
-	      var ecallModiInfo = $("form[role='ecall_modi']").serialize();
-	  
-	  $.ajax({
-		  url:"modifyEcall",
-		  type:"post",
-		  data:ecallModiInfo,
-		  success:function(){
-			  
-		  },
-		  error:function(){
-			  alert("안됨");
-		  }
-	  });
-			  
-     }
-	    alert("성공");
-		  $('#modalBox4').modal('hide');
+    var c_num = $('input[name="CNUM"	]:first').val();
+    var numC_num = Number(c_num);
+    var c_num2 = numC_num + 1;
+    var c_num3 = numC_num + 2;
+    var forGubun = 1;
+    if ($('#e_name_id_' + c_num + '').val() != null && $('#e_name_id_' + c_num + '').val() != "")
+      if ($('#e_name_id_' + c_num2 + '').val() != null && $('#e_name_id_' + c_num2 + '').val() != "") forGubun += 1;
+    if ($('#e_name_id_' + c_num3 + '').val() != null && $('#e_name_id_' + c_num3 + '').val() != "") forGubun += 1;
+    for (var round = 0; round < forGubun; round++) {
+      var numC_num = Number(c_num);
+      var eName = $("#e_name_id_" + Number(numC_num + round) + "").val();
+      var ePhone1 = $("#e_phone" + Number(numC_num + round) + "_1").val();
+      var ePhone2 = $("#e_phone" + Number(numC_num + round) + "_2").val();
+      var ePhone3 = $("#e_phone" + Number(numC_num + round) + "_3").val();
+      var relation = $("#rel_" + Number(numC_num + round) + "").val();
+      var id = $("#innerId" + Number(numC_num + round) + "").val();
+      var cnum = $("#innerCnum" + Number(numC_num + round) + "").val();
+      $("input[name='id']").val(id);
+      $("input[name='c_Num']").val(cnum);
+      $("input[name='e_Name']").val(eName);
+      $("#relation_receive").val(relation);
+      $("#phone1").val(ePhone1);
+      $("#phone2").val(ePhone2);
+      $("#phone3").val(ePhone3);
+      var ecallModiInfo = $("form[role='ecall_modi']").serialize();
+      $.ajax({
+        url: "modifyEcall",
+        type: "post",
+        data: ecallModiInfo,
+        success: function() {},
+        error: function() {
+          alert("안됨");
+        }
+      });
+    }
+    alert("성공");
+    $('#modalBox4').modal('hide');
   }
-  
-  
-  
-  
-  
+
   function dongList_go(gu) {
     $.ajax({
       url: "dongList?gu=" + gu,
@@ -377,6 +351,7 @@
       }
     });
   }
+  
 
   function dongRegList_go(gu) {
     $.ajax({
@@ -414,6 +389,7 @@
       method: 'get'
     }).submit();
   }
+  
   //등록화면 호출
   function registForm_go() {
     $.ajax({
@@ -504,6 +480,13 @@
         if ($("#reg-btn").css('display', 'none')) {
           $("#reg-btn").css('display', 'inline');
         }
+        
+        
+        $(document).ready(function(){
+		        MemberPictureThumb('localhost');
+        	   
+        	}); 
+        	
         // modal open(생활지원사)
         $('#openModalBtn').on('click', function() {
           $('#modalBox').modal('show');
@@ -581,6 +564,7 @@
       }
     });
   }
+  
   // 대상자 정보 수정화면 호출
   function memModifyForm_go(id) {
     $.ajax({
@@ -693,7 +677,7 @@
 		var formData = new FormData($('form[role="imageForm"]')[0]); //form태그 객체화 : formdata안에 jqery
 		
 		$.ajax({
-			url:"picture.do",
+			url:"picture",
 			data:formData,
 			type:"post",
 			processData:false,
@@ -716,7 +700,19 @@
 	}
 	
 
-
+	function MemberPictureThumb(contextPath) {
+		
+		for(var target of document.querySelectorAll('.manPicture')){
+		var id = target.getAttribute('data-id');
+		alert(id);
+		target.style.backgroundImage="url('/ers/manager/member/getPicture?id="+id+"')";
+		target.style.backgroundPosition="center";
+		target.style.backgroundRepeat="no-repeat";
+		target.style.backgroundSize="cover";
+		}
+	}
+		
+	
  
 </script>
 

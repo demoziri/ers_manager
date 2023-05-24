@@ -6,7 +6,7 @@
 <!-- 대상자 사진 -->
 <form role="form" class="row pe-0">
 <div class="col-3 border p-0">
-  <input type="hidden" name="picture" value="noImage.jpg" />
+  <input type="hidden" name="picture" value="noImage.jpg" accept="image/*"/>
   <div class="input-group mb-3">
     <div class="mailbox-attachments clearfix" style="text-align: center;">
       <div class="mailbox-attachment-icon has-img mt-2" id="pictureView" style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto;"></div>

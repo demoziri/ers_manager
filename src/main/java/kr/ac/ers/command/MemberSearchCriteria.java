@@ -1,8 +1,6 @@
 package kr.ac.ers.command;
 
 
-
-
 public class MemberSearchCriteria {
 
 	private int page;
