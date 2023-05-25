@@ -134,10 +134,10 @@
       </div>
     </div>
   </div>
-</div>
-<div class="row" style="height:250px;">
+
+<div class="row" >
   <!-- 댁내장비 AS 요청 목록 -->
-  <div class="col-7">
+  <div class="col-7 " style="padding-left:22px;">
     <div class="card card-body mt-3" style="border:1px solid gray;height:250px;box-shadow:0.1rem 0.1rem 0.1rem rgba(0,0,0,.3);">
       <div>
         <span class="fs-3" style="border-bottom:2px solid gray;">댁내장비 AS 요청 내역</span>
@@ -186,7 +186,7 @@
     </div>
   </div>
   <!-- 공지사항 -->
-  <div class="col-5">
+  <div class="col-5" >
     <div class="card card-body mt-3" style="border:1px solid gray;height:250px; box-shadow:0.1rem 0.1rem 0.1rem rgba(0,0,0,.3);">
       <div>
         <span class="fs-3" style="border-bottom:2px solid gray;">공지사항</span>
@@ -217,9 +217,9 @@
     </div>
   </div>
 </div>
-
 </div>
 
-</div>
+
+
 
 <%@include file="../manager/common/foot.jspf" %>

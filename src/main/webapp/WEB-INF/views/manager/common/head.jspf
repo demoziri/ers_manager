@@ -93,7 +93,7 @@
                 <a class="nav-link text-light" href="#">직원관리</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="">장비관리</a>
+                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/machine/main">장비관리</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/report/main">보고서조회</a>

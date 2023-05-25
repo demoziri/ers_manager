@@ -19,11 +19,11 @@
     <div class="col-5">
       <!-- 미처리 보고서 -->
       <div class="row">
-        <div class="card card-body" style="border:1px solid red;height:250px;">
+        <div class="card card-body border-0 mt-2" style="height:250px;">
           <div>
             <span class="fs-3" style="border-bottom:2px solid gray;">미처리 보고서</span>
           </div>
-          <div class="h-100 row card card-body p-1">
+          <div class="h-100 row card card-body  p-1">
             <!-- 장비 미처리 보고서 -->
             <div class="border h-100 col-6 d-inline-block pt-0">
               <div class="row text-center bg-success text-light"><span class="fs-5 border">장비 미처리 보고서</span></div>
@@ -44,11 +44,11 @@
       </div>
       <!-- 보고서 목록 -->
       <div class="row">
-        <div class="card card-body" style="border:1px solid red;height:400px;">
+        <div class="card card-body mt-1" style="border:1px solid gray;height:400px;">
           <div>
             <span class="fs-3" style="border-bottom:2px solid gray;">보고서 목록</span>
           </div>
-          <div>
+          <div class="mb-1">
             <select name="reType" id="" style="height:100%;">
               <option value="" selected>보고서 구분</option>
               <option value="">고객면담</option>
@@ -219,7 +219,7 @@
     </div>
     <!-- 보고서 상세 -->
     <div class="col-7 h-100">
-      <div class="card card-body" style="border:1px solid red;height:650px;">
+      <div class="card card-body mt-2" style="border:1px solid gray;height:650px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
         </div>

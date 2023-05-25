@@ -65,7 +65,7 @@ public class ManagerMemberController {
 	@GetMapping("/detail")
 	public ModelAndView memberDetail(String id, ModelAndView mnv) {
 		
-		String url = "manager/member/detail2";
+		String url = "manager/member/detail";
 		
 		MemberVO member = memberService.getMemberById(id);
 		
@@ -142,7 +142,7 @@ public class ManagerMemberController {
 	@GetMapping("/regist")
 	public ModelAndView memberRegistForm(ModelAndView mnv) {
 		String id = memberService.nextId();
-		String url = "manager/member/regist2";
+		String url = "manager/member/regist";
 		mnv.addObject("id",id);
 		mnv.setViewName(url);
 		
