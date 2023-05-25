@@ -213,6 +213,7 @@
                 </tbody>
             </table>
           </div>
+          
         </div>
       </div>
     </div>
@@ -222,9 +223,12 @@
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
         </div>
-		<div id="reDetail">
-          	
-        </div>
+		
+        <div class="row" id="reDetail" style="height:100%;margin-top:5px;background-color:#dfdfdf;">
+          <!-- 보고서 상세정보 들어갈 자리 -->
+          <div class="h-100 d-flex justify-content-center align-items-center">보고서를 선택해주세요.</div>
+       </div>
+   
       </div>
     </div>
 
@@ -240,6 +244,7 @@
 			type:"get",
 			datatype:"html",
 			success:function(data){
+				$("#reDetail").css('background-color', "");
 				$("#reDetail").html(data);
 			}
 		})

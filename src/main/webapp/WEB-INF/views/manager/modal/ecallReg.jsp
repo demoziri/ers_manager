@@ -5,7 +5,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title mx-auto" id="staticBackdropLabel">비상연락망</h4>
-        <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button>
+       <!--  <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button> -->
       </div>
       <div class="modal-body">
        <form role="form2">

@@ -86,7 +86,7 @@
 	<update id="updateMember" parameterType="MemberVO">
 		update member
 		set
-		address=#{address},phone=#{phone},caution=#{caution},status=#{status},lNum=#{lNum}
+		address=#{address},phone=#{phone},caution=#{caution},status=#{status},lNum=#{lNum},picture=#{picture}
 		where id=#{id}
 	</update>
 	

@@ -93,7 +93,7 @@
                  <th>
                  	<button class="btn btn-danger btn-sm" id="openPhoneModal">비상연락망</button>
                  </th>
-                  <td><span style="font-weight:bold;">${member.e_count }</span>/3</td>
+                  <td><span id="ecallCount" style="font-weight:bold;">${member.e_count }</span>/3</td>
                 </tr>
               </table>
               <div >

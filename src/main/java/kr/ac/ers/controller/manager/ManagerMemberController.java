@@ -154,7 +154,8 @@ public class ManagerMemberController {
 	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
 		
 		MemberVO member = registReq.toMemberVO();
-		System.out.println(member);
+		
+		
 		MemberVO checkMember = memberService.getMemberById(eRegistReq.getId());
 		if(checkMember == null ) {
 			memberService.regist(member);
@@ -199,8 +200,9 @@ public class ManagerMemberController {
 			fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(),"$$");
 			File storeFile = new File(uploadPath, fileName);
 			
-			// 파일 경로 생성
-			storeFile.mkdirs();
+			/*
+			 * // 파일 경로 생성 storeFile.mkdirs();
+			 */
 			
 			// local HDD 에 저장
 			multi.transferTo(storeFile);
@@ -231,13 +233,7 @@ public class ManagerMemberController {
 		return IOUtils.toByteArray(in);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	@GetMapping("/modify")
@@ -245,6 +241,10 @@ public class ManagerMemberController {
 		MemberVO member = memberService.getMemberById(id);
 		int ecallCount = ecallService.getEcallCount(id);
 		member.setE_count(ecallCount);
+		
+		
+		 
+		 
 		model.addAttribute("member",member);
 		
 		return "manager/member/modify";
@@ -253,9 +253,21 @@ public class ManagerMemberController {
 	
 	 @ResponseBody
 	 @PostMapping("/doModify") 
-	 public MemberVO memberModify(MemberModifyCommand modifyReq) {
+	 public MemberVO memberModify(MemberModifyCommand modifyReq) throws Exception {
+
 		 MemberVO member = modifyReq.toMemberVO();
+		 //기존 사진
+		 String oldPicture = memberService.getMemberById(modifyReq.getId()).getPicture();
+		
+			if(modifyReq.getPicture()!=null && modifyReq.getPicture().getSize() > 0) {
+				String fileName = savePicture(oldPicture, modifyReq.getPicture());
+				member.setPicture(fileName);
+			}else {
+				member.setPicture(oldPicture);
+			}
+		
 		 memberService.modifyMember(member);
+		 
 		 //System.out.println(member.getName());
 		 MemberVO modifiedMember = memberService.getMemberById(modifyReq.getId());
 		 return modifiedMember;

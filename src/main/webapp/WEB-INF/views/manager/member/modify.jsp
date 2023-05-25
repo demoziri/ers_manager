@@ -9,22 +9,21 @@
 <!-- 대상자 사진 -->
 <form role="modiform" class="row pe-0">
 <div class="col-3 border p-0">
-  <input type="hidden" name="picture" value="noImage.jpg" />
-  <div class="input-group mb-3">
-    <div class="mailbox-attachments clearfix" style="text-align: center;">
-      <div class="mailbox-attachment-icon has-img mt-2" id="pictureView" style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto;"></div>
-      <div class="mailbox-attachment-info">
-        <div class="input-group input-group-sm">
-          <label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">파일선택</label>
-          <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled />
-          <span class="input-group-append-sm">
-            <button type="button" class="btn btn-info btn-sm btn-append" onclick="upload_go();">업로드</button>
-          </span>
-        </div>
-      </div>
+  <div class="row">
+    <input type="hidden" name="oldPicture" value="${member.picture }" />
+    <input type="file" id="inputFile" onchange="changePicture_go();" name="picture" style="display: none" />
+    <div class="input-group col-md-12">
+       <div class="col-md-12" style="text-align: center;">
+          <div class="manPicture" data-id="${member.id }" id="pictureView"
+             style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto; margin-bottom: 5px;"></div>
+          <div class="input-group input-group-sm" >
+             <label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">사진변경</label>
+             <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled value="${member.picture.split("\\$\\$")[1]}" style="width:30px;"/>
+             <input name="uploadPicture" class="form-control" type="hidden" id="picture" />
+          </div>
+       </div>
     </div>
-    <br />
-  </div>
+ </div>
 </div>
 <!-- 대상자 상세정보 -->
 <div class="col-9 border">
@@ -144,5 +143,10 @@
   	<input type="hidden" name="id" value="" />
   	<input type="hidden" name="c_Num" value="" />
   	<input type="hidden" name="relation" value="" id="relation_receive"/>
-  </form>
+</form>
+
+
+
+
+
 </html>

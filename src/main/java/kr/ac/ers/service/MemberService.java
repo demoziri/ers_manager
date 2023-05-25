@@ -8,11 +8,12 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.command.PageMaker;
+import kr.ac.ers.dto.ApplyFileVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
+import kr.ac.ers.repository.ApplyFileMapper;
 import kr.ac.ers.repository.MemberMapper;
 
 @Service
@@ -21,6 +22,8 @@ public class MemberService {
 	@Autowired
 	private MemberMapper memberMapper;
 
+	@Autowired
+	private ApplyFileMapper applyFileMapper;
 	
 	public Map<String,Object> getMemberList(MemberSearchCriteria cri) {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -96,7 +99,9 @@ public class MemberService {
 		memberMapper.updateMember(member);
 	}
 	
-	
+	public ApplyFileVO getApplyFile(int afNo) {
+		return applyFileMapper.selectApplyFileByAfNo(afNo);
+	}
 	
 	
 }

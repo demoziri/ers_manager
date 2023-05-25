@@ -24,7 +24,7 @@
   <div class="row">
     <!-- 대상자 목록 -->
     <div class="col-5">
-      <div class="searchType card card-body" style="border:2px dotted gray;height:400px;">
+      <div class="searchType card card-body mt-2" style="border:2px dotted gray;height:400px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">대상자 목록</span>
         </div>
@@ -96,7 +96,7 @@
     </div>
     <!-- 대상자 상세정보 -->
     <div class="col-7">
-      <div class="card card-body" style="border:2px dotted gray;height:400px;">
+      <div class="card card-body mt-2" style="border:2px dotted gray;height:400px;">
         <div style="position:relative;">
           <span class="fs-3 mem_title" style="border-bottom:2px solid gray;">대상자 정보</span>
           <button type="button" class="btn btn-success" id="reg-btn" style="position:absolute;bottom:0;right:0;" onclick="registForm_go();">신규 대상자 등록</button>
@@ -113,7 +113,7 @@
   <div class="row">
     <!-- 보고서 목록 -->
     <div class="col-5">
-      <div class="card card-body pt-0" style="border:2px dotted gray;height:250px;">
+      <div class="card card-body pt-0 mt-3" style="border:2px dotted gray;height:250px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 목록</span>
         </div>
@@ -141,7 +141,7 @@
     <!-- 보고서 목록 끝 -->
     <!-- 보고서 상세 -->
     <div class="col-7">
-      <div class="card card-body pt-0" style="border:2px dotted gray;height:250px;">
+      <div class="card card-body pt-0 mt-3" style="border:2px dotted gray;height:250px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
           &ensp;
@@ -178,6 +178,8 @@
   <!-- 업로드 필수 value 0->1 업로드하지않고 사진만바꾸면 다시 0 -->
   <input type="hidden" name="checkUpload" value="0" />
 </form>
+
+<%@include file="../common/foot.jspf" %>
 
 <script type="text/x-handlebars-template" id="dong-list-template">
   <option value="" selected="selected">동 선택</option>
@@ -249,9 +251,8 @@
     var forGubun = 2;
     if ($('#e_name_id_2').val() != null && $('#e_name_id_2').val() != "") forGubun += 1;
     if ($('#e_name_id_3').val() != null && $('#e_name_id_3').val() != "") forGubun += 1;
-    alert(forGubun);
     for (var round = 1; round < forGubun; round++) {
-      alert("확인 round : " + round)
+      
       var eName = $("#e_name_id_" + round + "").val();
       var ePhone1 = $("#e_phone" + round + "_1").val();
       var ePhone2 = $("#e_phone" + round + "_2").val();
@@ -263,36 +264,45 @@
       $("#phone2").val(ePhone2);
       $("#phone3").val(ePhone3);
       var regInfo = $("form[role='form']").serialize();
+      
       $.ajax({
         url: "doRegist",
         type: "post",
         data: regInfo,
         success: function(data) {
-          console.log("id ?? " + data);
-          alert("등록이 완료되었습니다.");
           member_id = data;
-          console.log("mem_id : " + member_id);
-          memDetail_go(member_id);
-          $("#memList").load(location.href + " #memList");
+		    memDetail_go(member_id);
+		    $("#memList").load(location.href + " #memList");
         },
         error: function() {
           alert("실패?");
         }
       });
     }
+    alert("등록이 완료되었습니다.");
   }
 
   function modify_go() {
+	changePicture_go();
     $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
-    var modiInfo = $("form[role='modiform']").serialize();
+    
+    var form = $("form[role='modiform']")[0];
+    var formData = new FormData(form);
+
     $.ajax({
-      url: "doModify?",
+      url: "doModify",
       type: "post",
-      data: modiInfo,
+      data: formData,
+      contentType : false,
+      processData : false,     
       success: function(data) {
         alert(data.name + "님의 정보를 수정했습니다.");
         memDetail_go(data.id);
-        /* $("#memList").load(location.href + " #memList"); */
+        $(document).ready(function() {
+           MemberPictureThumb('localhost');
+        });
+        
+        $("#memList").load(location.href + " #memList");
       },
       error: function() {
         alert("실패");
@@ -351,7 +361,6 @@
       }
     });
   }
-  
 
   function dongRegList_go(gu) {
     $.ajax({
@@ -389,7 +398,6 @@
       method: 'get'
     }).submit();
   }
-  
   //등록화면 호출
   function registForm_go() {
     $.ajax({
@@ -408,7 +416,6 @@
         // modal open(비상연락망)
         $('#openRegPhoneModal').on('click', function() {
           $('#modalBox3').modal('show');
-          alert("뭐냐1");
           //입력박스 숨어있다가
           $("#rel1").change(function() {
             //기타를 선택하면 등장
@@ -451,6 +458,7 @@
           }); */
           $('#regEcallBtn').on('click', function() {
             alert("비상연락망을 등록했습니다.");
+            $('#ecallCount span').html("등록완료");
             $('#modalBox3').modal('hide');
           })
         });
@@ -471,6 +479,9 @@
         var e = $(data).find("#mem_Detail").html();
         var f = $(data).find("#re_List").html();
         // 대상자 상세
+        $(document).ready(function() {
+          MemberPictureThumb('localhost');
+        });
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(e);
         $(".mem_title").html("<span class='regist_text'>대상자 정보</span>");
@@ -480,13 +491,6 @@
         if ($("#reg-btn").css('display', 'none')) {
           $("#reg-btn").css('display', 'inline');
         }
-        
-        
-        $(document).ready(function(){
-		        MemberPictureThumb('localhost');
-        	   
-        	}); 
-        	
         // modal open(생활지원사)
         $('#openModalBtn').on('click', function() {
           $('#modalBox').modal('show');
@@ -541,15 +545,14 @@
         // modal open(비상연락망)
         $('#openPhoneModal').on('click', function() {
           $('#modalBox2').modal('show');
-          alert(id);
           $.ajax({
             url: "ecall?id=" + id,
             type: "get",
             datatype: "json",
             success: function(data) {
-              if(data.length == 0){
-            	  alert("비상연락망을 등록해주세요.");
-            	  return;
+              if (data.length == 0) {
+                alert("비상연락망을 등록해주세요.");
+                return;
               }
               let template = Handlebars.compile($('#ecall-list-template').html());
               let html = template(data);
@@ -564,7 +567,6 @@
       }
     });
   }
-  
   // 대상자 정보 수정화면 호출
   function memModifyForm_go(id) {
     $.ajax({
@@ -575,54 +577,48 @@
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(data);
         $(".mem_title").html("<span class='regist_text'>대상자 정보(수정)</span>");
+        $(document).ready(function() {
+          MemberPictureThumb('localhost');
+        });
         // modal open
         $('#openModiPhoneModal').on('click', function() {
           $('#modalBox4').modal('show');
           $.ajax({
-        	  url: "ecall?id=" + id,
-              type: "get",
-              datatype: "json",
-              success:function(data){
-	          	  let template = Handlebars.compile($('#ecallModi-list-template').html());
-	          	  
-	          	 	Handlebars.registerHelper('substring1', function(phone) {
-	             	return phone.substr(0,3);
-	               	    });
-	          	 	
-	          	 	Handlebars.registerHelper('substring2', function(phone) {
-		             	return phone.substr(4,4);
-		                });
-	          	 	
-	          	 	Handlebars.registerHelper('substring3', function(phone) {
-		             	return phone.substr(9);
-		                });
-	              let html = template(data);
-	              $('#ecall_Modi').html(html);
-              }
+            url: "ecall?id=" + id,
+            type: "get",
+            datatype: "json",
+            success: function(data) {
+              let template = Handlebars.compile($('#ecallModi-list-template').html());
+              Handlebars.registerHelper('substring1', function(phone) {
+                return phone.substr(0, 3);
+              });
+              Handlebars.registerHelper('substring2', function(phone) {
+                return phone.substr(4, 4);
+              });
+              Handlebars.registerHelper('substring3', function(phone) {
+                return phone.substr(9);
+              });
+              let html = template(data);
+              $('#ecall_Modi').html(html);
+            }
           });
-          
-         
-          
-          alert(id);
         });
       }
     })
   }
 
   function memReport_go() {
-	    $.ajax({
-	      url: "reDetail",
-	      type: "get",
-	      datatype: "html",
-	      success: function(data) {
-	        $("#memReport_detail").css('background-color', "");
-	        $("#memReport_detail").html(data);
-	      }
-	    })
-	  }
-  
-  
-  
+    $.ajax({
+      url: "reDetail",
+      type: "get",
+      datatype: "html",
+      success: function(data) {
+        $("#memReport_detail").css('background-color', "");
+        $("#memReport_detail").html(data);
+      }
+    })
+  }
+
   function picture_go() {
     //alert("changed file");
     var form = $('form[role="imageForm"]');
@@ -658,62 +654,64 @@
     form.find('[name="checkUpload"]').val(0);
     $('#inputFileName').val(picture.files[0].name);
   }
-  
-  
+
   function upload_go() {
-		//alert("upload btn");
-		if(!$('input[name="pictureFile"]').val()){ //.val() : file 경로
-			alert("사진을 선택하세요.");
-			$('input[name="pictureFile"]').click();
-			return;
-		}
-		
-		if($('input[name="checkUpload"]').val()==1){
-			alert("이미 업로드된 파일입니다.");
-			return;
-		}
-		
-		//var formData = new FormData(document.querySelector('form[role="imageForm"]')); //form태그 객체화 : formdata안에 javascript
-		var formData = new FormData($('form[role="imageForm"]')[0]); //form태그 객체화 : formdata안에 jqery
-		
-		$.ajax({
-			url:"picture",
-			data:formData,
-			type:"post",
-			processData:false,
-			contentType:false,
-			success:function(data){
-				//업로드 확인변수 세팅
-				$('input[name="checkUpload"]').val(1);
-				//저장된 파일명 저장
-				$('input#oldFile').val(data); //변경시 삭제될 파일명
-				$('form[role="form"] input[name="picture"]').val(data);
-				alert("사진이 업로드 되었습니다.");
-			},
-			error:function(error){
-				
-			}
-		});
-		
-		//type:post processData:false contentType:false 반드시!! 줘야 formdata 넘어간다.
-		
-	}
-	
+    //alert("upload btn");
+    if (!$('input[name="pictureFile"]').val()) { //.val() : file 경로
+      alert("사진을 선택하세요.");
+      $('input[name="pictureFile"]').click();
+      return;
+    }
+    if ($('input[name="checkUpload"]').val() == 1) {
+      alert("이미 업로드된 파일입니다.");
+      return;
+    }
+    //var formData = new FormData(document.querySelector('form[role="imageForm"]')); //form태그 객체화 : formdata안에 javascript
+    var formData = new FormData($('form[role="imageForm"]')[0]); //form태그 객체화 : formdata안에 jquery
+    $.ajax({
+      url: "picture",
+      data: formData,
+      type: "post",
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        //업로드 확인변수 세팅
+        $('input[name="checkUpload"]').val(1);
+        //저장된 파일명 저장
+        $('input#oldFile').val(data); //변경시 삭제될 파일명
+        $('form[role="form"] input[name="picture"]').val(data);
+        alert("사진이 업로드 되었습니다.");
+      },
+      error: function(error) {}
+    });
+    //type:post processData:false contentType:false 반드시!! 줘야 formdata 넘어간다.
+  }
 
-	function MemberPictureThumb(contextPath) {
-		
-		for(var target of document.querySelectorAll('.manPicture')){
-		var id = target.getAttribute('data-id');
-		alert(id);
-		target.style.backgroundImage="url('/ers/manager/member/getPicture?id="+id+"')";
-		target.style.backgroundPosition="center";
-		target.style.backgroundRepeat="no-repeat";
-		target.style.backgroundSize="cover";
-		}
-	}
-		
-	
- 
+  function MemberPictureThumb(contextPath) {
+    for (var target of document.querySelectorAll('.manPicture')) {
+      var id = target.getAttribute('data-id');
+      target.style.backgroundImage = "url('/ers/manager/member/getPicture?id=" + id + "')";
+      target.style.backgroundPosition = "center";
+      target.style.backgroundRepeat = "no-repeat";
+      target.style.backgroundSize = "cover";
+    }
+  }
+
+  function changePicture_go() {
+    alert("picture changed");
+    var picture = $('input[id="inputFile"]')[0];
+    if (picture.files && picture.files[0]) {
+      var reader = new FileReader();
+      reader.readAsDataURL(picture.files[0]);
+      reader.onload = function(e) {
+        var pictureview = $('div#pictureView')[0];
+        //이미지 미리보기
+        pictureView.style.backgroundImage = "url(" + e.target.result + ")";
+        pictureView.style.backgroundPosition = "center";
+        pictureView.style.backgroundSize = "cover";
+        pictureView.style.backgroundRepeat = "no-repeat";
+      }
+    }
+    $('#inputFileName').val(picture.files[0].name);
+  }
 </script>
-
-<%@include file="../common/foot.jspf" %>

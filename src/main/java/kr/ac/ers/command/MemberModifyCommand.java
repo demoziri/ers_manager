@@ -1,11 +1,15 @@
 package kr.ac.ers.command;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.ac.ers.dto.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
+@ToString
 public class MemberModifyCommand {
 	private String id;
 	private String phone[];
@@ -13,9 +17,11 @@ public class MemberModifyCommand {
 	private String caution;
 	private String status;
 	private String lNum;
-	private String picture;
+	private MultipartFile picture;
+	private String oldPicture;
 	
 	
+
 public MemberVO toMemberVO() {
 		
 		
@@ -27,7 +33,9 @@ public MemberVO toMemberVO() {
 		member.setCaution(caution);
 		member.setStatus(status);
 		member.setLNum(lNum);
-		member.setPicture(picture);
+		
+		
+		
 		return member;
 	}
 	
