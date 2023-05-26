@@ -3,17 +3,57 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="pageTitle" value="장비 관리" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <%@include file="../common/head.jspf" %>
 
+<c:set var="stockList" value="${dataMap.stockList }" />
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${pageMaker.machineCri }" />
 
 
 
 <div class="container-fluid">
   <!-- 장비보유현황 -->
-  <div class="row" style="height:80px;border:1px solid;background-color:#aaaaaa;">
-  	<span class="fs-2 text-light">장비 보유 현황</span>
-  	
-  </div>
+  <div class="row bg-primary bg-secondary" style="height:80px; line-height:80px;">
+		<div class="col-5" >
+			<h1 class="align-self-center " style="line-height:80px; color:white; margin-left:20px; font-size:25px;">장비 보유 현황</h1>
+		</div>
+		<div class="col-7" style="">
+			<div class="row" style="position:relative; height:90%; align-items:center;">
+				<div class="col-3 text-center" style="line-height:normal;">
+					<i class="bi bi-lightning" style="color:white; font-size:50px; "></i>
+					<div class="d-inline-block" >
+						<div style="color:white; font-size:16px;">센서 총 개수</div>
+						<div style="color:white; font-size:25px;">300개</div>
+					</div>
+				</div>
+				<div class="col-3 text-center" style="line-height:normal;">
+					
+					<i class="fa-solid fa-fire"style="color:white; font-size:50px; "></i>
+					
+					
+					<div class="d-inline-block" >
+						<div style="color:white; font-size:16px;">화재감지기</div>
+						<div style="color:white; font-size:25px;">100개</div>
+					</div>
+				</div>
+				<div class="col-3 text-center" style="line-height:normal;">
+					<i class="bi bi-person-check" style="color:white; font-size:50px; "></i>
+					<div class="d-inline-block" >
+						<div style="color:white; font-size:16px;">활동량 감지기</div>
+						<div style="color:white; font-size:25px;">100개</div>
+					</div>
+				</div>
+				<div class="col-3 text-center" style="line-height:normal;">
+					<i class="bi bi-door-open" style="color:white; font-size:50px;"></i>
+					<div class="d-inline-block" >
+						<div style="color:white; font-size:16px;">출입문 감지기</div>
+						<div style="color:white; font-size:25px;">100개</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
   <div class="row mt-2">
     <div class="col-8">
       <!-- 미처리 업무 -->
@@ -108,11 +148,17 @@
                   </tr>
                   <thead>
                   <tbody style="overflow:auto;">
+                  <c:forEach items="${asList }" var="AS">
                     <tr onclick="">
-                      <td>둔산동 센터</td>
-                      <td>12건</td>
-                      <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14 ~ 2023-05-20</td>
+                      <td>${as.c_name }</td>
+                      <td>${as.asRequestCnt }</td>
+                      <td style="font-size:0.8rem;vertical-align:middle;">
+	                      <fmt:formatDate value="${as.week_start }" pattern="yyyy-MM-dd" var="week_start" />
+	                       ~
+	                      <fmt:formatDate value="${as.week_end }" pattern="yyyy-MM-dd" var="week_end" />
+                       </td>
                     </tr>
+                  </c:forEach>
                     <tr onclick="">
                       <td>괴정동센터</td>
                       <td>8건</td>
@@ -211,28 +257,16 @@
                   <thead>
                   <tbody class="table-group-divider">
                     <%-- <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate" /> --%>
+                    <c:forEach items="${stockList }" var="stock">
                     <tr>
-                      <td>서구</td>
-                      <td>둔산동</td>
-                      <td>14</td>
-                      <td>32</td>
-                      <td>12</td>
+                      <td>${stock.l_name }</td>
+                      <td>${stock.c_name }</td>
+                      <td>${stock.firesensor }</td>
+                      <td>${stock.activesensor }</td>
+                      <td>${stock.doorsensor }</td>
                     </tr>
-                    <tr>
-                      <td>서구</td>
-                      <td>둔산동</td>
-                      <td>14</td>
-                      <td>32</td>
-                      <td>12</td>
-                    </tr>
-                    <tr>
-                      <td>서구</td>
-                      <td>둔산동</td>
-                      <td>14</td>
-                      <td>32</td>
-                      <td>12</td>
-                    </tr>
-
+                    </c:forEach>
+                    
                   </tbody>
               </table>
             </div>
@@ -248,7 +282,7 @@
       <div>
         <span class="fs-3" style="border-bottom:2px solid gray;">보유재고</span>
       </div>
-      <div class="card card-body">
+      <div class="card card-body" style="border:1px solid;height:532px;">
       	<ul class="nav nav-tabs" >
 		  <li class="nav-item" >
       	  
@@ -336,5 +370,28 @@
   </div>
 
 </div>
+
+<script>
+function list_go(page, url) {
+    if (!url) url = "main";
+    var page = $("form#jobForm input[name='page']").val(page);
+   
+    var gu = $("form#jobForm input[name='gu']").val($('select[name="gu"]').val());
+    var dong = $("form#jobForm input[name='dong']").val($('select[name="dong"]').val());
+    
+    $('form#jobForm').attr({
+      action: url,
+      method: 'get'
+    }).submit();
+  }
+
+
+
+</script>
+
+
+
+
+
 
 <%@include file="../common/foot.jspf" %>

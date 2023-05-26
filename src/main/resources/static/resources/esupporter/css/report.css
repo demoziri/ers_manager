@@ -1,0 +1,121 @@
+.input_date {
+	border: 1px solid black;
+	font-size: 2rem;
+}
+
+.search-bar {
+	width: 300px;
+	height: 45px;
+	border: solid 1px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	z-index: 1;
+	opacity: 1;
+}
+
+.search-bar__input {
+	width: 40%;
+	border: none;
+	-webkit-appearance: none;
+	text-align: center;
+	margin-left: 10px;
+	overflow: auto;
+	z-index: -1;
+	font-size: 1.25rem;
+	border-radius: 5px;
+}
+
+.search-bar__input:focus {
+	outline: none;
+	width: 100%;
+	text-align: left;
+}
+
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fa-search {
+	font-size: 2rem;
+	border:1px solid black;
+}
+
+.text--center {
+	margin: 0 auto;
+	font-family: 'MinSans-Regular';
+}
+
+.input_borderRadius{
+	border-radius: 5px;
+	font-family: 'MinSans-Regular';
+}
+
+.report-buttons{
+	text-align: end;
+	margin-right: 50px;
+}
+
+.report-buttonLeft{
+	margin-right: 70%;
+}
+
+.report-div{
+	width: 90%;
+	margin-left: 5%;
+}
+
+.table {
+  width: 100%;
+  border: 1px solid #000000 !important;
+}
+
+.table td {
+  padding: 8px;
+}
+
+.table th {
+  background-color: #EFEFEF;
+  color: #000000;
+  text-align: center;
+  width: 20%;
+}
+
+.tableHeadFont{
+	font-family: 'MinSans-Regular';
+	vertical-align: middle;
+	text-align: center;
+	font-size: 1.5rem;
+}
+
+.tableBodyFont{
+	font-family: 'SpoqaHanSansNeo-Regular';
+	font-size: 1.5rem;
+}
+
+.div-gather{
+	width: 90%;
+	margin: 0 auto;
+}
+
+.tg  {border-collapse:collapse;border-spacing:0;width: 100%;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-aur8{background-color:#efefef;border-color:#333333;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+
+
+
+
+
+
+
+
+
+
+

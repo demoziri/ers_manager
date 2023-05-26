@@ -108,7 +108,7 @@
       <th>상태</th>
       <td>
         <select name="status">
-          <option value=""></option>
+          <option value="" ${member.status eq '' ? 'selected' : "" } >등록 진행중</option>
           <option value="1" ${member.status eq '1' ? 'selected' : "" }>서비스 이용중</option>
           <option value="2" ${member.status eq '2' ? 'selected' : "" }>장기부재</option>
           <option value="3" ${member.status eq '3' ? 'selected' : "" }>해지</option>

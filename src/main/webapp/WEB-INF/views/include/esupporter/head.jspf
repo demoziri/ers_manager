@@ -1,0 +1,133 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link href="/resources/esupporter/css/head.css" rel="stylesheet">
+
+<meta charset="UTF-8">
+<title>${pageTitle}</title>
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- 테일윈드 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+<!-- 노말라이즈, 라이브러리까지 한번에 해결 -->
+<!--데이지 UI  -->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
+
+<!-- 폰트어썸 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<!-- 사이트 공통 CSS -->
+<link rel="stylesheet" href="/bootstrap/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="/bootstrap/dist/css/adminlte.min.css?v=3.2.0">
+<!-- 사이트 공통 JS -->
+<script src="/bootstrap/plugins/jquery/jquery.min.js"></script>
+<script src="/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/dist/js/adminlte.min.js?v=3.2.0"></script>
+
+<script>
+	//페이지 로드 시 쿼리문 실행
+	window.onload = function() {
+		executeQuery();
+	};
+
+	function showNotification(message) {
+		var notification = document.getElementById('notification');
+		notification.innerText = message;
+		notification.style.display = 'block';
+	}
+
+	// 알림 숨기는 함수
+	function hideNotification() {
+		var notification = document.getElementById('notification');
+		notification.innerText = '';
+		notification.style.display = 'none';
+	}
+
+	// 알림을 주는 엔티티에서 호출
+	showNotification('알림 메시지');
+
+	// 일정 시간이 지나면 알림 숨김
+	setTimeout(hideNotification, 5000); // 5초 후에 숨김
+	
+	function executeQuery() {
+		// AJAX 요청 생성
+		var xhr = new XMLHttpRequest();
+		
+		alert(xhr);
+		
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+		    	// AJAX 요청이 완료되고 응답이 성공인 경우 처리할 작업
+		    	var response = xhr.responseText;
+		    	
+		    	// 결과값 확인 후 알림 표시
+		    	if (response === '1') {
+					showNotification('알림 메시지');
+				} else {
+			    	hideNotification();
+				}
+			}
+		};
+
+		// AJAX 요청 설정
+		xhr.open('GET', 'emergency', true);
+		xhr.send();
+	}
+	
+</script>
+
+</head>
+<body class="body">
+	
+	<!-- 알림 영역 -->
+    <div id="notification" style="display: none;"></div>
+	
+	<nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="padding: 0px;">
+		<div class="header_main">
+			<a href="/ers/esupporter/main" class="navbar-brand">
+				<img src="/resources/esupporter/img/사이렌.jpg" class="brand-image img-circle elevation-3" style="opacity: .8; width: 150px; height: 100px;">
+			</a>
+			<button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="head_title collapse navbar-collapse order-3" id="navbarCollapse">
+					<span class="brand_text">응급안전안심서비스</span>
+			</div>
+			<div style="display:none;">${loginUser.name }</div>
+			<ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+				<!--로그인  -->
+				<li class="item_bar">
+					<img class="img_size" onclick="location.href='/ers/esupporter/logout'" src="/resources/esupporter/img/변경자물쇠.png" />
+					<div class="header_menu_name" onclick="location.href='/ers/esupporter/logout'">로그아웃</div>
+				</li>
+				<!-- 현재상태 -->
+				<li class="item-bar">
+					<img class="img_size" src="/resources/esupporter/img/대기중아이콘.png" />
+					<select class="selectOption header_menu_name" style="">
+						<option value="">대기중</option>
+						<option value="">퇴근</option>
+						<option value="">출동중</option>
+					</select>
+				</li>
+				<!--공지사항  -->
+				<li class="item_bar">
+					<img class="img_size" onclick="location.href='/ers/esupporter/noticeList'" src="/resources/esupporter/img/확성기.png" />
+					<div class="header_menu_name" onclick="location.href='/ers/esupporter/noticeList'">공지사항</div>
+				</li>
+				<!--마이페이지  -->
+				<li class="item_bar">
+					<img class="img_size" onclick="location.href='/ers/esupporter/myPageMain'" src="/resources/esupporter/img/마이페이지.png" />
+					<div class="header_menu_name">마이페이지</div>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<section class="mt-5">
+			<div class="container mx-auto px-3"></div>
+	</section>

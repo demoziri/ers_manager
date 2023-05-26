@@ -1,0 +1,79 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+</div>
+</div>
+</div>
+
+
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- bootstrap js -->
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+<script src="${pageScope.request.contextPath}/resources/js/common.js"></script>
+`<script>
+  function updateDateTime() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+    var day = now.getDate().toString().padStart(2, '0');
+    var hours = now.getHours().toString().padStart(2, '0');
+    var minutes = now.getMinutes().toString().padStart(2, '0');
+    var seconds = now.getSeconds().toString().padStart(2, '0');
+    
+    var dateTimeString = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+    document.getElementById("currentDateTime").innerText = dateTimeString;
+  }
+  
+  updateDateTime();
+  
+  setInterval(updateDateTime, 1000);
+  
+  setInterval(() => checkEmergency('${loginManager.depart}'), 3000);
+  
+  function checkEmergency(depart){
+     
+     $.ajax({
+        url:'${pageContext.request.contextPath}/ers/local/checkEmergency?depart='+depart,
+        success:function(data){
+         if(data != null && data > 0){
+            Swal.fire({
+                     title: "응급상황 발생!",
+                     text: "요원지정화면으로 넘어가시겠습니까?",
+                     icon: 'warning',
+                     
+                     showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+                     confirmButtonColor: '#eb0b0b', // confrim 버튼 색깔 지정
+                     cancelButtonColor: '#e0e0e0', // cancel 버튼 색깔 지정
+                     confirmButtonText: 'YES', // confirm 버튼 텍스트 지정
+                     cancelButtonText: 'NO', // cancel 버튼 텍스트 지정
+                     
+                     reverseButtons: false// 버튼 순서 거꾸로
+                     
+                  }).then((yeah) => {
+                    if (yeah.isConfirmed) {
+                        /* "YES"클릭시 로직 */
+                       $.ajax({
+                          url:'${pageContext.request.contextPath}/ers/local/emergencyUpdate?depart='+depart
+                       })
+                       
+                       location.href="${pageContext.request.contextPath}/ers/local/emergency/list";
+                    }
+                    else{
+                       $.ajax({
+                          url:'${pageContext.request.contextPath}/ers/local/emergencyUpdate?depart='+depart
+                       })
+                     }
+                   });
+         }   
+        },error:function(error){
+           alert(error);
+        }
+     })
+  }
+</script>
+ 
+
+</body>
+</html>

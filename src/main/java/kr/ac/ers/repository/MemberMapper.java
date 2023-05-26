@@ -34,6 +34,5 @@ public interface MemberMapper {
 	
 	void updateMember(MemberVO member);
 	
-	
-	
+	void insertMemberIdToSensorCk(String id);
 }

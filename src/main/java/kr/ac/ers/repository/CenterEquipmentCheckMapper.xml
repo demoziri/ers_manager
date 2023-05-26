@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.CenterEquipmentCheckMapper">
+
+	
+<select id="selectUnconnectList" resultType="CenterEquipmentCheckVO">
+	select m.id, '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name as m_name, m.address, m.phone, ma.unconnecttime ,mc.name as ma_name, ma.mstatus
+	from member m, machine ma, machinecode mc, local l
+	where mc.mcode = ma.mcode
+	and ma.id = m.id
+	and ma.lnum = l.lnum
+	and ma.mstatus = '미수신'
+	and l.name=#{lname}
+	order by ma.unconnecttime
+</select>
+	
+<select id="selectUnconnectCancelList" resultType="CenterEquipmentCheckVO">
+	select m.id, '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name as m_name, m.address, m.phone
+	from member m,
+	(
+	 select m.name, count(*) as ccount
+	 from member m, machine ma, local l
+	 where ma.id = m.id
+	 and ma.lnum = l.lnum
+	 and l.name=#{lname}
+	 and ma.mstatus = '연결해제'
+	 group by m.name
+	) cnt
+	where m.status = 1
+	and m.name = cnt.name
+</select>
+
+<select id="selectMachineReturnList" resultType="CenterEquipmentCheckVO">
+	select m.id, '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name as m_name,  m.address, m.phone
+	from member m, machine ma, local l
+	where m.dropstatus='Y'
+	and ma.lnum = l.lnum
+	and l.name=#{lname}
+	and ma.id = m.id
+	group by m.id, m.name, m.address, '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name, decode(m.status, '1' ,'독거노인', '장애인'), 
+	m.status, '1', '독거노인', '장애인', '] ', 
+	m.name, m.phone
+</select>
+
+<select id="selectNewMemberList" resultType="CenterEquipmentCheckVO">
+	select m.id, '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name as m_name, m.address, m.phone
+	from member m
+	where not exists(
+	    select * from machine ma, local l
+	    where ma.id = m.id
+	)
+	and m.address like '%'||#{lname}||'%'
+</select>
+</mapper>

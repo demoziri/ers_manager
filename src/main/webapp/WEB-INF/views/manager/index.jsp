@@ -5,9 +5,6 @@
 
 <c:set var="pageTitle" value="메인" />
 <%@include file="../manager/common/head.jspf" %>
-<c:set var="memberList" value="${dataMap.memberList }" />
-<c:set var="pageMaker" value="${dataMap.pageMaker }" />
-<c:set var="cri" value="${pageMaker.cri }" />
 
 <div class="container-fluid">
   <div class="row" style="height:400px;">
@@ -141,7 +138,7 @@
     <div class="card card-body mt-3" style="border:1px solid gray;height:250px;box-shadow:0.1rem 0.1rem 0.1rem rgba(0,0,0,.3);">
       <div>
         <span class="fs-3" style="border-bottom:2px solid gray;">댁내장비 AS 요청 내역</span>
-        <a href="" style="float:right;color:inherit;text-decoration:none;"><i class="bi bi-plus-circle-dotted"></i>&nbsp;더보기</a>
+        <a href="<%=request.getContextPath()%>/ers/manager/machine/main" style="float:right;color:inherit;text-decoration:none;"><i class="bi bi-plus-circle-dotted"></i>&nbsp;더보기</a>
       </div>
       <div class="row" id="memDetail" style="height:100%;margin-top:5px;background-color:#dfdfdf;">
         <!-- AS 들어갈 자리 -->
@@ -190,7 +187,7 @@
     <div class="card card-body mt-3" style="border:1px solid gray;height:250px; box-shadow:0.1rem 0.1rem 0.1rem rgba(0,0,0,.3);">
       <div>
         <span class="fs-3" style="border-bottom:2px solid gray;">공지사항</span>
-        <a href="" style="float:right;color:inherit;text-decoration:none;"><i class="bi bi-plus-circle-dotted"></i>&nbsp;더보기</a>
+        <a href="<%=request.getContextPath()%>/ers/manager/notice/main" style="float:right;color:inherit;text-decoration:none;"><i class="bi bi-plus-circle-dotted"></i>&nbsp;더보기</a>
       </div>
       <div class="row" id="memDetail" style="margin-top:5px;">
         <!-- 대상자 상세정보 들어갈 자리 -->
@@ -203,14 +200,14 @@
             </tr>
             <thead>
             <tbody class="table-group-divider">
-              <%--  <c:forEach var="member" items="${memberList }">
-                  <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate" /> --%>
-              <tr <%-- onclick="memDetail_go(${member.id});" --%>>
-                <td>공지 번호</td>
-                <td>공지 제목 들어올 자리</td>
-                <td style="font-size:0.9rem;">YYYY-MM-DD</td>
+            <c:forEach var="notice" items="${noticeList }">
+            <fmt:formatDate value="${notice.regDate }" pattern="yyyy-MM-dd" var="regDate" />
+              <tr>
+                <td>${notice.nno } </td>
+                <td>${notice.title }</td>
+                <td style="font-size:0.9rem;"><fmt:formatDate value="${notice.regDate}" pattern="yyyy-MM-dd"/></td>
               </tr>
-              <%-- </c:forEach> --%>
+            </c:forEach>
             </tbody>
         </table>
       </div>

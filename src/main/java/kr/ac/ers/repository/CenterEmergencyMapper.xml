@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.CenterEmergencyMapper">
+	<select id="selectEmergencyCountByDepart" resultType="int">
+		select count(*)
+        from emergency em, member m
+        where m.id = em.id
+        and m.address like '%'||#{depart}||'%'
+        and em.confirmcheck = 'N'
+	</select>
+	
+	<select id="selectEmergencyListByDepartForScode" resultType="CenterEmergencyVO">
+		select em.scode, em.stype, em.occurtime, em.wid, m.id m_id, m.name m_name
+        from emergency em, member m
+        where m.id = em.id
+        and m.address like '%'||#{depart}||'%'
+        and em.confirmcheck = 'N'
+	</select>
+	
+	<update id="updateEmergencyCheckOut">
+		update emergency
+        set confirmcheck = 'Y'
+        where confirmcheck ='N'
+        and scode = #{scode}
+	</update>
+	
+	<select id="selectEmergencyListByDepart" resultType="CenterEmergencyVO">
+		select em.scode, decode(em.stype,'1' ,'응급', '2', '119', '3', '화재감지') as stype, em.occurtime, em.wid, m.id m_id, m.name m_name, m.memtype, m.address, m.phone
+        from emergency em, member m
+        where m.id = em.id
+        and m.address like '%'||#{depart}||'%'
+        and em.reportcheck = 'N'
+	</select>
+</mapper>

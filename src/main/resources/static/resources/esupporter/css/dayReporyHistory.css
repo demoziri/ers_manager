@@ -1,0 +1,112 @@
+/* 탭 스타일링 */
+.tabs {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex; /* 탭을 가로로 나열 */
+}
+
+.tabs li {
+	flex: 1; /* 가로 공간을 동일하게 분할 */
+	cursor: pointer;
+	padding: 5px 10px;
+	background-color: #f2f2f2;
+	text-align: center;
+}
+
+.tabs li.active {
+	background-color: #ccc;
+}
+
+/* 탭 내용 스타일링 */
+.tab-content {
+	display: none;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+
+.tab-content.active {
+	display: block;
+}
+
+.table td, th{
+	text-align: center;
+}
+
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.text--center {
+	margin: 0 auto;
+	font-family: 'MinSans-Regular';
+}
+
+.input_borderRadius{
+	border-radius: 5px;
+	font-family: 'MinSans-Regular';
+}
+
+.input_date {
+	border: 1px solid black;
+	font-size: 2rem;
+}
+
+.searchinput {
+	width: 180px;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: inherit;
+}
+
+.search-bar {
+	width: 300px;
+	height: 45px;
+	border: solid 1px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	z-index: 1;
+	opacity: 1;
+}
+
+.div_group{
+	display: inherit;
+}
+
+.search-bar__input {
+	width: 30%;
+	border: none;
+	-webkit-appearance: none;
+	text-align: center;
+	margin-left: 10px;
+	overflow: auto;
+	z-index: -1;
+	font-size: 1.25rem;
+	border-radius: 5px;
+}
+
+.search-bar__input:focus {
+	outline: none;
+	width: 100%;
+	text-align: left;
+}
+
+.fa-search {
+	font-size: 2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+

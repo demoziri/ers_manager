@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.ManagerMapper">
+	<select id="getManagerByLoginId" resultType="ManagerVO">
+		SELECT *
+		FROM manager
+		WHERE manid = #{id}
+	</select>
+	<select id="selectManagerById" resultType="ManagerVO">
+		SELECT *
+		FROM manager
+		WHERE manid = #{id}
+	</select>
+	
+	<insert id="insertManager"> 
+		insert into 
+		manager(manid, pwd, name, birth, phone,email,address)
+		values(#{manid},#{pwd},#{name},#{birth},#{phone},#{email},#{address})
+	</insert>
+	
+	<select id="overlappedID" parameterType="MemberVO" resultType="int"> 
+		select count(manid)
+		from manager 
+		where manid=#{manid}
+	</select>
+	
+	<select id="manager_FindId" parameterType="String" resultType="String">
+		select manid
+		from manager 
+		where name = #{name} and phone = #{phone}
+	</select>
+	
+	<select id="manager_FindPw" parameterType="String" resultType="String">
+		select manid
+		from manager
+		where manid = #{manid} and phone = #{phone}
+	</select>
+	
+	<update id="manager_resetPw">
+		update manager
+		set pwd = #{pwd}
+		where manid = #{manid}
+	</update>
+		
+	
+</mapper>

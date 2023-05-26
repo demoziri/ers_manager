@@ -1,0 +1,29 @@
+table.type03 {
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.5;
+  border-top: 1px solid #ccc;
+  border-left: 3px solid #369;
+  margin : 20px 10px;
+}
+
+table.type03 th {
+  width: 147px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 1.75rem;
+  vertical-align: middle;
+  text-align: center;
+  color: #153d73;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background-color: #EFEFEF;
+}
+
+table.type03 td {
+  width: 349px;
+  padding: 10px;
+  vertical-align: top;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}

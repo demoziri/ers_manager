@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.ac.ers.command.MemberSearchCriteria;
-import kr.ac.ers.command.PageMaker;
+import kr.ac.ers.command.MemPageMaker;
 import kr.ac.ers.dto.ApplyFileVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
+import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.repository.ApplyFileMapper;
+import kr.ac.ers.repository.CenterNoticeMapper;
 import kr.ac.ers.repository.MemberMapper;
 
 @Service
@@ -24,6 +26,9 @@ public class MemberService {
 
 	@Autowired
 	private ApplyFileMapper applyFileMapper;
+	
+	@Autowired
+	private CenterNoticeMapper centerNoticeMapper;
 	
 	public Map<String,Object> getMemberList(MemberSearchCriteria cri) {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -44,8 +49,8 @@ public class MemberService {
 
 		
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
+		MemPageMaker pageMaker = new MemPageMaker();
+		pageMaker.setMemCri(cri);
 		pageMaker.setTotalCount(memberMapper.selectSearchMemberListCount(cri));
 		
 		dataMap.put("pageMaker", pageMaker);
@@ -65,8 +70,8 @@ public class MemberService {
 	
 	
 	public void regist(MemberVO member) {
-		String id = memberMapper.selectMemberSequenceNextValue();
 		memberMapper.insertMember(member);
+		memberMapper.insertMemberIdToSensorCk(member.getId());
 		
 	}
 	
@@ -74,6 +79,22 @@ public class MemberService {
 		String id = memberMapper.selectMemberSequenceNextValue();
 		return id;
 	}
+	
+	public List<MemberVO> getMemberListToMain() {
+		RowBounds rowBounds = new RowBounds(0, 5);
+		
+		List<MemberVO> memberList = memberMapper.selectMemberList(null, rowBounds);
+		return memberList;
+	}
+	
+	public List<NoticeVO> getNoticeListToMangerMain() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		
+		List<NoticeVO> noticeList = centerNoticeMapper.selectNoticeList(null,rowBounds);
+		return noticeList;
+	}
+	
+	
 	
 	
 	public void registLsupporter(String wid, String id) {
@@ -103,5 +124,7 @@ public class MemberService {
 		return applyFileMapper.selectApplyFileByAfNo(afNo);
 	}
 	
-	
+
+	  
+	 
 }

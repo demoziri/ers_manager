@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.CenterEmanagerMapper">
+	<sql id="search">
+		<if test="gu != null">
+			and l_name like '%'||#{gu}||'%'
+		</if>
+		<if test="dong != null">
+			and dongname like '%'||#{dong}||'%'
+		</if>
+		<if test="status != null">
+			and status like '%'||#{status}||'%' 
+		</if>
+		<if test="cri.keyword != null">
+			and e_name like '%'||#{cri.keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="selectEmanagerList" resultType="CenterEmanagerVO">
+		select * from centeremanagerview
+		where wcode is not null
+		<include refid="search"/>
+	</select>
+	
+	<select id="selectEmanagerListCount" resultType="int">
+		select count(*) from centeremanagerview
+		where wcode is not null
+		<include refid="search"/>
+	</select>
+	
+	<select id="selectEmanagerByWcode" resultType="CenterEmanagerVO">
+		select * from centeremanagerview
+		where wcode = #{wcode}
+	</select>
+	
+	<select id="selectEmanagerListToMain" resultType="CenterEmanagerVO">
+		select status, count(*) totalCount
+		from esupporter group by status
+	</select>
+	
+	<select id="selectEmanagerListByLnameStatus" resultType="int">
+		select count(*)
+            from esupporter e, center c, dong d, local l
+            where d.dongcode = c.dongcode
+            and e.cnum = c.cnum
+            and l.lnum = d.lnum
+            and l.name=#{lname}
+            and e.status=#{status}
+	</select>
+	
+	<select id="selectEmanagerListByCnum" resultType="CenterEmanagerVO">
+		select * from centeremanagerview
+		where cnum = #{cnum}
+		and status = '대기중'
+	</select>
+</mapper>

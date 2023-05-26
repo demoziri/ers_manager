@@ -29,7 +29,7 @@
     <tr>
       <th>대상자 구분</th>
       <td>
-        <select name="memType" id="">
+        <select name="memType" id="" style="height:30px;">
           <option value="" selected>선택</option>
           <option value="독거노인">독거노인</option>
           <option value="장애인">장애인</option>
@@ -47,7 +47,7 @@
       </td>
       <th>전화번호</th>
       <td>
-        <select name="phone" id="">
+        <select name="phone" id="" style="height:30px;">
           <option value="">선택</option>
           <option value="010">010</option>
           <option value="042">042</option>
@@ -59,7 +59,7 @@
      <tr>
       <th>고위험도</th>
       <td>
-        <select name="caution">
+        <select name="caution" style="height:30px;">
           <option value="">선택</option>
           <option value="Y">Y</option>
           <option value="N">N</option>
@@ -67,7 +67,7 @@
       </td>
       <th>성별</th>
       <td>
-      	<select name="gender">
+      	<select name="gender" style="height:30px;">
           <option value="">선택</option>
           <option value="남">남</option>
           <option value="여">여</option>
@@ -78,7 +78,7 @@
       <th>구</th>
       <td>
       	<input type="hidden" name="address" value="대전광역시" />
-        <select name="address" id="lNum" onchange="dongRegList_go(this.value)">
+        <select name="address" id="lNum" onchange="dongRegList_go(this.value)" style="height:30px;">
           <option value="">선택</option>
           <option value="중구" data-name="L02">중구</option>
           <option value="서구" data-name="L01">서구</option>
@@ -89,7 +89,7 @@
       </td>
       <th>동</th>
       <td>
-        <select id="dongRegList" name="address" >
+        <select id="dongRegList" name="address" style="height:30px;">
             <option value="" selected>선택</option>
         </select>
       </td>
@@ -97,7 +97,7 @@
     <tr>
       <th>상세주소</th>
       <td colspan="3">
-        <input type="text" name="address" style="width:100%;" />
+        <input type="text" name="address" style="width:100%;" style="height:30px;"/>
       </td>
     </tr>
    
@@ -112,7 +112,7 @@
       </td>
     </tr>
   </table>
-  <input type="hidden" name="id" value="${id }"/>
+  <input type="hidden" name="id" value="${id}"/>
   <input type="hidden" name="lNum" value=""/>
   <input type="hidden" name="e_Name" value=""/>
   <input type="hidden" name="relation" value="" id="relation_receive"/>

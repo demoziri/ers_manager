@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.EsupporterMapper">
+	
+	<sql id="search">	
+		<if test="cri.searchType == 'n'.toString()">
+			and m.name like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'nrv'.toString()">
+			and (
+			m.name like '%'||#{cri.keyword}||'%'
+			or
+			r.regdate like '%'||#{cri.keyword}||'%'
+			or
+			r.viewcheck like '%'||#{cri.keyword}||'%'
+			)
+		</if>
+		<if test="cri.searchType == 'nrvf'.toString()">
+			and (
+			m.name like '%'||#{cri.keyword}||'%'
+			or
+			r.regdate like '%'||#{cri.keyword}||'%'
+			or
+			r.viewcheck like '%'||#{cri.keyword}||'%'
+			<!-- 
+			or
+			파일첨부
+			 -->
+			)
+		</if>
+		<if test="cri.searchType == 'b'.toString()">
+			and m.birth like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'g'.toString()">
+			and m.gender like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'r'.toString()">
+			and m.reType like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'rd'.toString()">
+			and m.regDate like '%'||#{cri.keyword}||'%'			
+		</if>	
+		<if test="cri.searchType == 'vc'.toString()">
+			and m.viewCheck like '%'||#{cri.keyword}||'%'			
+		</if>		
+	</sql>
+	
+	<select id="esupporterStateChange" resultType="int" parameterType="String">
+		select count(*) from esupporter
+		where status = '출동중'
+		and wId = #{wId}
+	</select>
+	
+	<select id="emergencyDispatchNotification" resultType="EmergencyVO" parameterType="String">
+		select e.scode as sCode, e.stype as sType, e.occurtime as occurTime, e.confirmcheck as confirmCheck, e.reportcheck as reportCheck, e.id as id, e.wid as wId,
+			   m.name as name, m.birth as birth, m.address as address, m.phone as phone, m.caution as caution, m.pacemaker as pacemaker, m.equipment as equipment,
+			   m.memtype as memType, m.gender as gender, s.outconfirm as outConfirm
+		  from emergency e, member m, sensorck s
+		 where e.id = m.id
+		   and m.id = s.id
+		   and wId = #{wId}
+	</select>
+	
+	<update id="checkEmergencyDispatchNotification" parameterType="EmergencyVO">
+		update emergency
+		set confirmCheck = #{confirmCheck}
+		where sCode = #{sCode}
+	</update>
+	
+	<update id="afterReportEmergencyDispatchNotification" parameterType="EmergencyVO">
+		update emergency
+		set reportCheck = #{reportCheck}
+		where sCode = #{sCode}
+	</update>
+	
+	<select id="selectEsupportByWId" resultType="EsupporterVO" parameterType="String">
+		select f.wcode, f.name, f.birth, f.phone, f.picture, f.wtype, f.gender, f.email, e.wId, e.status, e.pwd, e.cnum
+		from fieldstaff f , esupporter e
+		where f.wcode = e.wcode
+		and wId = #{wId}
+	</select>
+	
+	<select id="selectEmergencyList" resultType="DispatchVO" >
+		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, e.wId as wId
+		from emergency e, member m
+		where e.id = m.id
+		<include refid="search"/>
+		and e.wId = #{wId}
+	</select>
+	
+	<select id="selectEmergencyDetail" resultType="DispatchVO" parameterType="int">
+		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, e.wId as wId
+		from emergency e, member m
+		where e.id = m.id
+		and e.sCode = #{sCode}
+	</select>
+	
+	<select id="selectEmergencyReportYNList" resultType="DispatchReportVO" >
+		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, r.redone as redone,
+			   r.viewcheck as viewcheck, e.wId as wId, r.rno as rno
+		from emergency e, member m, report r, fieldstaff f
+		where e.id = m.id
+		and f.wcode = r.wcode
+		<include refid="search"/>
+		and e.wId = #{wId}
+	</select>
+	
+	<select id="selectEmergencyReportYNDetail" resultType="DispatchReportVO" parameterType="int">
+		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, r.redone as redone,
+			   r.viewcheck as viewcheck, e.wId as wId, r.rno as rno
+		from emergency e, member m, report r, fieldstaff f
+		where e.id = m.id
+		and f.wcode = r.wcode
+		and e.sCode = #{sCode}
+	</select>
+	
+	<select id="selectEmergencyReportList" resultType="EmergencyReportVO">
+		select r.rno as rNo, r.regdate as regDate, r.id as id, r.wcode as wCode, r.redone as reDone, r.viewcheck as viewCheck, r.retype as reType,
+			   r.occurtime as occurTime, r.occurtype as occurType, r.callcheck as callCheck, m.name as name, m.address as address
+		  from report r, member m
+		 where r.id = m.id
+		 <include refid="search"/>
+		   and r.retype = '1'
+		   and r.wcode= #{wCode}
+		   
+		 order by r.regDate desc
+	</select>
+	
+	<select id="selectEmergencyReportCount" resultType="int">
+		select count(*)
+		  from report r, member m
+		 where r.id = m.id
+		 <include refid="search"/>
+		   and r.retype = '1'
+		   and r.wcode= #{wCode}
+	</select>
+	
+	<select id="selectEmergencyReportDetail" resultType="EmergencyReportVO" parameterType="int">
+		select r.rno, r.regdate, r.content, r.id, r.wcode, r.redone, r.viewcheck, r.retype, r.occurtime, r.occurtype, r.callcheck, m.name, m.address
+		  from report r, member m
+		 where r.id = m.id
+           and retype = '1'
+		   and rno = #{rNo}
+	</select>
+	
+	<select id="selectEquipmentReportList" resultType="EquipmentReportVO">
+		select r.rno, r.regdate, r.content, r.id, r.wcode, r.redone, r.viewcheck, r.retype, r.occurTime, r.occurtype, r.callcheck, s.mnum, s.mstatus, m.name, m.address
+		from report r, selectmachine s, member m
+		where r.rno = s.rno
+		<include refid="search"/>
+        and r.id = m.id
+		and r.wcode= #{wCode}
+	</select>
+	
+	<select id="selectEquipmentReportDetail" resultType="EquipmentReportVO">
+		select r.rno, r.regdate, r.content, r.id, r.wcode, r.redone, r.viewcheck, r.retype, r.occurTime, r.occurtype, r.callcheck, s.mnum, s.mstatus
+		from report r, selectmachine s
+		where r.rno = s.rno
+		and r.rno = #{rNo}
+	</select>
+	
+	<select id="selectEsupporterReportAll">
+	
+	</select>
+	
+	<select id="selectDayEmergencyReport">
+	
+	</select>
+	
+	<select id="selectDayEquipmentReport">
+	
+	</select>
+	
+	<select id="selectReportSequenceNextValue" resultType="int">
+		select report_seq.nextVal
+		from dual
+	</select>
+	
+	<update id="insertEquipmentReport" parameterType="EquipmentReportVO">
+		insert into report(rNo,regDate,content,id,wCode,reDone,viewCheck,reType,occurTime,occurType,callCheck)
+		values(#{rNo},#{regDate},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},#{occurType},#{callCheck})
+	</update>
+	
+	<update id="insertEmergencyReport" parameterType="EmergencyReportVO">
+		insert into report(rNo,content,id,wCode,reDone,viewCheck,reType,occurTime,occurType,callCheck)
+		values(#{rNo},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},#{occurType},#{callCheck})
+	</update>
+	
+</mapper>

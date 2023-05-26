@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.ManagerMachineMapper">
+
+	<select id="selectStockList" resultType="ManagerMachineVO">
+		select l.lnum,l.name l_name ,c.name c_name,d.dongname ,count(case when m.mcode='M01' then 1 end) as gateway,
+		count(case when m.mcode='M02' then 1 end) as activesensor, count(case when m.mcode='M03' then 1 end)as doorsensor,
+		count(case when m.mcode='M04' then 1 end) as firesensor
+		from local l, center c, machine m, dong d
+		where l.lnum=m.lnum and c.cnum=m.cnum and d.dongcode = c.dongcode
+		<if test="gu != null and gu != ''.toString() ">
+			and l.name=#{gu}		
+		</if>
+		<if test="dong != null and dong != ''.toString()">
+			and dongname=#{dong}		
+		</if>
+		and m.mstatus = '재고'
+		group by c.name, l.name, l.lnum, d.dongname
+		order by l.lnum
+	</select>
+	
+	
+	
+	<select id="selectSearchStockListCount" resultType="Integer">
+		select count(*)
+			from
+			(
+				select l.lnum,l.name l_name ,c.name c_name,d.dongname ,count(case when m.mcode='M01' then 1 end) as gateway,
+				count(case when m.mcode='M02' then 1 end) as activesensor, count(case when m.mcode='M03' then 1 end)as doorsensor,
+				count(case when m.mcode='M04' then 1 end) as firesensor
+				from local l, center c, machine m, dong d
+				where l.lnum=m.lnum and c.cnum=m.cnum and d.dongcode = c.dongcode
+				<if test="gu != null and gu != ''.toString() ">
+					and l.name=#{gu}		
+				</if>
+				<if test="dong != null and dong != ''.toString()">
+					and dongname=#{dong}		
+				</if>
+				and m.mstatus = '재고'
+				group by c.name, l.name, l.lnum, d.dongname
+				order by l.lnum
+			)
+	</select>
+	
+	
+	<select id="selectASListPerWeek" resultType="ManagerMachineVO">
+	with ISO as
+	   (
+	    select
+	         to_char(WEEK_START, 'YYYY-MM-DD') WEEK_START
+	        ,to_char(WEEK_END, 'YYYY-MM-DD') WEEK_END
+	        ,to_char(WEEK_START, 'WW') WEEK_OF_YEAR_ISO
+	        ,to_char(WEEK_START, 'W') WEEK_OF_MONTH
+	    from
+	        (
+	         select
+	              trunc(START_DT + LEVEL, 'D') WEEK_START
+	             ,trunc(START_DT + LEVEL, 'D') + 6 WEEK_END
+	         from
+	            (
+	             select
+	                  to_date('20000101', 'YYYYMMDD') - 1 START_DT
+	                 ,to_date('20231231', 'YYYYMMDD') END_DT
+	             from DUAL
+	            )
+	            <![CDATA[connect by LEVEL <= END_DT - START_DT]]>
+			    )
+			    group by WEEK_START, WEEK_END
+			    order by week_start
+				)
+				select
+				c.name c_name, COUNT(m.mnum) asRequestCnt ,WEEK_START,WEEK_END 
+				from ISO a, machine m, center c
+				where m.assend between to_date(WEEK_START,'YYYY-MM-DD') AND TO_DATE(WEEK_END,'YYYY-MM-DD')
+				and m.cnum = c.cnum
+				group by WEEK_START, WEEK_END, c.name
+				ORDER BY WEEK_START ASC
+	</select>
+	
+	
+
+
+
+
+
+
+</mapper>

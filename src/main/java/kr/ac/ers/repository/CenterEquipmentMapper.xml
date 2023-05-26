@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.CenterEquipmentMapper">
+
+	
+<select id="selectEquipmentListWithCount" resultType="CenterEquipmentVO">
+	select mc.mcode, mc.name as m_name, count(*) totalcount, count(case when mstatus = '수신' then 1 end) as receive, count(case when mstatus = '미수신' then 1 end) as noreceive, count(case when mstatus = '연결해제' then 1 end) as unconnect,
+	count(case when mstatus ='고장' then 1 end) as trouble, count(case when mstatus ='재고' then 1 end) as stock
+	from machinecode mc, machine m, local l
+	where mc.mcode = m.mcode and m.lnum = l.lnum
+    <if test="lname != null and lname != ''.toString()">
+    and l.name like '%'||#{lname}||'%'
+    </if>
+    group by mc.mcode, mc.name
+	order by mc.mcode
+</select>
+	
+<select id ="selectLocalList" resultType="LocalVO">
+	select * from local
+	order by lnum
+</select>
+
+<select id ="selectEquipmentListWithCountByLnum" resultType="CenterEquipmentVO">
+	select mc.mcode, mc.name as m_name, l.name l_name, l.lnum, count(*) totalcount, count(case when mstatus = '수신' then 1 end) as receive, count(case when mstatus = '미수신' then 1 end) as noreceive, count(case when mstatus = '연결해제' then 1 end) as unconnect,
+	count(case when mstatus ='고장' then 1 end) as trouble, count(case when mstatus ='재고' then 1 end) as stock
+	from machinecode mc, machine m, local l
+	where mc.mcode = m.mcode 
+	and m.lnum = l.lnum 
+	and l.lnum = #{lnum}
+	group by mc.mcode, mc.name, l.name, l.lnum
+	order by l.lnum, mc.mcode
+</select>
+
+<select id ="selectCenterListByLname" resultType="CenterCenterVO">
+	select c.cnum, c.name as c_name, c.address, c.phone, c.supervisor, d.dongcode, d.dongname, l.lnum, l.name as l_name
+	from center c, dong d, local l
+	where c.dongcode = d.dongcode
+	and d.lnum = l.lnum
+	and l.name = #{lname}
+	<if test="center_name != null">
+	and c.name like '%'||#{center_name}||'%'
+	</if>
+	order by d.dongname
+</select>
+
+<select id ="selectEquipmentListByLnameCenterName" resultType="CenterEquipmentVO">
+	select mc.mcode, mc.name as m_name, c.cnum,c.name as c_name, count(*) totalcount, count(case when mstatus = '수신' then 1 end) as receive, count(case when mstatus = '미수신' then 1 end) as noreceive, count(case when mstatus = '연결해제' then 1 end) as unconnect,
+	count(case when mstatus ='고장' then 1 end) as trouble, count(case when mstatus ='재고' then 1 end) as stock
+	from machinecode mc, machine m, center c
+	where mc.mcode = m.mcode
+    and m.cnum = c.cnum
+    and c.name = #{center_name}
+    group by mc.mcode, mc.name, c.cnum, c.name
+	order by c.cnum, mc.mcode
+</select>
+
+<select id ="selecUserListByInfo" resultType="CenterEquipmentUserListVO">
+	select '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name as m_name, m.address, m.phone, mc.name, ma.mstatus, ma.unconnecttime, c.name as c_name, l.name as l_name
+	from member m, machine ma, machinecode mc, center c, local l
+	where ma.id = m.id
+	and mc.mcode = ma.mcode
+	and ma.cnum = c.cnum
+	and ma.lnum = l.lnum
+	and mc.name = #{m_name}
+	and ma.mstatus = #{mstatus}
+	<if test="lname != null and lname != ''.toString()">
+		and l.name = #{lname}
+	</if>
+	<if test="center_name != null and center_name != ''.toString()">
+		and c.name like #{center_name}
+	</if> -->
+</select>
+
+<select id ="selectUserListCount" resultType="int">
+	select count(*)
+	from member m, machine ma, machinecode mc, center c, local l
+	where ma.id = m.id
+	and mc.mcode = ma.mcode
+	and ma.cnum = c.cnum
+	and ma.lnum = l.lnum
+	and mc.name = #{m_name}
+	and ma.mstatus = #{mstatus}
+	<if test="lname != null and lname != ''.toString()">
+		and l.name = #{lname}
+	</if>
+	<if test="center_name != null and center_name != ''.toString()">
+		and c.name like #{center_name}
+	</if> -->
+</select>
+
+</mapper>

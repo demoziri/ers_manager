@@ -1,0 +1,166 @@
+.div_date {
+	background-color: inherit;
+}
+
+.input_date {
+	border: 1px solid black;
+	font-size: 2rem;
+}
+
+.searchinput {
+	width: 180px;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: inherit;
+}
+
+.search-bar {
+	width: 300px;
+	height: 45px;
+	border: solid 1px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	z-index: 1;
+	opacity: 1;
+}
+
+.search-bar__input {
+	width: 40%;
+	border: none;
+	-webkit-appearance: none;
+	text-align: center;
+	margin-left: 10px;
+	overflow: auto;
+	z-index: -1;
+	font-size: 1.25rem;
+	border-radius: 5px;
+}
+
+.search-bar__input:focus {
+	outline: none;
+	width: 100%;
+	text-align: left;
+}
+
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fa-search {
+	font-size: 2rem;
+}
+
+search-border{
+	border: 1px solid;
+}
+
+.text--center {
+	margin: 0 auto;
+	font-family: 'MinSans-Regular';
+}
+
+.flex--center {
+	justify-content: center;
+}
+
+.date_width{
+	width: 200px;
+}
+
+.dashbar{
+	font-size: 3rem;
+}
+
+.input_borderRadius{
+	border-radius: 5px;
+	font-family: 'MinSans-Regular';
+}
+
+.div_group{
+	display: inherit;
+}
+
+.tableHeadFont{
+	font-family: 'MinSans-Regular';
+	vertical-align: middle;
+	text-align: center;
+	font-size: 1.25rem;
+}
+
+.tableBodyFont{
+	font-family: 'SpoqaHanSansNeo-Regular';
+	text-align: center;
+	font-size: 1.25rem;
+}
+
+.buttons{
+	text-align: end;
+	margin-right: 5px;
+}
+
+.button-left{
+	margin-right: 69%;
+}
+
+.text_label{
+	font-family: 'MinSans-Regular';
+	font-size: 2rem;
+}
+
+.text_input{
+	font-family: 'SpoqaHanSansNeo-Regular';
+	font-size: 1.75rem;
+}
+
+.report-buttons{
+	text-align: end;
+	margin-right: 50px;
+}
+
+.report-buttonLeft{
+	margin-right: 70%;
+}
+
+.report-div{
+	width: 90%;
+	margin-left: 5%;
+}
+
+.table {
+  width: 100%;
+  border: 1px solid #000000 !important;
+}
+
+.table td {
+  padding: 8px;
+}
+
+.table th {
+  background-color: #EFEFEF;
+  color: #000000;
+  text-align: center;
+  width: 20%;
+}
+
+
+
+
+
+
+
+
+
+
+
+

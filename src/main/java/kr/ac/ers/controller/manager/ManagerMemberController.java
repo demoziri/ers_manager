@@ -153,21 +153,24 @@ public class ManagerMemberController {
 	@PostMapping("/doRegist")
 	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
 		
-		MemberVO member = registReq.toMemberVO();
+		System.out.println("등록할 아이디 : " + registReq.getId());
+		
+		MemberVO newMember = registReq.toMemberVO();
 		
 		
 		MemberVO checkMember = memberService.getMemberById(eRegistReq.getId());
-		if(checkMember == null ) {
-			memberService.regist(member);
+		if(checkMember == null) {
+			memberService.regist(newMember);
 			EcallVO ecall = eRegistReq.toEcallVO();
 			ecallService.registEcall(ecall);
-			
+			System.out.println("대상자등록 실행됨\n----------------------");
 		}else {
 			EcallVO ecall = eRegistReq.toEcallVO();
 			ecallService.registEcall(ecall);
+			System.out.println("비상연락망등록 실행됨");
 		}
 		
-		return member.getId();
+		return newMember.getId();
 	}
 	
 	@Value("${picturePath}")
@@ -253,15 +256,21 @@ public class ManagerMemberController {
 	
 	 @ResponseBody
 	 @PostMapping("/doModify") 
-	 public MemberVO memberModify(MemberModifyCommand modifyReq) throws Exception {
-
+	 public MemberVO memberModify(MemberModifyCommand modifyReq) {
+		 
 		 MemberVO member = modifyReq.toMemberVO();
 		 //기존 사진
 		 String oldPicture = memberService.getMemberById(modifyReq.getId()).getPicture();
 		
 			if(modifyReq.getPicture()!=null && modifyReq.getPicture().getSize() > 0) {
-				String fileName = savePicture(oldPicture, modifyReq.getPicture());
-				member.setPicture(fileName);
+				String fileName;
+				try {
+					fileName = savePicture(oldPicture, modifyReq.getPicture());
+					member.setPicture(fileName);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else {
 				member.setPicture(oldPicture);
 			}

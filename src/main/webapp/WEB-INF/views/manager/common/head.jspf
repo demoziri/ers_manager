@@ -69,10 +69,10 @@
         <div class="w-100 d-flex justify-content-end">
           <div class="mx-2">
             <a class="navbar-sm-brand text-light text-decoration-none" href="#">
+              <i class="bi bi-person-circle"></i>&nbsp;${loginManager.name }님</a>&ensp;
+            <a class="navbar-sm-brand text-light text-decoration-none" href="${pageContext.request.contextPath }/ers/manager/logout">
               <i class="bi bi-arrow-up-left-square-fill"></i>
-              로그아웃</a>&ensp;
-            <a class="navbar-sm-brand text-light text-decoration-none" href="#">
-              <i class="bi bi-person-circle"></i>&nbsp;마이페이지</a>
+              로그아웃</a>
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@
                 <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/member/main">대상자관리</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="#">직원관리</a>
+                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/staff/main">직원관리</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/machine/main">장비관리</a>
@@ -99,7 +99,7 @@
                 <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/report/main">보고서조회</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="#">공지사항</a>
+                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/notice/main">공지사항</a>
               </li>
             </ul>
           </div>

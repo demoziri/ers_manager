@@ -80,7 +80,7 @@
 	
 	<select id="selectMaxId" resultType="String">
 		select max(id)
-		from member 
+		from member
 	</select>
 
 	<update id="updateMember" parameterType="MemberVO">
@@ -89,5 +89,12 @@
 		address=#{address},phone=#{phone},caution=#{caution},status=#{status},lNum=#{lNum},picture=#{picture}
 		where id=#{id}
 	</update>
+	
+	<insert id="insertMemberIdToSensorCk" parameterType="String">
+		insert into
+		sensorck(id)
+		values(#{id})
+	</insert>
+	
 	
 </mapper>

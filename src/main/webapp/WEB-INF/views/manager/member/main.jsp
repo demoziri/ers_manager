@@ -8,7 +8,7 @@
 
 <c:set var="memberList" value="${dataMap.memberList }" />
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
-<c:set var="cri" value="${pageMaker.cri }" />
+<c:set var="cri" value="${pageMaker.memCri }" />
 
 <style>
   .mem_table>tbody>tr:hover {
@@ -24,28 +24,28 @@
   <div class="row">
     <!-- 대상자 목록 -->
     <div class="col-5">
-      <div class="searchType card card-body mt-2" style="border:2px dotted gray;height:400px;">
+      <div class="searchType card card-body mt-2" style="border:1px solid gray;height:400px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">대상자 목록</span>
         </div>
         <div>
           <select name="memType" style="height:100%;">
-            <option value="" ${cri.memType eq '' ? 'selected' : "" }>대상자구분</option>
-            <option value="독거노인" ${cri.memType eq '독거노인' ? 'selected' : "" }>독거노인</option>
-            <option value="장애인" ${cri.memType eq '장애인' ? 'selected' : "" }>장애인</option>
+            <option value="" ${memCri.memType eq '' ? 'selected' : "" }>대상자구분</option>
+            <option value="독거노인" ${memCri.memType eq '독거노인' ? 'selected' : "" }>독거노인</option>
+            <option value="장애인" ${memCri.memType eq '장애인' ? 'selected' : "" }>장애인</option>
           </select>
           <select name="gu" onchange="dongList_go(this.value)" style="height:100%;width:100px;">
-            <option value="" ${cri.gu eq 'selected' ? 'selected' : "" }>지역구 선택</option>
-            <option value="중구" ${cri.gu eq '중구' ? 'selected' : "" }>중구</option>
-            <option value="동구" ${cri.gu eq '동구' ? 'selected' : "" }>동구</option>
-            <option value="서구" ${cri.gu eq '서구' ? 'selected' : "" }>서구</option>
-            <option value="대덕구" ${cri.gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
-            <option value="유성구" ${cri.gu eq '유성구' ? 'selected' : "" }>유성구</option>
+            <option value="" ${cmemCriri.gu eq 'selected' ? 'selected' : "" }>지역구 선택</option>
+            <option value="중구" ${memCri.gu eq '중구' ? 'selected' : "" }>중구</option>
+            <option value="동구" ${memCri.gu eq '동구' ? 'selected' : "" }>동구</option>
+            <option value="서구" ${memCri.gu eq '서구' ? 'selected' : "" }>서구</option>
+            <option value="대덕구" ${memCri.gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
+            <option value="유성구" ${memCri.gu eq '유성구' ? 'selected' : "" }>유성구</option>
           </select>
           <select id="dongList" name="dong" style="height:100%;width:100px;">
             <option value="" selected>동 선택</option>
           </select>
-          <input type="text" name="name" value="${cri.name }" placeholder="이름" style="width:100px;text-align:center;" />
+          <input type="text" name="name" value="${memCri.name }" placeholder="이름" style="width:100px;text-align:center;" />
           <button onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
         </div>
         <div id="memList">
@@ -68,18 +68,18 @@
                     <td>${member.name }</td>
                     <td style="font-size:0.9rem;">${regDate }</td>
                     <c:if test="${member.machineCk eq 4}">
-                      <td style="color:blue;">설치완료</td>
+                      <td style="color:#4f94d4;">설치완료</td>
                     </c:if>
                     <c:if test="${member.machineCk ne 4}">
-                      <td style="color:red;">미설치</td>
+                      <td style="color:#d63638;">미설치</td>
                     </c:if>
                     <c:if test="${empty member.wid }">
-                      <td style="color:red;">
+                      <td style="color:#e65054;">
                         미배정
                       </td>
                     </c:if>
                     <c:if test="${not empty member.wid }">
-                      <td style="color:blue;">
+                      <td style="color:#e65054;">
                         배정완료
                       </td>
                     </c:if>
@@ -96,7 +96,7 @@
     </div>
     <!-- 대상자 상세정보 -->
     <div class="col-7">
-      <div class="card card-body mt-2" style="border:2px dotted gray;height:400px;">
+      <div class="card card-body mt-2" style="border:1px solid gray;height:400px;">
         <div style="position:relative;">
           <span class="fs-3 mem_title" style="border-bottom:2px solid gray;">대상자 정보</span>
           <button type="button" class="btn btn-success" id="reg-btn" style="position:absolute;bottom:0;right:0;" onclick="registForm_go();">신규 대상자 등록</button>
@@ -113,7 +113,7 @@
   <div class="row">
     <!-- 보고서 목록 -->
     <div class="col-5">
-      <div class="card card-body pt-0 mt-3" style="border:2px dotted gray;height:250px;">
+      <div class="card card-body pt-0 mt-3" style="border:1px solid gray;height:250px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 목록</span>
         </div>
@@ -141,7 +141,7 @@
     <!-- 보고서 목록 끝 -->
     <!-- 보고서 상세 -->
     <div class="col-7">
-      <div class="card card-body pt-0 mt-3" style="border:2px dotted gray;height:250px;">
+      <div class="card card-body pt-0 mt-3" style="border:1px solid gray;height:250px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
           &ensp;
@@ -252,7 +252,8 @@
     if ($('#e_name_id_2').val() != null && $('#e_name_id_2').val() != "") forGubun += 1;
     if ($('#e_name_id_3').val() != null && $('#e_name_id_3').val() != "") forGubun += 1;
     for (var round = 1; round < forGubun; round++) {
-      
+      alert("round"+round);
+      alert("gubun"+forGubun);
       var eName = $("#e_name_id_" + round + "").val();
       var ePhone1 = $("#e_phone" + round + "_1").val();
       var ePhone2 = $("#e_phone" + round + "_2").val();
@@ -283,11 +284,10 @@
   }
 
   function modify_go() {
-	changePicture_go();
     $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
-    
     var form = $("form[role='modiform']")[0];
     var formData = new FormData(form);
+
 
     $.ajax({
       url: "doModify",
@@ -297,12 +297,12 @@
       processData : false,     
       success: function(data) {
         alert(data.name + "님의 정보를 수정했습니다.");
+        $("#memList").load(location.href + " #memList");
         memDetail_go(data.id);
         $(document).ready(function() {
            MemberPictureThumb('localhost');
         });
-        
-        $("#memList").load(location.href + " #memList");
+		changePicture_go();
       },
       error: function() {
         alert("실패");
@@ -400,6 +400,7 @@
   }
   //등록화면 호출
   function registForm_go() {
+	
     $.ajax({
       url: "regist",
       type: "get",
@@ -458,8 +459,8 @@
           }); */
           $('#regEcallBtn').on('click', function() {
             alert("비상연락망을 등록했습니다.");
-            $('#ecallCount span').html("등록완료");
             $('#modalBox3').modal('hide');
+            $('#ecallCount').html("등록완료");
           })
         });
         // modal close
