@@ -43,43 +43,71 @@
 	</select>
 	
 	
-	<select id="selectASListPerWeek" resultType="ManagerMachineVO">
-	with ISO as
-	   (
-	    select
-	         to_char(WEEK_START, 'YYYY-MM-DD') WEEK_START
-	        ,to_char(WEEK_END, 'YYYY-MM-DD') WEEK_END
-	        ,to_char(WEEK_START, 'WW') WEEK_OF_YEAR_ISO
-	        ,to_char(WEEK_START, 'W') WEEK_OF_MONTH
-	    from
-	        (
-	         select
-	              trunc(START_DT + LEVEL, 'D') WEEK_START
-	             ,trunc(START_DT + LEVEL, 'D') + 6 WEEK_END
-	         from
-	            (
-	             select
-	                  to_date('20000101', 'YYYYMMDD') - 1 START_DT
-	                 ,to_date('20231231', 'YYYYMMDD') END_DT
-	             from DUAL
-	            )
-	            <![CDATA[connect by LEVEL <= END_DT - START_DT]]>
-			    )
-			    group by WEEK_START, WEEK_END
-			    order by week_start
-				)
-				select
-				c.name c_name, COUNT(m.mnum) asRequestCnt ,WEEK_START,WEEK_END 
-				from ISO a, machine m, center c
-				where m.assend between to_date(WEEK_START,'YYYY-MM-DD') AND TO_DATE(WEEK_END,'YYYY-MM-DD')
-				and m.cnum = c.cnum
-				group by WEEK_START, WEEK_END, c.name
-				ORDER BY WEEK_START ASC
+	<select id="selectASPerWeek" resultType="ManagerMachineVO">
+	WITH ISO AS
+    (
+	    SELECT
+	        TO_CHAR(WEEK_START, 'yyyy-mm-dd') AS WEEK_START,
+	        TO_CHAR(WEEK_END, 'yyyy-mm-dd') AS WEEK_END,
+	        TO_CHAR(WEEK_START, 'WW') AS WEEK_OF_YEAR_ISO,
+	        TO_CHAR(WEEK_START, 'W') AS WEEK_OF_MONTH
+	    FROM
+    	   (
+	        SELECT
+	            TRUNC(START_DT + LEVEL, 'D') AS WEEK_START,
+	            TRUNC(START_DT + LEVEL, 'D') + 6 AS WEEK_END
+	        FROM
+	           (
+	            SELECT
+	                TO_DATE('2000-01-01', 'yyyy-mm-dd') - 1 AS START_DT,
+	                TO_DATE('2023-12-31', 'yyyy-mm-dd') AS END_DT
+	            FROM DUAL
+	           )
+       		<![CDATA[CONNECT BY LEVEL <= END_DT - START_DT]]>
+		    )
+		    GROUP BY WEEK_START, WEEK_END
+		    ORDER BY WEEK_START
+			)
+			SELECT
+			    c.name AS c_name, c.cnum,
+			    COUNT(m.mnum) AS asRequestCnt,
+			    TO_DATE(WEEK_START, 'YYYY-MM-DD') AS WEEK_START,
+			    TO_DATE(WEEK_END, 'YYYY-MM-DD') AS WEEK_END
+			FROM ISO a, machine m, center c
+			WHERE m.assend BETWEEN TO_DATE(WEEK_START, 'YYYY-MM-DD') AND TO_DATE(WEEK_END, 'YYYY-MM-DD')
+			    AND m.cnum = c.cnum
+			GROUP BY WEEK_START, WEEK_END, c.name, c.cnum
+			ORDER BY WEEK_START ASC
 	</select>
 	
 	
-
-
+	<select  id="selectASListPerWeekBycNum" resultType="ManagerMachineVO">
+		 select 
+		 c.name c_name,m.mNum,mc.name mc_name,m.assend
+		 from machine m, center c, machinecode mc
+		 where m.cnum = c.cnum and assend between #{week_start} and #{week_end}
+		 and m.mcode=mc.mcode and c.cnum=#{cnum}
+		 group by c.name ,m.mNum,mc.name ,m.assend
+		 order by m.assend desc
+	</select>
+	
+	
+	<select id="selectTotalCount" resultType="ManagerMachineVO">
+		select count(*) totalcount, count(case when mcode='M01' then 1 end)as gateway,
+		count(case when mcode='M02' then 1 end)as activesensor, count(case when mcode='M03' then 1 end)as doorsensor,
+		count(case when mcode='M03' then 1 end)as firesensor
+		from machine
+		where mstatus='재고'
+	</select>
+	
+	<select  id="selectMachineListByMcode" resultType="ManagerMachineVO">
+		select m.* ,mc.name mc_name
+		from machine m, machinecode mc
+		where m.mcode = mc.mcode
+		<if test="mcode != null and mcode != ''.toString()">
+		and m.mstatus='재고' and m.mcode=#{mcode}
+		</if>
+	</select>		
 
 
 

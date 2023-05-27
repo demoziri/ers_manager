@@ -46,7 +46,7 @@
             <option value="" selected>동 선택</option>
           </select>
           <input type="text" name="name" value="${memCri.name }" placeholder="이름" style="width:100px;text-align:center;" />
-          <button onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
+          <button onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
         </div>
         <div id="memList">
           <table class="table table-bordered border-2 mt-1 text-center mem_table">
@@ -66,7 +66,7 @@
                   <tr onclick="memDetail_go(${member.id});">
                     <td>${member.memType }</td>
                     <td>${member.name }</td>
-                    <td style="font-size:0.9rem;">${regDate }</td>
+                    <td style="font-size:0.7rem;vertical-align:middle;">${regDate }</td>
                     <c:if test="${member.machineCk eq 4}">
                       <td style="color:#4f94d4;">설치완료</td>
                     </c:if>
@@ -129,7 +129,7 @@
             <option value="">건강상태</option>
           </select>
           &ensp;기간&nbsp;<input type="date" style="width:120px;" />&nbsp;-&nbsp;<input type="date" style="width:120px;" />
-          <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
         </div>
         <div id="reList" style="background-color:#dfdfdf;height: 100%;width: 100%;margin-top: 5px;overflow-x: hidden;overflow: scroll;overflow-x: hidden;">
           <!-- 보고서 테이블 들어갈 자리-->

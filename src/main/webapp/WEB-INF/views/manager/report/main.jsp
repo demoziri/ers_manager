@@ -58,7 +58,7 @@
               <option value="">응급보고서</option>
             </select>
             &ensp;기간&nbsp;<input type="date" />&nbsp;-&nbsp;<input type="date" />
-            <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
+            <button type="submit" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
           </div>
           <div id="re_List" style="overflow:scroll;overflow-x:hidden;">
 

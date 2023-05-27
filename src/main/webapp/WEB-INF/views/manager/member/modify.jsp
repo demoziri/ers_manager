@@ -117,7 +117,7 @@
     </tr>
     <tr>
       <th>
-        <button class="btn btn-danger btn-sm" type="button" id="openModiPhoneModal">비상연락망</button>
+        <button class="btn btn-danger btn-sm"  style="margin-top:4px;font-size:0.7rem;" type="button" id="openModiPhoneModal">비상연락망</button>
       </th>
       <td><span style="font-weight:bold;">${member.e_count }</span>/3</td>
       <th>신청서</th>

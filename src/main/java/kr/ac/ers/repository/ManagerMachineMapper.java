@@ -1,5 +1,6 @@
 package kr.ac.ers.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,7 +17,13 @@ public interface ManagerMachineMapper {
 	
 	int selectSearchStockListCount(MachineSearchCriteria cri);
 	
-	List<ManagerMachineVO> selectASListPerWeek();
+	List<ManagerMachineVO> selectASPerWeek();
+	
+	List<ManagerMachineVO> selectASListPerWeekBycNum(Date week_start, Date week_end, String cnum);
+	
+	ManagerMachineVO selectTotalCount();
+	
+	List<ManagerMachineVO> selectMachineListByMcode(String mcode);
 	
 	
 }

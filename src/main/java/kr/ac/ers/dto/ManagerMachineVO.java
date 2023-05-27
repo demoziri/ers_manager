@@ -11,6 +11,9 @@ public class ManagerMachineVO {
 	
 	private String mcode;
 	private String mname;
+	private String mc_name;
+	private String mnum;
+	private String cnum;
 	private String l_name;
 	private String c_name;
 	private String dongname;
@@ -20,6 +23,13 @@ public class ManagerMachineVO {
 	private String gateway;
 	private Date week_start;
 	private Date week_end;
+	private Date asSend;
+	private Date regDate;
 	private int asRequestCnt;
-
+	private int totalCount;
+	
+	
+	
+	
+	
 }

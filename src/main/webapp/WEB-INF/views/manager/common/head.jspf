@@ -21,6 +21,10 @@
     font-style: normal;
   }
 
+  body {
+      zoom: 130%;
+    }
+	 
   html>body,
   html>body .toastui-editor-contents,
   html>body .ProseMirror,
