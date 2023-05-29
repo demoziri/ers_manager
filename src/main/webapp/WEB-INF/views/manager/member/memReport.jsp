@@ -5,28 +5,44 @@
 
 <div style="height:100%;width:100%;">
   <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
-  
-  <table class="table table-bordered">
-    <tr>
-      <th>작성자</th>
-      <td>${report.name}
-      <c:if test="${report.WType eq 1 }">[응급관리요원]</c:if>
-      <c:if test="${report.WType eq 2 }">[생활지원사]</c:if>
-      </td>
-      <th>등록일</th>
-      <td>${regDate }</td>
-    </tr>
-    <tr style="height:100px;vertical-align:middle;">
-      <th>특이사항</th>
-      <td colspan="3">${report.content }</td>
-    </tr>
-    <tr>
-      <th>첨부파일</th>
-      <td>첨부파일.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
-      <th>비고</th>
-      <td>-</td>
-    </tr>
-  </table>
+
+  <div>
+    <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
+    &ensp;
+    <span id="reportName" style="font-weight:bold;color:#4191B3">
+    	<c:if test="${report.reType eq 1 }">응급상황 보고서</c:if>
+    	<c:if test="${report.reType eq 2 }">고객면담 보고서</c:if>
+    	<c:if test="${report.reType eq 3 }">건강상태 보고서</c:if>
+    	<c:if test="${report.reType eq 4 }">서비스 취소</c:if>
+    	<c:if test="${report.reType eq 5 }">장기부재</c:if>
+    	<c:if test="${report.reType eq 6 }">악성대상자신고</c:if>
+    	<c:if test="${report.reType eq 7 }">장비점검</c:if>
+    </span>
+  </div>
+  <div style="height:100%;width:100%;">
+    <table class="table table-bordered">
+      <tr>
+        <th>작성자</th>
+        <td>${report.name}
+          <c:if test="${report.WType eq 2 }">[응급관리요원]</c:if>
+          <c:if test="${report.WType eq 1 }">[생활지원사]</c:if>
+        </td>
+        <th>등록일</th>
+        <td>${regDate }</td>
+      </tr>
+      <tr style="height:100px;vertical-align:middle;">
+        <th>특이사항</th>
+        <td colspan="3">${report.content }</td>
+      </tr>
+      <tr>
+        <th>첨부파일</th>
+        <td>첨부파일.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
+        <th>비고</th>
+        <td>-</td>
+      </tr>
+    </table>
+  </div>
+  <!-- 보고서 상세가 여기로 오겠지 -->
 </div>
 
 <!-- 보고서 종류별 양식 만들어야함 -->

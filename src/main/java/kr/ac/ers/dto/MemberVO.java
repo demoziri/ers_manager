@@ -32,11 +32,13 @@ public class MemberVO {
 	private String orgdisease;
 	private String allergy;
 	private String equipment;
-	private String afNo;
+	private String afno;
 	private String memType;
 	private int machineCk; //설치완료:1 미설치:0
 	private String w_Name;
 	private int e_count;
 	private String lNum;
-
+	
+	private ApplyFileVO applyfile; //첨부파일
+	
 }

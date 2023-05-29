@@ -8,15 +8,17 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.MemPageMaker;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.ApplyFileVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
+import kr.ac.ers.dto.ManagerVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.repository.ApplyFileMapper;
 import kr.ac.ers.repository.CenterNoticeMapper;
-import kr.ac.ers.repository.ManagerReportMapper;
 import kr.ac.ers.repository.MemberMapper;
 
 @Service
@@ -75,6 +77,12 @@ public class MemberService {
 	public void regist(MemberVO member) {
 		memberMapper.insertMember(member);
 		memberMapper.insertMemberIdToSensorCk(member.getId());
+		System.out.print(member);
+		
+		if(member.getApplyfile() != null) {
+			member.getApplyfile().setId(member.getId());
+			applyFileMapper.insertApplyFile(member.getApplyfile());
+		}
 		
 	}
 	
@@ -123,11 +131,11 @@ public class MemberService {
 		memberMapper.updateMember(member);
 	}
 	
-	public ApplyFileVO getApplyFile(int afNo) {
-		return applyFileMapper.selectApplyFileByAfNo(afNo);
+	public ApplyFileVO getApplyFile(String id) {
+		return applyFileMapper.selectApplyFileByAfNo(id);
 	}
 	
-
+	
 	  
 	 
 }

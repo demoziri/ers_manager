@@ -20,4 +20,7 @@ public interface ManagerReportMapper {
 	ReportVO selectReportByRno(String rno);
 	
 	ReportVO updateViewCheck(String rno);
+	
+	
+	List<ReportVO> selectReportListToMain(RowBounds rowbounds);
 }

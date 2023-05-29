@@ -65,7 +65,8 @@
                 </tr>
                 <tr>
                   <th>신청서</th>
-                  <td>신청서.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
+                 
+                  <td>${member.applyfile.filename.split("\\$\\$")[1]}<i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/manager/member/getFile?id=${member.applyfile.id }'"></i></td>
                   <th>생활지원사</th>
                   <td id="lsName" style="text-align:center;">
                   <c:if test="${empty member.wid && member.machineCk eq 4}">
@@ -173,10 +174,10 @@
                     <td>장비점검</td>
                     </c:if>
                     <td>${regDate }</td>
-                    <c:if test="${report.WType eq 1 }">
+                    <c:if test="${report.WType eq 2 }">
                     <td>응급관리요원</td>
                     </c:if>
-                    <c:if test="${report.WType eq 2 }">
+                    <c:if test="${report.WType eq 1 }">
                     <td>생활지원사</td>
                     </c:if>
                   </tr>

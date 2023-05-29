@@ -1,6 +1,8 @@
 package kr.ac.ers.command;
 
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.ac.ers.dto.MemberVO;
 import lombok.Data;
 
@@ -16,10 +18,11 @@ public class MemberRegistCommand {
 	private String gender;
 	private String picture;
 	private String wid;
+	private String manid;
 	private String caution;
 	private String memType;
 	private String lNum;
-
+	private MultipartFile uploadfile;
 	
 	public MemberVO toMemberVO() {
 		

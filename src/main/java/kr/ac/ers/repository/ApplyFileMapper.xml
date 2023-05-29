@@ -6,10 +6,14 @@
 	<select  id="selectApplyFileByAfNo" resultType="ApplyFileVO">
 		select * 
 		from applyfile 
-		where afNo = #{afNo}
+		where id = #{id}
 	</select>
 	
-	
+	<insert id="insertApplyFile">
+		insert into 
+		applyfile (afno, uploadpath, filename, filetype, id, manid)
+		values (applyfile_seq.nextVal, #{uploadpath}, #{filename},#{filetype},#{id},#{manid})
+	</insert>
 	
 	
 

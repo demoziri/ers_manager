@@ -1,6 +1,5 @@
 package kr.ac.ers.command;
 
-import java.util.Date;
 
 import lombok.ToString;
 

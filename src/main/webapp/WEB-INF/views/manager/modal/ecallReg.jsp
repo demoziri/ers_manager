@@ -39,8 +39,8 @@
                     <option value="010">010</option>
                     <option value="042">042</option>
                   </select>
-                  <input type="text" name="e_phone2" style="width:50px;" id="e_phone1_2"/>
-                  <input type="text" name="e_phone3" style="width:50px;" id="e_phone1_3"/>
+                  <input type="text" name="e_phone2" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" style="width:50px;" id="e_phone1_2"/>
+                  <input type="text" name="e_phone3" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" style="width:50px;" id="e_phone1_3"/>
                 </td>
               </tr>
         	

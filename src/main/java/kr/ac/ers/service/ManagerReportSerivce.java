@@ -38,4 +38,10 @@ public class ManagerReportSerivce {
 	 return report;
 		 
 	 }
+	 
+	 public List<ReportVO> getReportListToManagerMain(){
+		 RowBounds rowbounds = new RowBounds(0,6);
+		 List<ReportVO> reportList = managerReportMapper.selectReportListToMain(rowbounds);
+		 return reportList;
+	 }
 }

@@ -7,10 +7,10 @@ import kr.ac.ers.dto.ApplyFileVO;
 @Mapper
 public interface ApplyFileMapper {
 	
-	public ApplyFileVO selectApplyFileByAfNo(int afNo);
+	public ApplyFileVO selectApplyFileByAfNo(String id);
 	
 	public void insertApplyFile(ApplyFileVO applyFile);
 	
-	public void deleteApplyFile(int afNo);
+	
 
 }

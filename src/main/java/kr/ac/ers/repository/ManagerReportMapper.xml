@@ -46,9 +46,12 @@
 	</update>
 
 
-	<select id="selectReportListToMain">
-		
-	
+	<select id="selectReportListToMain" resultType="ReportVO">
+		select r.*, f.name, f.wtype
+		from report r, fieldstaff f
+		where r.wcode = f.wcode
+		and viewcheck='0'
+		order by regDate desc
 	</select>
 
 

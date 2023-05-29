@@ -2,17 +2,21 @@ package kr.ac.ers.dto;
 
 import java.util.Date;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 
-@Data
+@Getter
+@Setter
+@ToString
 public class ApplyFileVO {
-	private int afNo;
-	private String uploadPath;
-	private String fileName;
-	private String fileType;
-	private int id;
-	private String manId;
+	private int afno;
+	private String uploadpath;
+	private String filename;
+	private String filetype;
+	private String id;
+	private String manid;
 	private Date regDate;
 	
 	

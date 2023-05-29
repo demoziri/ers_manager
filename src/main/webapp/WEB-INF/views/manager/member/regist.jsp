@@ -4,7 +4,7 @@
 <html lang="ko">
 
 <!-- 대상자 사진 -->
-<form role="form" class="row pe-0">
+<form role="form" class="row pe-0" enctype="multipart/form-data">
 <div class="col-3 border p-0">
   <input type="hidden" name="picture" value="noImage.jpg" accept="image/*"/>
   <div class="input-group mb-3">
@@ -52,8 +52,8 @@
           <option value="010">010</option>
           <option value="042">042</option>
         </select>
-        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="pNo_2" style="width:50px;" />
-        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="pNo_3" style="width:50px;" />
+        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" id="pNo_2" style="width:50px;" />
+        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" id="pNo_3" style="width:50px;" />
       </td>
     </tr>
      <tr>
@@ -100,19 +100,19 @@
         <input type="text" name="address" id="detailAddress"style="width:100%;" style="height:30px;"/>
       </td>
     </tr>
-   
     <tr>
       <th>
         <button class="btn btn-danger btn-sm" type="button" id="openRegPhoneModal">비상연락망</button>
       </th>
-      <td>0/3</td>
+      <td id="ecallCount">0/3</td>
       <th>신청서</th>
       <td>
-        <input type="file" style="width:200px;" />
+        <input type="file" name="uploadfile" style="width:200px;" />
       </td>
     </tr>
   </table>
   <input type="hidden" name="id" value="${id}"/>
+  <input type="hidden" name="manid" value="${loginManager.manid}"/>
   <input type="hidden" name="lNum" value=""/>
   <input type="hidden" name="e_Name" value=""/>
   <input type="hidden" name="relation" value="" id="relation_receive"/>

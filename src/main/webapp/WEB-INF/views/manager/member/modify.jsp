@@ -58,8 +58,8 @@
           <option value="042" ${start eq '042' ? 'selected' : "" }>042</option>
           <option value="010" ${start eq '010' ? 'selected' : "" }>010</option>
         </select>
-        -<input type="text" name="phone" value="${middle }" style="width:50px;" />
-        -<input type="text" name="phone" value="${end }" style="width:50px;" />
+        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" value="${middle }" style="width:50px;" />
+        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" value="${end }" style="width:50px;" />
       </td>
     </tr>
     <tr>
@@ -106,11 +106,16 @@
       </td>
       <th>상태</th>
       <td>
-        <select name="status">
+        <select name="status"  id="statusSelect">
           <option value="" ${member.status eq '' ? 'selected' : "" } >등록 진행중</option>
           <option value="1" ${member.status eq '1' ? 'selected' : "" }>서비스 이용중</option>
           <option value="2" ${member.status eq '2' ? 'selected' : "" }>장기부재</option>
+          <c:if test="${loginManager.authority ne 1 }">
+          <option value="3" ${member.status eq '3' ? 'selected' : "" } disabled>해지</option>
+          </c:if>
+          <c:if test="${loginManager.authority eq 1 }">
           <option value="3" ${member.status eq '3' ? 'selected' : "" }>해지</option>
+          </c:if>
         </select>
       </td>
     </tr>
@@ -145,7 +150,22 @@
 </form>
 
 
-
+<script>
+  $(document).ready(function() {
+    $("#statusSelect").change(function() {
+      var selectedValue = $(this).val();
+      
+      if (selectedValue === "3") {
+        var confirmResult = confirm("해지하시겠습니까?");
+        
+        if (!confirmResult) {
+          // 이전 선택으로 되돌리기
+          $(this).val("${member.status}");
+        }
+      }
+    });
+  });
+</script>
 
 
 </html>

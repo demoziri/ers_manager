@@ -25,7 +25,7 @@ public class EcallRegistCommand {
 			
 		EcallVO ecall = new EcallVO();
 		
-		System.out.println("relation ? " + this.relation);
+		
 		ecall.setCnum(c_Num);
 		ecall.setName(e_Name);
 		ecall.setRelation(relation);

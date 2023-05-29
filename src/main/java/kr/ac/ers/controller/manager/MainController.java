@@ -30,6 +30,8 @@ public class MainController {
 		List<NoticeVO> noticeList = memberService.getNoticeListToMangerMain();
 		List<MemberVO> memberList = memberService.getMemberListToMain();
 		
+		
+		
 		mnv.addObject("memberList",memberList);
 		mnv.addObject("noticeList",noticeList);
 		

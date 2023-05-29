@@ -150,16 +150,8 @@
     <!-- 보고서 목록 끝 -->
     <!-- 보고서 상세 -->
     <div class="col-7">
-      <div class="card card-body pt-0 mt-3" style="border:1px solid gray;height:250px;">
-        <div>
-          <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
-          &ensp;
-          <span style="font-weight:bold;color:#4191B3">-</span>
-        </div>
-        <div id="memReport_detail" style="height:100%;width:100%;background-color:#dfdfdf;">
-
-          <!-- 보고서 상세가 여기로 오겠지 -->
-        </div>
+      <div class="card card-body pt-0 mt-3" id="memReport_detail" style="border:1px solid gray;height:250px;">
+        
       </div>
     </div>
   </div>
@@ -264,7 +256,7 @@
         <input type="checkbox" value={{wid}} />
       </td>
       <td>
-        <div id="pictureView" class="manPicture mt-1" data-id={{wid}} style="border: 1px solid green; height: 80px; width: 60px; margin: 0 auto;"></div>
+        <div id="pictureView" class="lsuppPicture mt-1" data-id={{wid}} style="border: 1px solid green; height: 80px; width: 60px; margin: 0 auto;"></div>
       </td>
       <td>
         {{name}} / {{gender}} / {{birth}}
@@ -294,7 +286,10 @@
       $("#phone1").val(ePhone1);
       $("#phone2").val(ePhone2);
       $("#phone3").val(ePhone3);
-      var regInfo = $("form[role='form']").serialize();
+      
+      
+      var form = $("form[role='form']")[0];
+      var formData = new FormData(form);
       
       
 	   var uploadCheck = $('input[name="checkUpload"]').val();
@@ -362,7 +357,9 @@
       $.ajax({
         url: "doRegist",
         type: "post",
-        data: regInfo,
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function(data) {
           member_id = data;
 		    memDetail_go(member_id);
@@ -518,7 +515,6 @@
     	  success:function(data){
     		  
     		  if(data==''){
-    			  alert("야야야");
     			  $('#report_list').html("<div class='h-100 d-flex justify-content-center align-items-center' style='background-color:#dfdfdf;'>등록된 보고서가 없습니다.</div>"); 
     		  }
     		  
@@ -536,9 +532,9 @@
     		  
     		  Handlebars.registerHelper('wtypeHelper', function(wtype) {
     			  if (wtype === '1') {
-    			    return new Handlebars.SafeString('응급관리요원');
-    			  } else if (wtype === '2') {
     			    return new Handlebars.SafeString('생활지원사');
+    			  } else if (wtype === '2') {
+    			    return new Handlebars.SafeString('응급관리요원');
     			  } else {
     			    return new Handlebars.SafeString('');
     			  }
@@ -577,6 +573,8 @@
     		  let template = Handlebars.compile($('#report-list-template').html());
   	       	  let html = template(data);
   	       	  	$('#report_list').html(html);
+  	       	  	
+  	       	  
   	       	
     	  }
       });
@@ -592,7 +590,6 @@
   
   //등록화면 호출
   function registForm_go() {
-	
     $.ajax({
       url: "regist",
       type: "get",
@@ -612,8 +609,8 @@
          
           $('#regEcallBtn').on('click', function() {
             alert("비상연락망을 등록했습니다.");
-            $('#modalBox3').modal('hide');
             $('#ecallCount').html("등록완료");
+            $('#modalBox3').modal('hide');
           })
         });
         // modal close
@@ -656,6 +653,14 @@
               let template = Handlebars.compile($('#lsupp-list-template').html());
               let html = template(data);
               $('#lsuppList').html(html);
+              
+              
+              
+              $(document).ready(function() {
+            	  lsuppPictureThumb('localhost');
+                });
+              
+              
               //배정 버튼 눌렀을 때	
               $("#reg_lsupp").on('click', function() {
                 var wid = $("#lsuppList").find('input:checked').val();
@@ -769,6 +774,7 @@
       success: function(data) {
         $("#memReport_detail").css('background-color', "");
         $("#memReport_detail").html(data);
+        
       }
     })
   }
@@ -845,6 +851,16 @@
     for (var target of document.querySelectorAll('.manPicture')) {
       var id = target.getAttribute('data-id');
       target.style.backgroundImage = "url('/ers/manager/member/getPicture?id=" + id + "')";
+      target.style.backgroundPosition = "center";
+      target.style.backgroundRepeat = "no-repeat";
+      target.style.backgroundSize = "cover";
+    }
+  }
+  
+  function lsuppPictureThumb(contextPath) {
+    for (var target of document.querySelectorAll('.lsuppPicture')) {
+      var wid = target.getAttribute('data-id');
+      target.style.backgroundImage = "url('/ers/manager/member/getLsuppPicture?wid=" + wid + "')";
       target.style.backgroundPosition = "center";
       target.style.backgroundRepeat = "no-repeat";
       target.style.backgroundSize = "cover";

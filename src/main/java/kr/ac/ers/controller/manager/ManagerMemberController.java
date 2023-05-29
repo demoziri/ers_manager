@@ -27,10 +27,10 @@ import kr.ac.ers.command.MemberModifyCommand;
 import kr.ac.ers.command.MemberRegistCommand;
 import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.AddressVO;
+import kr.ac.ers.dto.ApplyFileVO;
 import kr.ac.ers.dto.EcallVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
-import kr.ac.ers.dto.ReportFileVO;
 import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.service.AddressService;
 import kr.ac.ers.service.EcallService;
@@ -53,7 +53,7 @@ public class ManagerMemberController {
 	
 	@Autowired private ManagerReportSerivce managerReportSerivce;
 	 
-
+	@Autowired private LsupporterService lsupporterSerivce;
 	
 	@GetMapping("/main")
 	public ModelAndView memberMain(MemberSearchCriteria cri, ModelAndView mnv) {
@@ -63,6 +63,8 @@ public class ManagerMemberController {
 		if (cri.getPerPageNum() < 1) cri.setPerPageNum(5);
 		
 		Map<String,Object> dataMap = memberService.getMemberList(cri);
+		
+		
 		
 		
 		mnv.addObject("dataMap",dataMap);
@@ -92,6 +94,7 @@ public class ManagerMemberController {
 		String url = "manager/member/detail";
 		
 		MemberVO member = memberService.getMemberById(id);
+		member.setApplyfile(memberService.getApplyFile(id));
 		
 		int machineCount = memberService.countMachineCheck(id);
 		member.setMachineCk(machineCount);
@@ -107,6 +110,8 @@ public class ManagerMemberController {
 		List<ReportVO> reportList = managerReportSerivce.getReportListToMemberMain(reCri);
 		
 		mnv.addObject("reportList",reportList);
+		
+		
 		
 		mnv.addObject("member", member);
 		mnv.addObject("id",id);
@@ -180,32 +185,83 @@ public class ManagerMemberController {
 		return mnv;
 	}
 	
+	@Value("${fileUploadPath}")
+	private String fileUploadPath;
+	
+	
+	
+	
 	@ResponseBody
 	@PostMapping("/doRegist")
-	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) {
+	public String memberRegist(MemberRegistCommand registReq, EcallRegistCommand eRegistReq) throws Exception {
 		
-		System.out.println("등록할 아이디 : " + registReq.getId());
+		MultipartFile multiFiles = registReq.getUploadfile();
+		String savePath = this.fileUploadPath;
+		ApplyFileVO applyFile = saveFileToApply(multiFiles, savePath);
+		applyFile.setId(registReq.getId());
+		applyFile.setManid(registReq.getManid());
 		
+	
 		MemberVO newMember = registReq.toMemberVO();
+		newMember.setApplyfile(applyFile);
 		
-		
-		MemberVO checkMember = memberService.getMemberById(eRegistReq.getId());
+		MemberVO checkMember = memberService.getMemberById(registReq.getId());
 		if(checkMember == null) {
 			memberService.regist(newMember);
 			EcallVO ecall = eRegistReq.toEcallVO();
 			ecallService.registEcall(ecall);
-			System.out.println("대상자등록 실행됨\n----------------------");
+			
 		}else {
 			EcallVO ecall = eRegistReq.toEcallVO();
 			ecallService.registEcall(ecall);
-			System.out.println("비상연락망등록 실행됨");
+			
 		}
 		
 		return newMember.getId();
 	}
 	
+	private ApplyFileVO saveFileToApply(MultipartFile multiFiles, String savePath) throws Exception {
+		ApplyFileVO applyFile = new ApplyFileVO();
+		//저장 -> attachVO -> list.add
+		if (multiFiles != null) {
+	
+		String fileName = MakeFileName.toUUIDFileName(multiFiles.getOriginalFilename(), "$$");
+		File target = new File(savePath, fileName);
+		target.mkdirs();
+		multiFiles.transferTo(target);
+
+		
+		applyFile.setUploadpath(savePath);
+		applyFile.setFilename(fileName);
+		applyFile.setFiletype(fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase());
+		}
+		
+		return applyFile;
+	}
+	
+	
+	@GetMapping("/getFile")
+	public ModelAndView getFile(String id, Model model)throws Exception{
+		ModelAndView modelAndView = new ModelAndView(new FileDownloadView());
+		ApplyFileVO applyFile = memberService.getApplyFile(id);
+		
+		model.addAttribute("savedPath", applyFile.getUploadpath());
+		model.addAttribute("fileName",applyFile.getFilename());
+		
+		return modelAndView;
+	}
+	
+	
+	
 	@Value("${picturePath}")
 	private String picturePath;
+	
+	
+	@Value("${lsuppPicturePath}")
+	private String lsuppPicturePath;
+	
+	
+	
 	
 	@PostMapping(value = "/picture", produces = "text/plain;charset=utf-8")
 	@ResponseBody //String을 직접 내보내고자 할 때
@@ -266,6 +322,22 @@ public class ManagerMemberController {
 		
 		return IOUtils.toByteArray(in);
 	}
+	
+	
+	@GetMapping("/getLsuppPicture")
+	@ResponseBody
+	public byte[] getLsuppPicture(String wid) throws Exception {
+		LsupporterStatusVO lsupporter = lsupporterSerivce.selectlsupporterStatus(wid);
+		if(lsupporter == null) return null;
+		
+		String picture = lsupporter.getPicture();
+		String imgPath = this.lsuppPicturePath;
+		
+		InputStream in = new FileInputStream(new File(imgPath, picture));
+		
+		return IOUtils.toByteArray(in);
+	}
+	
 	
 
 	
