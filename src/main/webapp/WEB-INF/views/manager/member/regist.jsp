@@ -29,7 +29,7 @@
     <tr>
       <th>대상자 구분</th>
       <td>
-        <select name="memType" id="" style="height:30px;">
+        <select name="memType" id="regMemType" style="height:30px;">
           <option value="" selected>선택</option>
           <option value="독거노인">독거노인</option>
           <option value="장애인">장애인</option>
@@ -37,29 +37,29 @@
       </td>
       <th>이름</th>
       <td>
-        <input type="text" name="name" />
+        <input type="text" name="name" id="regName"/>
       </td>
     </tr>
     <tr>
       <th>생년월일</th>
       <td>
-        <input type="date" name="birth" />
+        <input type="date" name="birth" id="regBirth"/>
       </td>
       <th>전화번호</th>
       <td>
-        <select name="phone" id="" style="height:30px;">
+        <select name="phone" id="pNo_1" style="height:30px;" >
           <option value="">선택</option>
           <option value="010">010</option>
           <option value="042">042</option>
         </select>
-        -<input type="text" name="phone" style="width:50px;" />
-        -<input type="text" name="phone" style="width:50px;" />
+        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="pNo_2" style="width:50px;" />
+        -<input type="text" name="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="pNo_3" style="width:50px;" />
       </td>
     </tr>
      <tr>
       <th>고위험도</th>
       <td>
-        <select name="caution" style="height:30px;">
+        <select name="caution" id="regCaution" style="height:30px;">
           <option value="">선택</option>
           <option value="Y">Y</option>
           <option value="N">N</option>
@@ -67,7 +67,7 @@
       </td>
       <th>성별</th>
       <td>
-      	<select name="gender" style="height:30px;">
+      	<select name="gender"  id="regGender" style="height:30px;">
           <option value="">선택</option>
           <option value="남">남</option>
           <option value="여">여</option>
@@ -97,7 +97,7 @@
     <tr>
       <th>상세주소</th>
       <td colspan="3">
-        <input type="text" name="address" style="width:100%;" style="height:30px;"/>
+        <input type="text" name="address" id="detailAddress"style="width:100%;" style="height:30px;"/>
       </td>
     </tr>
    
@@ -126,6 +126,13 @@
   </div>
 </div>
 </form>
+
+
+<script>
+var defaultDate = "1950-01-01";
+$('#regBirth').val(defaultDate);
+</script>
+
 
 
 </html>

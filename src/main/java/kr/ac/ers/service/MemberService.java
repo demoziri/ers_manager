@@ -8,14 +8,15 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.command.MemPageMaker;
+import kr.ac.ers.command.MemberSearchCriteria;
 import kr.ac.ers.dto.ApplyFileVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.repository.ApplyFileMapper;
 import kr.ac.ers.repository.CenterNoticeMapper;
+import kr.ac.ers.repository.ManagerReportMapper;
 import kr.ac.ers.repository.MemberMapper;
 
 @Service
@@ -29,6 +30,8 @@ public class MemberService {
 	
 	@Autowired
 	private CenterNoticeMapper centerNoticeMapper;
+	
+
 	
 	public Map<String,Object> getMemberList(MemberSearchCriteria cri) {
 		Map<String,Object> dataMap = new HashMap<String,Object>();

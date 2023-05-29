@@ -3,19 +3,53 @@
 <mapper	namespace="kr.ac.ers.repository.ManagerReportMapper">
 
 
-	<select  id="selectReportByMemId" resultType="ReportVO">
-		select *
-		from report
-		where id=#{id}
+	<select  id="selectReportByCriteria" resultType="ReportVO">
+		select r.*, f.name, f.wtype
+		from report r, fieldstaff f
+		where
+		r.wcode = f.wcode
+		<if test="reType != null and reType != ''.toString()">
+		and reType=#{reType}
+		</if>
+		<if test="start_day != null and start_day != ''.toString()"> 
+		and regDate between TO_DATE(#{start_day}, 'YYYY-MM-DD') and TO_DATE(#{end_day}, 'YYYY-MM-DD')
+		</if>
+		and id=#{id}
+		order by regDate desc
 	</select>
 
 
+	<select id="selectSearchMemberReportCount" resultType="Integer">
+		select count(*)
+		from report
+		where
+		id=#{id}
+		<if test="reType != null and reType != ''.toString()">
+		and reType=#{reType}
+		</if>
+		<if test="regDate != null and reType != ''.toString()"> 
+		and regDate between #{start_day} and #{end_day}
+		</if>
+	</select>
+
+	<select id="selectReportByRno" resultType="ReportVO">
+		select r.*, f.name, f.wtype
+		from report r, fieldstaff f  
+		where r.wcode = f.wcode
+        and rno=#{rno}
+	</select>
+
+	<update id="updateViewCheck">
+		update report
+		set viewcheck='1'
+		where rno=#{rno}
+	</update>
 
 
-
-
-
-
+	<select id="selectReportListToMain">
+		
+	
+	</select>
 
 
 

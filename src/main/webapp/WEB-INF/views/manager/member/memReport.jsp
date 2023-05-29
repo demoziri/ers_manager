@@ -1,17 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div style="height:100%;width:100%;">
+  <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
+  
   <table class="table table-bordered">
     <tr>
       <th>작성자</th>
-      <td>김보건[생활지원사]</td>
+      <td>${report.name}
+      <c:if test="${report.WType eq 1 }">[응급관리요원]</c:if>
+      <c:if test="${report.WType eq 2 }">[생활지원사]</c:if>
+      </td>
       <th>등록일</th>
-      <td>2023-04-05</td>
+      <td>${regDate }</td>
     </tr>
     <tr style="height:100px;vertical-align:middle;">
       <th>특이사항</th>
-      <td colspan="3">어쩌고 저쩌고 내용이 여기 오겠지요</td>
+      <td colspan="3">${report.content }</td>
     </tr>
     <tr>
       <th>첨부파일</th>

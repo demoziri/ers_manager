@@ -22,6 +22,7 @@ public class ReportVO {
 	private int wCode;
 	private String reDone;
 	private String viewCheck;
+	private String wType;
 	private String reType;
 	private Date occurTime;
 	private String occurType;

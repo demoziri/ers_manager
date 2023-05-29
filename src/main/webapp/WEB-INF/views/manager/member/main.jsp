@@ -18,7 +18,13 @@
   .re_table>tbody>tr:hover {
     background-color: lightblue;
   }
+  
+  .red-text {
+    color: red;
+    font-weight:bold;
+  }
 </style>
+
 
 <div class="container-fluid">
   <div class="row">
@@ -30,22 +36,22 @@
         </div>
         <div>
           <select name="memType" style="height:100%;">
-            <option value="" ${memCri.memType eq '' ? 'selected' : "" }>대상자구분</option>
-            <option value="독거노인" ${memCri.memType eq '독거노인' ? 'selected' : "" }>독거노인</option>
-            <option value="장애인" ${memCri.memType eq '장애인' ? 'selected' : "" }>장애인</option>
+            <option value="" ${cri.memType eq '' ? 'selected' : "" }>대상자구분</option>
+            <option value="독거노인" ${cri.memType eq '독거노인' ? 'selected' : "" }>독거노인</option>
+            <option value="장애인" ${cri.memType eq '장애인' ? 'selected' : "" }>장애인</option>
           </select>
           <select name="gu" onchange="dongList_go(this.value)" style="height:100%;width:100px;">
-            <option value="" ${cmemCriri.gu eq 'selected' ? 'selected' : "" }>지역구 선택</option>
-            <option value="중구" ${memCri.gu eq '중구' ? 'selected' : "" }>중구</option>
-            <option value="동구" ${memCri.gu eq '동구' ? 'selected' : "" }>동구</option>
-            <option value="서구" ${memCri.gu eq '서구' ? 'selected' : "" }>서구</option>
-            <option value="대덕구" ${memCri.gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
-            <option value="유성구" ${memCri.gu eq '유성구' ? 'selected' : "" }>유성구</option>
+            <option value="" ${cri.gu eq 'selected' ? 'selected' : "" }>지역구 선택</option>
+            <option value="중구" ${cri.gu eq '중구' ? 'selected' : "" }>중구</option>
+            <option value="동구" ${cri.gu eq '동구' ? 'selected' : "" }>동구</option>
+            <option value="서구" ${cri.gu eq '서구' ? 'selected' : "" }>서구</option>
+            <option value="대덕구" ${cri.gu eq '대덕구' ? 'selected' : "" }>대덕구</option>
+            <option value="유성구" ${cri.gu eq '유성구' ? 'selected' : "" }>유성구</option>
           </select>
           <select id="dongList" name="dong" style="height:100%;width:100px;">
             <option value="" selected>동 선택</option>
           </select>
-          <input type="text" name="name" value="${memCri.name }" placeholder="이름" style="width:100px;text-align:center;" />
+          <input type="text" name="name" value="${cri.name }" placeholder="이름" style="width:100px;text-align:center;" />
           <button onclick="list_go(1);" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
         </div>
         <div id="memList">
@@ -112,7 +118,8 @@
 
   <div class="row">
     <!-- 보고서 목록 -->
-    <div class="col-5">
+    <div class="col-5" id="report_col">
+    <form id="reportSearch">
       <div class="card card-body pt-0 mt-3" style="border:1px solid gray;height:250px;">
         <div>
           <span class="fs-3" style="border-bottom:2px solid gray;">보고서 목록</span>
@@ -120,16 +127,16 @@
         <div>
           <select name="reType" id="" style="height:100%;">
             <option value="" selected>보고서 구분</option>
-            <option value="">고객면담</option>
-            <option value="">장비점검</option>
-            <option value="">서비스취소</option>
-            <option value="">악성대상자신고</option>
-            <option value="">응급보고서</option>
-            <option value="">장기부재신청</option>
-            <option value="">건강상태</option>
+            <option value="2">고객면담</option>
+            <option value="7">장비점검</option>
+            <option value="4">서비스취소</option>
+            <option value="6">악성대상자신고</option>
+            <option value="1">응급보고서</option>
+            <option value="5">장기부재신청</option>
+            <option value="3">건강상태</option>
           </select>
-          &ensp;기간&nbsp;<input type="date" style="width:120px;" />&nbsp;-&nbsp;<input type="date" style="width:120px;" />
-          <button type="submit" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
+          &ensp;기간&nbsp;<input type="date" style="width:120px;" name="" />&nbsp;-&nbsp;<input type="date" name="" style="width:120px;" />
+          <button type="submit"  onclick="repList_go();"class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
         </div>
         <div id="reList" style="background-color:#dfdfdf;height: 100%;width: 100%;margin-top: 5px;overflow-x: hidden;overflow: scroll;overflow-x: hidden;">
           <!-- 보고서 테이블 들어갈 자리-->
@@ -137,6 +144,8 @@
 
         </div>
       </div>
+      <input type="hidden" name="id" value="${report.id }" />
+      </form>
     </div>
     <!-- 보고서 목록 끝 -->
     <!-- 보고서 상세 -->
@@ -168,6 +177,10 @@
 
 </div>
 
+
+
+
+
 <!-- picture upload form  -->
 <!-- label for="inputFile" 이름 같게하면 됨 -->
 <form role="imageForm" action="picture" method="post" enctype="multipart/form-data">
@@ -188,6 +201,7 @@
 {{/each}}
 </script>
 
+
 <script type="text/x-handlebars-template" id="ecall-list-template">
   {{#each .}}
     <tr>
@@ -197,6 +211,21 @@
     </tr>
   {{/each}}
 </script>
+
+
+<script type="text/x-handlebars-template" id="report-list-template">
+{{#each .}}
+  <tr>
+    <td>{{rno}}</td>
+    <td class="{{#isRed reType}}red-text{{/isRed}}">{{retypeHelper reType}}</td>
+    <td>{{regDateFormatted}}</td>
+    <td>{{wtypeHelper wtype}}</td>
+  </tr>
+{{/each}}
+</script>
+
+
+
 
 <script type="text/x-handlebars-template" id="ecallModi-list-template">
   {{#each .}}
@@ -245,15 +274,16 @@
 </script>
 
 <script>
+
   function regist_go() {
+	 
     var member_id = "";
     $('input[name="lNum"]').val($('#lNum option:selected').attr("data-name"));
     var forGubun = 2;
     if ($('#e_name_id_2').val() != null && $('#e_name_id_2').val() != "") forGubun += 1;
     if ($('#e_name_id_3').val() != null && $('#e_name_id_3').val() != "") forGubun += 1;
     for (var round = 1; round < forGubun; round++) {
-      alert("round"+round);
-      alert("gubun"+forGubun);
+     
       var eName = $("#e_name_id_" + round + "").val();
       var ePhone1 = $("#e_phone" + round + "_1").val();
       var ePhone2 = $("#e_phone" + round + "_2").val();
@@ -266,6 +296,69 @@
       $("#phone3").val(ePhone3);
       var regInfo = $("form[role='form']").serialize();
       
+      
+	   var uploadCheck = $('input[name="checkUpload"]').val();
+		if(uploadCheck=="0"){
+			alert("사진 업로드는 필수입니다.");
+			return;
+		} 
+	  
+		if(!$('#regName').val()){
+			alert("이름을 입력해주세요.");
+			$('#regName').focus();
+			return;
+		}
+		if(!$('#regMemType').val()){
+			alert("대상자 구분을 입력해주세요.");
+			$('#regMemType').focus();
+			return;
+		}
+		if(!$('#regBirth').val()){
+			alert("생년월일을 입력해주세요.");
+			$('#regBirth').focus();
+			return;
+		}
+		if(!$('#pNo_1').val()){
+			alert("전화번호를 입력해주세요.");
+			$('#rpNo_1').focus();
+			return;
+		}
+		if(!$('#pNo_2').val()){
+			alert("전화번호를 입력해주세요.");
+			$('#rpNo_2').focus();
+			return;
+		}
+		if(!$('#pNo_3').val()){
+			alert("전화번호를 입력해주세요.");
+			$('#rpNo_3').focus();
+			return;
+		}
+		if(!$('#regCaution').val()){
+			alert("고위험도 여부를 선택해주세요.");
+			$('#regCaution').focus();
+			return;
+		}
+		if(!$('#regGender').val()){
+			alert("성별을 선택해주세요.");
+			$('#regGender').focus();
+			return;
+		}
+		if(!$('#lNum').val()){
+			alert("거주지(구)를 선택해주세요.");
+			$('#lNum').focus();
+			return;
+		}
+		if(!$('#dongRegList').val()){
+			alert("거주지(동)를 선택해주세요.");
+			$('#dongRegList').focus();
+			return;
+		}
+		if(!$('#detailAddress').val()){
+			alert("상세주소를 선택해주세요.");
+			$('#detailAddress').focus();
+			return;
+		}
+      
       $.ajax({
         url: "doRegist",
         type: "post",
@@ -274,6 +367,7 @@
           member_id = data;
 		    memDetail_go(member_id);
 		    $("#memList").load(location.href + " #memList");
+		    MemberPictureThumb('localhost');
         },
         error: function() {
           alert("실패?");
@@ -355,6 +449,7 @@
       url: "dongList?gu=" + gu,
       type: "get",
       success: function(data) {
+    	  
         let template = Handlebars.compile($('#dong-list-template').html());
         let html = template(data);
         $('#dongList').html(html);
@@ -398,6 +493,103 @@
       method: 'get'
     }).submit();
   }
+  
+  
+ 
+  function repList_go(id){
+	  
+	  var reType = $('select[name="reType"]').val();
+	  var start_day = $('input[name="start_day"]').val();
+	  var end_day = $('input[name="end_day"]').val();
+	  var id = $('input[name="id"]').val();
+ 	  alert(start_day);
+ 	  alert(end_day);
+      repSearchInfo = {
+		"reType":reType,
+		"start_day":start_day,
+		"end_day":end_day,
+		"id":id
+      }
+ 
+      $.ajax({
+    	  url:"repSearch",
+    	  type:"post",
+    	  data:repSearchInfo,
+    	  success:function(data){
+    		  
+    		  if(data==''){
+    			  alert("야야야");
+    			  $('#report_list').html("<div class='h-100 d-flex justify-content-center align-items-center' style='background-color:#dfdfdf;'>등록된 보고서가 없습니다.</div>"); 
+    		  }
+    		  
+    		  alert(data);
+    		  console.log(data);
+    		  alert("성공");
+    		 
+    		  data.forEach(function(item) {
+    	            var date = new Date(item.regDate);
+    	            var year = date.getFullYear();
+    	            var month = String(date.getMonth() + 1).padStart(2, '0');
+    	            var day = String(date.getDate()).padStart(2, '0');
+    	            item.regDateFormatted = year + '-' + month + '-' + day;
+    		  });
+    		  
+    		  Handlebars.registerHelper('wtypeHelper', function(wtype) {
+    			  if (wtype === '1') {
+    			    return new Handlebars.SafeString('응급관리요원');
+    			  } else if (wtype === '2') {
+    			    return new Handlebars.SafeString('생활지원사');
+    			  } else {
+    			    return new Handlebars.SafeString('');
+    			  }
+    			});
+    		  
+    		  Handlebars.registerHelper('retypeHelper', function(reType) {
+    			  if (reType === '1') {
+    			    return new Handlebars.SafeString('응급상황');
+    			  } else if (reType === '2') {
+    			    return new Handlebars.SafeString('고객면담');
+    			  } else if (reType === '3') {
+    				return new Handlebars.SafeString('건강상태');
+    			  } else if (reType === '4') {
+    				return new Handlebars.SafeString('서비스취소');  
+    			  } else if (reType === '5') {
+    				return new Handlebars.SafeString('장기부재');
+    			  } else if (reType === '6') {
+    				return new Handlebars.SafeString('악성대상자신고');
+    			  } else if (reType === '7') {
+    				return new Handlebars.SafeString('장비점검');
+    			  }
+    			  else {
+    			    return new Handlebars.SafeString('');
+    			  }
+    			});
+    		  
+    		  Handlebars.registerHelper('isRed', function(reType, options) {
+    			  if (reType === '5' || reType === '6') {
+    			    return options.fn(this);
+    			  } else {
+    			    return options.inverse(this);
+    			  }
+    			});
+    		  
+    	
+    		  let template = Handlebars.compile($('#report-list-template').html());
+  	       	  let html = template(data);
+  	       	  	$('#report_list').html(html);
+  	       	
+    	  }
+      });
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
   //등록화면 호출
   function registForm_go() {
 	
@@ -417,46 +609,7 @@
         // modal open(비상연락망)
         $('#openRegPhoneModal').on('click', function() {
           $('#modalBox3').modal('show');
-          //입력박스 숨어있다가
-          $("#rel1").change(function() {
-            //기타를 선택하면 등장
-            if ($("#rel1").val() == "etc") {
-              $("#relInput1").show();
-            } else {
-              $("#relInput1").hide();
-            }
-          });
-          $("#rel2").change(function() {
-            //기타를 선택하면 등장
-            if ($("#rel2").val() == "etc") {
-              $("#relInput2").show();
-            } else {
-              $("#relInput2").hide();
-            }
-          });
-          $("#rel3").change(function() {
-            //기타를 선택하면 등장
-            if ($("#rel3").val() == "etc") {
-              $("#relInput3").show();
-            } else {
-              $("#relInput3").hide();
-            }
-          });
-          /* var s = $("#cPhone").html();
-          var dataName = $("#cPhone").find("#cPhone_list").attr("data-name");
-          var num = 1;
-          
-          $("#addPhoneBtn").on('click', function addPhone_go() {
-            if ($("#cPhone").children().length > 2) {
-              alert("비상연락망은 3개까지 등록가능합니다.");
-              $("#cPhone").append('');
-              return false;
-            } else {
-                dataName++;
-                $("#cPhone").find("#cPhone_list").attr("data-name", dataName);
-                $("#cPhone").append(s);
-            }
-          }); */
+         
           $('#regEcallBtn').on('click', function() {
             alert("비상연락망을 등록했습니다.");
             $('#modalBox3').modal('hide');
@@ -478,7 +631,7 @@
       datatype: "text",
       success: function(data) {
         var e = $(data).find("#mem_Detail").html();
-        var f = $(data).find("#re_List").html();
+        var f = $(data).find("#report_template").html();
         // 대상자 상세
         $(document).ready(function() {
           MemberPictureThumb('localhost');
@@ -488,7 +641,7 @@
         $(".mem_title").html("<span class='regist_text'>대상자 정보</span>");
         // 대상자 관련 보고서 리스트
         $("#reList").css('background-color', "");
-        $("#reList").html(f);
+        $("#report_col").html(f);
         if ($("#reg-btn").css('display', 'none')) {
           $("#reg-btn").css('display', 'inline');
         }
@@ -608,11 +761,11 @@
     })
   }
 
-  function memReport_go() {
+  function memReport_go(id) {
     $.ajax({
-      url: "reDetail",
+      url: "reDetail?id="+id,
       type: "get",
-      datatype: "html",
+      datatype: "text",
       success: function(data) {
         $("#memReport_detail").css('background-color', "");
         $("#memReport_detail").html(data);

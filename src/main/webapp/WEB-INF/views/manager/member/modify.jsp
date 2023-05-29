@@ -65,14 +65,13 @@
     <tr>
       <th>구</th>
       <td>
-       <c:set value="${member.address }" var="address"/>
-       <c:set value="${fn:split(address,' ')[1]}" var="gu"/>
-       <c:set value="${fn:split(address,' ')[2]}" var="dong"/>
-       <c:set value="${fn:split(address,' ')[3]}" var="detail"/>
-       <%-- <c:set value="${fn:indexOf(address, detail }" var="detailIndex"/>
-       <c:set value="${fn:substring(address,'detailIndex' }" var="realDetail"/> --%>
-      
-       
+		<c:set value="${member.address}" var="address"/>
+		<c:set value="대전광역시 " var="prefix"/>
+		<c:set value="${address.substring(prefix.length())}" var="remaining"/>
+		<c:set value="${remaining.split(' ')}" var="addressArray"/>
+		<c:set value="${addressArray[0]}" var="gu"/>
+		<c:set value="${addressArray[1]}" var="dong"/>
+		<c:set value="${remaining.substring(gu.length() + dong.length() + 2)}" var="detail"/>
     	<input type="hidden" name="address" value="대전광역시" />
         <select name="address" id="lNum" onchange="dongModiList_go(this.value)">
           <option value="" >선택</option>

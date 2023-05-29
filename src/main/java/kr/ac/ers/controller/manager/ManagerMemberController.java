@@ -1,5 +1,6 @@
 package kr.ac.ers.controller.manager;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.ers.command.EcallModifyCommand;
 import kr.ac.ers.command.EcallRegistCommand;
+import kr.ac.ers.command.ManagerReportSearchCriteria;
 import kr.ac.ers.command.MemberModifyCommand;
 import kr.ac.ers.command.MemberRegistCommand;
 import kr.ac.ers.command.MemberSearchCriteria;
@@ -28,10 +30,15 @@ import kr.ac.ers.dto.AddressVO;
 import kr.ac.ers.dto.EcallVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.MemberVO;
+import kr.ac.ers.dto.ReportFileVO;
+import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.service.AddressService;
 import kr.ac.ers.service.EcallService;
+import kr.ac.ers.service.LsupporterService;
+import kr.ac.ers.service.ManagerReportSerivce;
 import kr.ac.ers.service.MemberService;
 import kr.ac.ers.utils.MakeFileName;
+import kr.ac.ers.view.FileDownloadView;
 
 
 @Controller
@@ -43,7 +50,10 @@ public class ManagerMemberController {
 	@Autowired private EcallService ecallService;
 	 
 	@Autowired private AddressService addressService;
+	
+	@Autowired private ManagerReportSerivce managerReportSerivce;
 	 
+
 	
 	@GetMapping("/main")
 	public ModelAndView memberMain(MemberSearchCriteria cri, ModelAndView mnv) {
@@ -59,6 +69,20 @@ public class ManagerMemberController {
 		mnv.setViewName(url);
 		
 		return mnv;
+	}
+	
+	
+	
+	
+	@ResponseBody
+	@PostMapping("/repSearch")
+	public List<ReportVO> repSearchList(ManagerReportSearchCriteria reCri) {
+		System.out.println(reCri);
+		
+		
+		List<ReportVO> reportList = managerReportSerivce.getReportListToMemberMain(reCri);
+		
+		return reportList;
 	}
 
 	
@@ -78,7 +102,14 @@ public class ManagerMemberController {
 		int ecallCount = ecallService.getEcallCount(id);
 		member.setE_count(ecallCount);
 		
+		ManagerReportSearchCriteria reCri= new ManagerReportSearchCriteria();
+		reCri.setId(id);
+		List<ReportVO> reportList = managerReportSerivce.getReportListToMemberMain(reCri);
+		
+		mnv.addObject("reportList",reportList);
+		
 		mnv.addObject("member", member);
+		mnv.addObject("id",id);
 		mnv.setViewName(url);
 		
 		return mnv;
@@ -284,9 +315,17 @@ public class ManagerMemberController {
 	 
 	
 	@GetMapping("/reDetail")
-	public String reportDetail() {
-		return "manager/member/memReport";
+	public ModelAndView reportDetail(String id,ModelAndView mnv) {
+		
+		String url = "manager/member/memReport";
+		ReportVO report = managerReportSerivce.getReportByRno(id);
+		
+		mnv.addObject("report",report);
+		mnv.setViewName(url);
+		return mnv;
 	}
+	
+	
 	
 	
 	

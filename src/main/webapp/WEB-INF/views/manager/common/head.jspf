@@ -22,7 +22,7 @@
   }
 
   body {
-      zoom: 130%;
+      zoom: 100%;
     }
 	 
   html>body,

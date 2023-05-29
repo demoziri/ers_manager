@@ -30,7 +30,7 @@
     <div class="col-8" style="">
       <div class="row" style="position:relative; height:90%; align-items:center;">
         <div class="col-1 "></div>
-      	<div class="col-1 "></div>
+        <div class="col-1 "></div>
         <div class="col-2 text-center" style="line-height:normal;">
           <i class="bi bi-lightning" style="color:white; font-size:50px; "></i>
           <div class="d-inline-block">
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="col-2 text-center" style="line-height:normal;">
-        
+
           <i class="bi bi-robot" style="color:white; font-size:50px; "></i>
           <div class="d-inline-block">
             <div style="color:white; font-size:13px;">게이트웨이</div>
@@ -67,7 +67,7 @@
             <div style="color:white; font-size:20px;">${totalCount.doorsensor }</div>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -92,7 +92,7 @@
                 <thead style="background-color:#dfdfdf;position:sticky;top:0;">
                   <tr>
                     <th>장비명</th>
-                    <th>요청일자</th>
+                    <th>요청일자</th>	
                     <th>수행기관</th>
                   </tr>
                   <thead>
@@ -244,7 +244,7 @@
       <div id="template_button">
         <span class="fs-3 " id="template_title" style="border-bottom:2px solid #dfdfdf;">보유재고</span>
       </div>
-      <div class="card card-body py-0 px-0" style="height:532px; border:1px solid gray;" >
+      <div class="card card-body py-0 px-0" style="height:532px; border:1px solid gray;">
         <!-- nav-tab들어갈 자리 -->
         <div>
           <ul class="nav nav-tabs">
@@ -265,12 +265,12 @@
             </li>
           </ul>
         </div>
-        
-        <div class="w-100" id="asDetail" style="height:300px;overflow:scroll;overflow-x:hidden;">
+
+        <div class="w-100" id="asDetail" style="height:350px;overflow:scroll;overflow-x:hidden;position:relative;">
         </div>
-        <div  style="height:232px; background-color:#dfdfdf;">
+        <div style="height:150px; background-color:#dfdfdf;">
         </div>
-        
+
       </div>
 
     </div>
@@ -278,6 +278,7 @@
   </div>
 
   <script type="text/x-handlebars-template" id="as-list-template">
+
     <table class="table table-bordered text-center as_table">
  	 <thead style="background-color:#dfdfdf;position:sticky;top:0;">
     <tr>
@@ -300,10 +301,10 @@
     {{/each}}
   </tbody>
 </table>
+<button class="btn btn-success" onclick="asConfirm_go();" type="button" style="position:absolute;right:5px;bottom:5px;">AS처리하기</button>
 </script>
 
-
-<script type="text/x-handlebars-template" id="machine-list-template">
+  <script type="text/x-handlebars-template" id="machine-list-template">
     <table class="table table-bordered text-center machine_table">
  	 <thead style="background-color:#dfdfdf;position:sticky;top:0;">
     <tr>
@@ -323,9 +324,6 @@
   </tbody>
 </table>
 </script>
-
-
-
 
   <script>
     var allLink = document.getElementById("allLink");
@@ -363,7 +361,6 @@
   </script>
 
   <script>
-  
     function list_go(page, url) {
       if (!url) url = "main";
       var page = $("form#jobForm input[name='page']").val(page);
@@ -375,69 +372,75 @@
       }).submit();
     }
 
-    
     function asDetail_go(start, end, cnum) {
-    	  $('#template_title').remove("#template_button");
-    	  data = {
-    	    "week_start": start,
-    	    "week_end": end,
-    	    "cnum": cnum
-    	  };
-    	  $.ajax({
-    	    url: "asDetail",
-    	    type: "get",
-    	    data: data,
-    	    success: function(data) {
-    	      // 날짜 형식 변환
-    	      data.forEach(function(item) {
-    	        var date = new Date(item.asSend);
-    	        var year = date.getFullYear();
-    	        var month = String(date.getMonth() + 1).padStart(2, '0');
-    	        var day = String(date.getDate()).padStart(2, '0');
-    	        item.asSendFormatted = year + '-' + month + '-' + day;
-    	      });
-    	      let template = Handlebars.compile($('#as-list-template').html());
-    	      let html = template(data);
-    	      $('#asDetail').html(html);
+      $('#template_title').remove("#template_button");
+      data = {
+        "week_start": start,
+        "week_end": end,
+        "cnum": cnum
+      };
+      $.ajax({
+        url: "asDetail",
+        type: "get",
+        data: data,
+        success: function(data) {
+          // 날짜 형식 변환
+          data.forEach(function(item) {
+            var date = new Date(item.asSend);
+            var year = date.getFullYear();
+            var month = String(date.getMonth() + 1).padStart(2, '0');
+            var day = String(date.getDate()).padStart(2, '0');
+            item.asSendFormatted = year + '-' + month + '-' + day;
+          });
+          let template = Handlebars.compile($('#as-list-template').html());
+          let html = template(data);
+          $('#asDetail').html(html);
+          $('#template_title').text("AS 요청 상세");
+          // Check if the button already exists
+          if ($('#list').length === 0) {
+            // Add new button tag
+            $('#template_button').append("<button id='list' type='button' onclick=\"machineList_go(' ');\" class='btn btn-warning btn-sm mt-1' style='float:right;align-items:center;'>보유재고보기</button>");
+          }
+        }
+      });
+    }
+    window.onload = function() {
+      machineList_go('');
+    }
 
-    	      $('#template_title').text("AS 요청 상세");
-
-    	      // Check if the button already exists
-    	      if ($('#list').length === 0) {
-    	        // Add new button tag
-    	        $('#template_button').append("<button id='list' type='button' onclick='machineList_go();' class='btn btn-warning btn-sm mt-1' style='float:right;align-items:center;'>보유재고보기</button>");
-    	      }
-    	    }
-    	  });
-    	}
-    
-    window.onload=function(){
-    	machineList_go('');
+    function machineList_go(mcode) {
+      $.ajax({
+        url: "machineList?mcode=" + mcode,
+        type: "get",
+        success: function(data) {
+          // 날짜 형식 변환
+          data.forEach(function(item) {
+            var date = new Date(item.regDate);
+            var year = date.getFullYear();
+            var month = String(date.getMonth() + 1).padStart(2, '0');
+            var day = String(date.getDate()).padStart(2, '0');
+            item.redDateFormatted = year + '-' + month + '-' + day;
+          });
+          let template = Handlebars.compile($('#machine-list-template').html());
+          let html = template(data);
+          $('#asDetail').html(html);
+        }
+      });
     }
     
-	function machineList_go(mcode){
-    	
-    	$.ajax({
-    		url:"machineList?mcode="+mcode,
-    		type:"get",
-    		success:function(data){
-  	        // 날짜 형식 변환
-  	          data.forEach(function(item) {
-  	            var date = new Date(item.regDate);
-  	            var year = date.getFullYear();
-  	            var month = String(date.getMonth() + 1).padStart(2, '0');
-  	            var day = String(date.getDate()).padStart(2, '0');
-  	            item.redDateFormatted = year + '-' + month + '-' + day;
-    			});
-  	        let template = Handlebars.compile($('#machine-list-template').html());
-            let html = template(data);
-            $('#asDetail').html(html);
-    		}
-    	});
-    }
-   
     
+   function asConfirm_go(){
+	   var result = confirm("AS요청을 처리하시겠습니까?");
+	   if(result){
+	       alert("처리가 완료되었습니다.");
+	       location.reload();
+	       machineList_go('');
+	   }else{
+	       alert("힝~");
+	   }
+   }
     
+  
     
     
   </script>

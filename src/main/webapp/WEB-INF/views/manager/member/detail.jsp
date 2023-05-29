@@ -17,8 +17,6 @@
           
           <div class="row" id="mem_Detail" style="height:100%;margin-top:5px;border:2px solid gray;">
             <!-- 대상자 사진 -->
-            
-			
             <div class="col-3 border">
               <div id="pictureView" class="manPicture mt-2" data-id="${member.id }" style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto;"></div>
               <div style="text-align:center;margin-top:10px;">
@@ -111,26 +109,27 @@
 
     <div class="row">
       <!-- 보고서 목록 -->
-      <div class="col-5">
-        <div class="card card-body pt-0" style="border:2px dotted gray;height:250px;">
+      <div class="col-5" id="report_template">
+      <form id="reportSearch" action="">
+        <div class="card card-body pt-0 mt-3" id="report_form" style="border:1px solid gray;height:250px;">
           <div>
             <span class="fs-3" style="border-bottom:2px solid gray;">보고서 목록</span>
           </div>
           <div>
             <select name="reType" id="" style="height:100%;">
-              <option value="" selected>보고서 구분</option>
-              <option value="">고객면담</option>
-              <option value="">장비점검</option>
-              <option value="">서비스취소</option>
-              <option value="">악성대상자신고</option>
-              <option value="">응급보고서</option>
-              <option value="">장기부재신청</option>
-              <option value="">건강상태</option>
-            </select>
-            &ensp;기간&nbsp;<input type="date" />&nbsp;-&nbsp;<input type="date" />
-            <button type="submit" class="btn btn-primary btn-sm" style="width:100px;float:right;">조회</button>
-          </div>
-          <div id="re_List">
+            <option value="" selected>보고서 구분</option>
+            <option value="2">고객면담</option>
+            <option value="7">장비점검</option>
+            <option value="4">서비스취소</option>
+            <option value="6">악성대상자신고</option>
+            <option value="1">응급보고서</option>
+            <option value="5">장기부재신청</option>
+            <option value="3">건강상태</option>
+          </select>
+           &ensp;기간&nbsp;<input type="date" style="width:120px;" name="start_day" />&nbsp;-&nbsp;<input type="date" name="end_day" style="width:120px;" />
+          <button type="button"  onclick="repList_go('${id}');"class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
+        </div>
+          <div id="re_List" style="height: 100%;width: 100%;margin-top: 5px;overflow-x: hidden;overflow: scroll;overflow-x: hidden;">
           
             <table class="table table-bordered  text-center re_table">
               <thead style="background-color:#dfdfdf;position:sticky;top:0;">
@@ -141,99 +140,59 @@
                   <th>작성자구분</th>
                 </tr>
                 <thead>
-                <tbody style="overflow:auto;">
-                  <tr onclick="memReport_go();">
-                    <td>2034</td>
+                <tbody style="overflow:auto;" id="report_list">
+                <c:if test="${empty reportList  }">
+                 <div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf;">
+                 	등록된 보고서가 없습니다.
+                 </div>
+                 </c:if>
+                 <c:if test="${not empty reportList }">
+                <c:forEach items="${reportList }" var="report">
+                <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
+                  <tr onclick="memReport_go('${report.RNo }');">
+                    <td>${report.RNo }</td>
+                    <c:if test="${report.reType eq 1 }">
+                    <td>응급상황</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 2 }">
                     <td>고객면담</td>
-                    <td>2023-05-10</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 3 }">
+                    <td>건강상태</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 4 }">
+                    <td style="color:red;font-weight:bold;">서비스취소</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 5 }">
+                    <td style="color:red;font-weight:bold;">장기부재</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 6 }">
+                    <td style="color:red;font-weight:bold;">악성대상자신고</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 7 }">
+                    <td>장비점검</td>
+                    </c:if>
+                    <td>${regDate }</td>
+                    <c:if test="${report.WType eq 1 }">
+                    <td>응급관리요원</td>
+                    </c:if>
+                    <c:if test="${report.WType eq 2 }">
                     <td>생활지원사</td>
+                    </c:if>
                   </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
-                  <tr>
-                    <td>2034</td>
-                    <td>고객면담</td>
-                    <td>2023-05-10</td>
-                    <td>생활지원사</td>
-                  </tr>
+                 </c:forEach>
+                </c:if>
                 </tbody>
             </table>
-        
+                  <input type="hidden" name="id" value="${id}" />
+          	
+			
           </div>
         </div>
+        </form>
       </div>
         <!-- 보고서 목록 끝 -->
-        <!-- 보고서 상세 -->
-      <div class="col-7">
-        <div class="card card-body pt-0" style="border:2px dotted gray;height:250px;">
-           <div>
-            <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
-            &ensp;
-            <span style="font-weight:bold;color:#4191B3">서비스취소보고서</span>
-          </div>
-          <div style="height:100%;width:100%;">
-          	<table class="table table-bordered">
-          		<tr>
-          			<th>작성자</th>
-          			<td>김보건[생활지원사]</td>
-          			<th>등록일</th>
-          			<td>2023-04-05</td>
-          		</tr>
-          		<tr style="height:100px;vertical-align:middle;">
-          			<th>특이사항</th>
-          			<td colspan="3">어쩌고 저쩌고 내용이 여기 오겠지요</td>
-          		</tr>
-          		<tr>
-          			<th>첨부파일</th>
-          			<td>첨부파일.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
-          			<th>비고</th>
-          			<td>-</td>
-          		</tr>
-          	</table>
-          </div>
-        </div>
-      </div>
-    </div>
+      
     <!-- 보고서 상세 끝 -->
   </div>
   
