@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<link href="/resources/esupporter/css/esupporter.css" rel="stylesheet">
+<link href="/resources/esupporter/css/dispatchList.css" rel="stylesheet">
 
 <style type="text/css">
 
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 		
-		<button class="btn btn-primary m-3">등록</button>
+		<button class="btn btn-primary m-3" onclick="location.href='/ers/esupporter/reportForm?afterUrl=1'">등록</button>
 		
 	</div>
 </div>
@@ -81,37 +81,28 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:if test="${empty rNo }">
-							<c:forEach var="dispatch" items="${dispatchList}">
-							<fmt:formatDate var="ocurTime" pattern="yyyy-MM-dd" value="${dispatch.ocurTime}"/>
-								<tr class="tableBodyFont">
-									<td>${dispatch.sType}</td>
-									<td>${dispatch.name}</td>
-									<td>${dispatch.address}</td>
-									<td>${dispatch.pacemaker}</td>
-									<td></td>
-									<td></td>
-									<td>${ocurTime}</td>
-								</tr>
-							</c:forEach>
-						</c:if>
-						<c:if test="${not empty rNo }">
-							<c:forEach var="dispatchReport" items="${dispatchReortList}">
-							<fmt:formatDate var="ocurTimeReport" pattern="yyyy-MM-dd" value="${dispatchReortList.ocurTime}"/>
-								<tr class="tableBodyFont">
-									<td>${dispatchReport.sType}</td>
-									<td>${dispatchReport.name}</td>
-									<td>${dispatchReport.address}</td>
-									<td>${dispatchReport.pacemaker}</td>
-									<td>${dispatchReport.reDone}</td>
-									<td>
-										<c:if test="${dispatchReport.viewCheck eq 0}">N</c:if>
-										<c:if test="${dispatchReport.viewCheck ge 1}">Y</c:if>
-									</td>
-									<td>${ocurTimeReport}</td>
-								</tr>
-							</c:forEach>
-						</c:if>
+						<c:forEach var="dispatch" items="${dispatchList}">
+						<fmt:formatDate var="occurTime" pattern="yyyy-MM-dd" value="${dispatch.occurTime}"/>
+							<tr class="tableBodyFont">
+								<td>${dispatch.SType}</td>
+								<td class="dispatchname" onclick="location.href='/ers/esupporter/dispatchDetail?sCode='+${dispatch.SCode}">${dispatch.name}</td>
+								<td>${dispatch.address}</td>
+								<td>
+									<c:if test="${dispatch.pacemaker eq 'N'}">부착안함</c:if>
+									<c:if test="${dispatch.pacemaker eq 'Y'}">부착함</c:if>
+								</td>
+								<td>
+									<c:if test="${dispatch.reDone eq null}">작성안함</c:if>
+									<c:if test="${dispatch.reDone eq 0}">임시저장</c:if>
+									<c:if test="${dispatch.reDone ne 0 and dispatch.reDone ne null}">제출</c:if>
+								</td>
+								<td>
+									<c:if test="${dispatch.viewCheck ne 0 and dispatch.viewCheck ne null}">열람 함</c:if>
+									<c:if test="${dispatch.viewCheck eq 0 or dispatch.viewCheck eq null}">열람 안함</c:if>
+								</td>
+								<td>${occurTime}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>

@@ -15,7 +15,7 @@
 }
 
 .search-bar__input {
-	width: 40%;
+	width: 100%;
 	border: none;
 	-webkit-appearance: none;
 	text-align: center;
@@ -94,6 +94,7 @@
 .tableBodyFont{
 	font-family: 'SpoqaHanSansNeo-Regular';
 	font-size: 1.5rem;
+	text-align: left;
 }
 
 .div-gather{
@@ -101,12 +102,80 @@
 	margin: 0 auto;
 }
 
+#btnWrap {
+width: 500px;
+margin: 100px auto;
+}
+
+#modalWrap {
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Specific styles for modal body */
+#modalBody {
+  width: 600px;
+  height: 650px;
+  padding: 30px;
+  margin: 0 auto;
+  border: 1px solid #777;
+  background-color: #fff;
+}
+#closeBtn {
+  float:right;
+  font-weight: bold;
+  color: #777;
+  font-size:25px;
+  cursor: pointer;
+}
+
+.searchinput{
+border:1px solid black;
+border-radius:5px;
+font-size:1.5rem;
+height:50px;
+text-align:left;
+}
+
+.search_button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 0 10px;
+  background-color: transparent;
+  border: none;
+}
+
+.regDate{
+	font-size: 2rem;
+}
+
+.search_container{
+  position: relative;
+}
+
+.tg .tg-0lax .search_container {
+  width: 100%; /* td 요소가 가득 차도록 부모 요소의 너비 설정 */
+}
+
+.tg .tg-0lax .searchinput {
+  width:100%;
+}
+
 .tg  {border-collapse:collapse;border-spacing:0;width: 100%;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;
   overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-aur8{background-color:#efefef;border-color:#333333;text-align:left;vertical-align:top}
+.tg .tg-aur8{background-color:#efefef;border-color:#333333;text-align:center;vertical-align:top}
 .tg .tg-0lax{text-align:left;vertical-align:top}
 
 

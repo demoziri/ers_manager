@@ -21,20 +21,20 @@
 		<div class="col-12">
 			<div class="mb-2">
 			<div class="float-right mb-2">
+				<div class="d-inline-block searchDate_text">
+							검색 시작일
+						</div>
+						<div class="d-inline-block">
+							<input type="date" class="form-control float-right" name="startDate" onchange="javascript:check_startDate();" value="${startDate}" id="startDate">
+						</div>
+						<div class="d-inline-block searchDate_text">
+							검색 종료일
+						</div>
+						<div class="d-inline-block">
+							<input type="date" class="form-control float-right" name="endDate" onchange="javascript:check_endDate();" value="${endDate}" id="endDate">
+						</div>
 				<div class="d-inline-block">
-					검색시작날짜
-				</div>
-				<div class="d-inline-block">
-					<input type="date" placeholder="수행기관을 입력해주세요." class="w-100"/>
-				</div>
-				<div class="d-inline-block">
-					검색끝날짜
-				</div>
-				<div class="d-inline-block">
-					<input type="date" placeholder="수행기관을 입력해주세요." class="w-100"/>
-				</div>
-				<div class="d-inline-block">
-					<select>
+					<select class="form-control float-right">
 						<option>게이트웨이</option>
 						<option>출입문감지기</option>
 						<option>화재감지기</option>
@@ -150,6 +150,27 @@
 	</div>
 </div>
 <script>
+function check_startDate(){
+	if(!$('input#endDate').val())return;
+	if($('input#startDate').val()>$('input#endDate').val()){
+		alert("검색 시작일은 종료일 보다 빨라야 합니다.");
+		$('input#startDate').val('${param.startDate}');
+		$('input#startDate').focus();
+		return;
+	}
+	$('#searchDateForm').submit();
+}
+function check_endDate(){
+	if(!$('input#startDate').val())return;
+	if($('input#startDate').val()>$('input#endDate').val()){
+		alert("검색 종료일은 시작일 보다 빨라야 합니다.");
+		$('input#endDate').val('${param.endDate}');
+		$('input#endDate').focus();
+		return;
+	}
+	$('#searchDateForm').submit();
+}
+
 function popOpen() {
     var modalPop = $('.modal_wrap');
     var modalBg = $('.modal_bg'); 

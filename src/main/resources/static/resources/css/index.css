@@ -76,7 +76,7 @@
 }
 
 .bg-skyblue{
-	background-color: #cce4ed;
+	background-color: #d6e6eb94;
 }
 .modal_bg {
 	display: none;
@@ -120,7 +120,7 @@
 .modal-textarea{
 	border: 1px solid #e7d4d4;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 10px;
     word-break: break-word;
 }
@@ -160,4 +160,7 @@
  color : #9e9e9e;
 }
 
-
+.searchDate_text{
+    vertical-align: top;
+    line-height: 40px;
+}

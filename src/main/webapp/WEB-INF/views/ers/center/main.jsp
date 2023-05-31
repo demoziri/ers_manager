@@ -10,22 +10,11 @@
 				<div class="card h-96">
 					<div class="card-header border-0">
 						<h3 class="card-title"><i class="fa-solid fa-bell bell_color pr-3"></i>금일 총 응급발생 처리현황</h3>
-						<a href="#" class="float-right color-inherit"><i class="fa-solid fa-plus pr-2"></i>더보기</a>
+						<a href="emergencyReport/list" class="float-right color-inherit"><i class="fa-solid fa-plus pr-2"></i>더보기</a>
 					</div>
 					<div class="card-body pb-0">
-						<div class="row justify-content-around">
-							<div class="card dashboard_gray_content_box">
-								<div class="dashboard_gray_content_box_header">응급호출</div>
-								<div class="dashboard_gray_content_box_body">3</div>
-							</div>
-							<div class="card dashboard_gray_content_box">
-								<div class="dashboard_gray_content_box_header">119통화</div>
-								<div class="dashboard_gray_content_box_body">3</div>
-							</div>
-							<div class="card dashboard_gray_content_box">
-								<div class="dashboard_gray_content_box_header">화재감지</div>
-								<div class="dashboard_gray_content_box_body">3</div>
-							</div>	
+						<div class="row justify-content-around" id="emergencyRepotListView">
+						
 						</div>
 					</div>
 				</div>
@@ -66,101 +55,21 @@
 					</div>
 					<div class="card-body pb-0">
 						<div class="row justify-content-around">
+							<c:forEach var="local" items="${localList }">
 							<div class="pb-2">
-								<div class="dashboard_gray_content_box_header">서구</div>
+								<div class="dashboard_gray_content_box_header">${local.name}</div>
 								<table class="table-bordered">
 									<tbody>
+										<c:forEach var="report" items="${local.reportList}">
 										<tr>
-											<th class="pl-1 pr-1">응급</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
+											<th class="pl-1 pr-1">${report.occurType}</th>
+											<td class="pl-4 pr-4 text-center ${report.cnt ne 0 ? 'text-red' : 'text-blue'}">${report.cnt}</td>
 										</tr>
-										<tr>
-											<th class="pl-1 pr-1">119</th>
-											<td class="pl-4 pr-4 text-red text-center">1</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">화재</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
-							<div class="pb-2">
-								<div class="dashboard_gray_content_box_header">중구</div>
-								<table class="table-bordered">
-									<tbody>
-										<tr>
-											<th class="pl-1 pr-1">응급</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">119</th>
-											<td class="pl-4 pr-4 text-red text-center">1</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">화재</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="pb-2">
-								<div class="dashboard_gray_content_box_header">동구</div>
-								<table class="table-bordered">
-									<tbody>
-										<tr>
-											<th class="pl-1 pr-1">응급</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">119</th>
-											<td class="pl-4 pr-4 text-red text-center">1</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">화재</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="pb-2">
-								<div class="dashboard_gray_content_box_header">유성구</div>
-								<table class="table-bordered">
-									<tbody>
-										<tr>
-											<th class="pl-1 pr-1">응급</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">119</th>
-											<td class="pl-4 pr-4 text-red text-center">1</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">화재</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="pb-2">
-								<div class="dashboard_gray_content_box_header">대덕구</div>
-								<table class="table-bordered">
-									<tbody>
-										<tr>
-											<th class="pl-1 pr-1">응급</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">119</th>
-											<td class="pl-4 pr-4 text-red text-center">1</td>
-										</tr>
-										<tr>
-											<th class="pl-1 pr-1">화재</th>
-											<td class="pl-4 pr-4 text-blue text-center">0</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+							</c:forEach>
 						</div>
 					</div>
 				</div>
@@ -308,4 +217,5 @@
 
 </div>
 
+<%@ include file="/WEB-INF/views/include/handlerCenter.jspf" %>
 <%@ include file="/WEB-INF/views/include/cfooter.jspf"%>

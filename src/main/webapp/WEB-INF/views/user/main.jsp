@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
-<head>
 <meta charset="UTF-8">
 <title></title>
+<head>
+  <!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 <style>
@@ -134,6 +137,7 @@ h4 {
     font-size:25px;
     font-family:'ChosunBg';
     border:1px solid #BDBDBD;
+	cursor:pointer;
 }
 
 .bt_sen1{
@@ -264,14 +268,14 @@ h4 {
 
 .bt_cancle {
 	background:#424242;
-	width:200px;
+	width:300px;
 	height:70px;
-	font-size:40px;
+	font-size:35px;
 	color:white;	
 	font-family:'ChosunBg';
 	border-radius:15px;
 	position:absolute;
-	right:250px;
+	right:270px;
 	bottom:20px;
 	
 }
@@ -283,6 +287,9 @@ h4 {
   background:#fff;
   border:0px;
   border-radius:50px;
+}
+.bt{
+	cursor:pointer;
 }
 </style>
 
@@ -301,7 +308,7 @@ h4 {
 		
 		<div style="display:flex; justify-content:space-around; margin-top:60px;"> 
 			<button class="bt bt_119" type="button" id="modal_open_btn_119">119</button>
-			<button class="bt bt_call" type="button" id="modal_open_btn_call"><p class="bt_p">응 급<br>호 출</p></button>
+			<button class="bt bt_call" type="button" id="modal_open_btn_call"><p class="bt_p" >응 급<br>호 출</p></button>
 			<button class="bt bt_telephone" type="button" id="modal_open_btn_telephone"><p class="bt_p">전 화<br>연 결</p></button>
 		</div>
 	</div>
@@ -313,20 +320,20 @@ h4 {
 		</div>
 		<div class="info info_box2">
 			<h2>센서 감지 정보</h2>
-			<h4>활동량감지센서 : 활동중 / 오후 6 : 17 </h4>
-			<h4>화재감지센서 : 미감지 / - </h4>
-			<h4>출입문감지센서 : 외출 / 오후 6 : 17 </h4>
+			<h4>활동량감지센서 : <span id="active">${sensorck.outconfirm eq 'N' ? '활동중' : '미감지'}</span> / <span id="activetime"><fmt:formatDate value="${sensorck.activetime}" pattern="HH시 MM분"/></span></h4>
+			<h4>화재감지센서 : <span id="fire"></span> / <span id="occurtime"></span></h4>
+			<h4>출입문감지센서 : <span class="out home">${sensorck.outconfirm eq 'N' ? '재실' : '외출' }</span> / <span id="outtime"><fmt:formatDate value="${sensorck.outtime}" pattern="HH시 MM분"/></span></h4>
 		</div>
 		<div class="sen_div">
-			<div class="bt_sen1 bt_sen">
-				<p style="margin-left:30px;">화 재<br>감 지</p>
-			</div>
-			<div class="bt_sen2 bt_sen">
-				<p style="margin-left:25px;">활동량<br>감 지</p>
-			</div>
-			<div class="bt_sen3 bt_sen">
-				<p style="margin-left:25px;">출입문<br>감 지</p>
-			</div>
+			<button id="bt_sen1"class="bt_sen1 bt_sen" type="button">
+				<p style="margin-left:25px;">화 재<br>감 지</p>
+			</button>
+			<button id="bt_sen2" class="bt_sen2 bt_sen" type="button" onclick="changeActivetime_go();">
+				<p style="margin-left:17px;">활동량<br>감 지</p>
+			</button>
+			<button id="bt_sen3" class="bt_sen3 bt_sen" type="button" onclick="changeOutconfirm_go();">
+				<p style="margin-left:17px;">출입문<br>감 지</p>
+			</button>
 		</div>
 	</div>
 
@@ -352,7 +359,7 @@ h4 {
 	
 
 	<div id="modal_call">
-   
+   x
     	<div class="modal_content content">
 			<div class="modal_red">
 
@@ -363,6 +370,7 @@ h4 {
 	       	    <p style="font-size:35px; font-weight:bold;">10초 후, 응급요원이 출동하오니</p>
 	        	<p style="font-size:28px;">실제상황이 아니라면 취소버튼을 눌러주세요.</p>
 	       		<p style="font-size:28px;">10초 내에 취소버튼을 누르면 응급요원이 출동하지 않습니다.</p>
+	       		<div id="timer"></div>
        		</div>
        		
        		<img src="/resources/images/ambulance.png" style="width:130px; height:110px; margin-left:20px;"/>
@@ -409,6 +417,22 @@ month = date.getMonth() + 1;
 day = date.getDate();
 
 
+var setSecond = 10;
+function updateDateTime2() {
+     
+     if(setSecond < 0){
+        
+     }else{
+     console.log(setSecond + "초");
+        
+     }
+     setSecond-=1;
+ }
+   
+updateDateTime2();
+
+setInterval(updateDateTime2, 1000);
+
 clock = document.querySelector("#clock")
 
 function getClock() {
@@ -443,6 +467,12 @@ btnOpenPopup = document.querySelector('.btn-open-popup');
 
 document.getElementById("modal_open_btn_119").onclick = function() {
     document.getElementById("modal_119").style.display="block";
+    
+    $.ajax({
+    	url:'/ers/user/occurEmergency',
+    	type:'POST',
+    	data:{stype:'2'},
+    });
 }
 
 document.getElementById("modal_close_btn_119").onclick = function() {
@@ -451,7 +481,15 @@ document.getElementById("modal_close_btn_119").onclick = function() {
 
 document.getElementById("modal_open_btn_call").onclick = function() {
     document.getElementById("modal_call").style.display="block";
+    
+    
+    $.ajax({
+    	url:'/ers/user/occurEmergency',
+    	type:'POST',
+    	data:{stype:'1'},
+    });
 }
+
 
 document.getElementById("modal_close_btn_call").onclick = function() {
     document.getElementById("modal_call").style.display="none";
@@ -465,7 +503,75 @@ document.getElementById("modal_close_btn_telephone").onclick = function() {
     document.getElementById("modal_telephone").style.display="none";
 }
 
+$('#occurtime').text('-');
+$('#fire').text("미감지");
 
+
+document.getElementById("bt_sen1").onclick = function() {    
+    $.ajax({
+    	url:'/ers/user/occurEmergency',
+    	type:'POST',
+    	data:{stype:'3'},
+    	success:function(data){
+    		var dateObj1=new Date(data.occurtime);
+	          
+	        var hour1=dateObj1.getHours();
+	        var minute1 = dateObj1.getMinutes();
+	      	$('#occurtime').text(hour1+"시 "+minute1+"분");
+	      	$('#fire').text("화재감지");
+    	},error:function(error){
+    		alert(error);
+    	}
+    });
+}
+
+function changeOutconfirm_go(){
+	  $.ajax({
+	    	url:'getChangeOutConfirm',
+	  		success:function(data){
+	  			if (data.outconfirm == 'N'){
+	  				var dateObj1=new Date(data.activetime);
+	  	          
+	  	         	var hour1=dateObj1.getHours();
+	  	         	var minute1 = dateObj1.getMinutes();
+	  	      		$('#activetime').text(hour1+"시 "+minute1+"분");
+	  	      		$('.home').text("재실");
+	  	      		$('#outtime').text('');
+	  	      		$('#active').text("활동중");
+	  	      		
+	  	         	
+	  			}else{
+	  				var dateObj1=new Date(data.outtime);
+		  	          
+	  	         	var hour1=dateObj1.getHours();
+	  	         	var minute1 = dateObj1.getMinutes();
+	  	         	$('#outtime').text(hour1+"시 "+minute1+"분");
+	  	         	$('.out').text("외출");
+	  	         	
+	  			}
+	  		},error:function(error){
+	  			alert(error);
+	  		} 
+	    });
+}
+
+function changeActivetime_go(){
+	$.ajax({
+		url:'getChangeActivetime',
+		success:function(data){
+			var dateObj1=new Date(data.activetime);
+	          
+	        var hour1=dateObj1.getHours();
+	        var minute1 = dateObj1.getMinutes();
+	      	$('#activetime').text(hour1+"시 "+minute1+"분");
+	      	$('#active').text("활동중");
+		},error:function(error){
+			alert(error);
+		}
+	
+	});
+
+}
 
 
 

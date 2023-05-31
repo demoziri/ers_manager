@@ -1,0 +1,43 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+<script type="text/x-handlebars-template" id="emergencyReport-viewList-template">
+{{#each .}}
+							<div class="card dashboard_gray_content_box">
+								<div class="dashboard_gray_content_box_header">{{occurType}}</div>
+								<div class="dashboard_gray_content_box_body">{{cnt}}</div>
+							</div>
+{{/each}}
+</script>
+
+
+<script>
+	function printData(replyArr, target, templateObject) {
+		var template = Handlebars.compile(templateObject.html());
+		var html = template(replyArr);
+		target.html(html);
+	}
+	window.onload=function(){
+		checkEmergencyReportView('');
+	}
+	
+	setInterval(() => checkEmergencyReportView(), 3000);
+
+
+
+	function checkEmergencyReportView() {
+		
+		$.ajax({
+			url : "checkEmergencyView",
+			method : "get",
+			contentType : "application/JSON",
+			success : function(list) {
+				printData(list, $('#emergencyRepotListView'), $('#emergencyReport-viewList-template'));
+			},
+			error : function(error) {
+				alert(error);
+			}
+		})
+	}
+</script>

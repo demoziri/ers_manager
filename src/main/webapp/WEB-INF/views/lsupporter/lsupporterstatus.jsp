@@ -17,7 +17,11 @@
 <div class="card card-primary card-outline">
 <div class="card-body box-profile">
 <div class="text-center">
-<img class="profile-user-img img-fluid img-circle" src="/resources/lsupporter/img/노인1.jpg" style="width:300px;height:300px;" alt="">
+<div class="row"  style="height:200px;">
+<div class="mailbox-attachments clearfix col-md-12" style="text-align: center;">							
+<div id="pictureView" class="lsuppPicture"  data-id="${lsupporter.wid }" style="border: 1px solid green; height: 200px; width: 140px; margin: 0 auto;"></div>														
+	</div>
+</div>
 </div>
 </div>
 

@@ -6,7 +6,7 @@
 <c:set var="noticeList" value="${dataMap.noticeList }"/>
 <c:set var="pageMaker" value="${dataMap.pageMaker}"/>
 <c:set var="cri" value="${pageMaker.cri}"/>
-<div style="height: 100%; overflow-y: scroll;">
+<div style="height: 100%; overflow-y: auto;">
 	<div class="pt-2 pb-2 pr-5 pl-5">
 		<div class="row">
 		<div class="col-12">

@@ -13,4 +13,5 @@ public class LocalVO {
 	private String name;
 	
 	private List<CenterEquipmentVO> equipmentList;
+	private List<CenterEmergencyReportCommandVO> reportList;
 }

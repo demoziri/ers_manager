@@ -19,6 +19,13 @@
     background-color: #4191B3 !important;
     color: white !important;
   }
+  
+  table>tbody>tr:hover {
+    background-color: lightblue;
+  }
+  
+  
+  
 </style>
 
 <div class="container-fluid">
@@ -249,26 +256,26 @@
         <div>
           <ul class="nav nav-tabs">
             <li class="nav-item" style="width:17%;font-size:0.8rem;">
-              <a class="nav-link active" onclick="machineList_go('');" id="allLink" style="background-color: #4191B3;text-align:center;">전체</a>
+              <a class="nav-link  active" onclick="machineList_go('');" id="allLink" style="background-color: #4191B3;text-align:center;">전체</a>
             </li>
             <li class="nav-item" style="width:20%;font-size:0.73rem;">
-              <a class="nav-link" onclick="machineList_go('M01');" id="gateLink">게이트웨이</a>
+              <a class="nav-link " onclick="machineList_go('M01');" id="gateLink">게이트웨이</a>
             </li>
             <li class="nav-item" style="width:20%;font-size:0.73rem;">
               <a class="nav-link" onclick="machineList_go('M04');" id="fireLink">화재감지기</a>
             </li>
             <li class="nav-item" style="width:23%;font-size:0.73rem;">
-              <a class="nav-link" onclick="machineList_go('M03');" id="doorLink">출입문감지기</a>
+              <a class="nav-link " onclick="machineList_go('M03');" id="doorLink" style="text-align:center;">출입문감지기</a>
             </li>
             <li class="nav-item" style="width:20%;font-size:0.73rem;text-align:center;">
-              <a class="nav-link" onclick="machineList_go('M02');" id="activityLink">활동감지기</a>
+              <a class="nav-link " onclick="machineList_go('M02');" id="activityLink">활동감지기</a>
             </li>
           </ul>
         </div>
 
         <div class="w-100" id="asDetail" style="height:350px;overflow:scroll;overflow-x:hidden;position:relative;">
         </div>
-        <div style="height:150px; background-color:#dfdfdf;">
+        <div style="height:150px; border:4px solid #4191B3;background-color:#dfdfdf;">
         </div>
 
       </div>
@@ -424,6 +431,27 @@
           let template = Handlebars.compile($('#machine-list-template').html());
           let html = template(data);
           $('#asDetail').html(html);
+          if(mcode==' '){
+      	  fireLink.classList.remove("active");
+      	  fireLink.style.color = "black";
+      	  fireLink.style.backgroundColor = "";  
+      	  
+      	  doorLink.classList.remove("active");
+      	  doorLink.style.color = "black";
+      	  doorLink.style.backgroundColor = "";  
+      	  
+      	  gateLink.classList.remove("active");
+      	  gateLink.style.color = "black";
+      	  gateLink.style.backgroundColor = "";  
+      	  
+      	  activityLink.classList.remove("active");
+      	  activityLink.style.color = "black";
+      	  activityLink.style.backgroundColor = "";  
+        	  
+          allLink.classList.add("active");
+          allLink.style.color = "white";
+          allLink.style.backgroundColor = "#4191B3";
+          }
         }
       });
     }

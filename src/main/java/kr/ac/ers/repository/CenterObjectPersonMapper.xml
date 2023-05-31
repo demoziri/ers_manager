@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.CenterObjectPersonMapper">
+	<select id="selectActiveCountByDepart" resultType="int">
+		select count(*) as cnt
+		from member m, sensorCK c, 
+		(select mem.id as m_id, count(*) as cnt 
+		from member mem, machine ma
+		where mem.id = ma.id
+		and ma.mstatus = '수신'
+		group by mem.id
+		) mem2
+		where m.id = c.id
+		and c.outconfirm = 'N'
+		and mem2.cnt = 4
+		and m.address like '%'||#{depart}||'%'
+		and m.id = mem2.m_id
+		<![CDATA[
+		and ROUND((sysdate - c.activetime) * 24, 2) > 1
+		]]>
+	</select>
+	
+	<select id="selectGoOutCountByDepart" resultType="int">
+		select count(*) as cnt
+		from member m, sensorCK c, 
+		(select mem.id as m_id, count(*) as cnt 
+		from member mem, machine ma
+		where mem.id = ma.id
+		and ma.mstatus = '수신'
+		group by mem.id
+		) mem2
+		where m.id = c.id
+		and c.outconfirm = 'Y'
+		and mem2.cnt = 4
+		and m.id = mem2.m_id
+		and m.address like '%'||#{depart}||'%'
+		<![CDATA[
+		and ROUND((sysdate - c.outtime) * 24, 2) > 4
+		]]>
+	</select>
+	
+	<select id="selectUnconnectCountByDepart" resultType="int">
+		select count(m.id)/4 as cnt
+		from member m, machine ma,
+		(select mem.id as m_id, count(*) as cnt
+		from member mem, machine ma
+		where mem.id = ma.id
+		and ma.mstatus = '연결해제'
+		group by mem.id
+		) mem2
+		where status =1
+		and ma.id = m.id
+		and mem2.cnt = 4
+		and m.id = mem2.m_id
+		and address like '%'||#{depart}||'%'
+	</select>
+	
+	<select id="selectAbsenceCountByDepart" resultType="int">
+		select count(*) as cnt from member
+		where status =3
+		and address like '%'||#{depart}||'%'
+	</select>
+	
+	<select id="selectPersonActiveListByDepart" resultType="CenterPersonVO">
+		select m.id as mid,m.name m_name, m.memtype, m.address, m.phone, c.activetime, round(sysdate - c.activetime) d_day ,MOD(round((sysdate - c.activetime) * 24),24) as h_hour, MOD(round((sysdate - c.activetime) * 24 * 60), 60 ) m_minute
+		from member m, sensorCK c, 
+		(select mem.id as m_id, count(*) as cnt 
+		from member mem, machine ma
+		where mem.id = ma.id
+		and ma.mstatus = '수신'
+		group by mem.id
+		) mem2
+		where m.id = c.id
+		and c.outconfirm = 'N'
+		and mem2.cnt = 4
+		and m.id = mem2.m_id
+		and m.address like '%'||#{depart}||'%'
+		and ROUND((sysdate - c.activetime) * 24, 2) > 1
+		and m.eid is null
+		order by c.activetime, m_name
+	</select>
+	
+	<select id="selectPersonGoOutListByDepart" resultType="CenterPersonVO">
+		select m.id as mid,m.name m_name, m.memtype, m.address, m.phone, c.outtime, round(sysdate - c.outtime) d_day ,MOD(round((sysdate - c.outtime) * 24),24) as h_hour, MOD(round((sysdate - c.outtime) * 24 * 60), 60 ) as m_minute
+		from member m, sensorCK c, 
+		(select mem.id as m_id, count(*) as cnt
+		from member mem, machine ma
+		where mem.id = ma.id
+		and ma.mstatus = '수신'
+		group by mem.id
+		) mem2
+		where m.id = c.id
+		and c.outconfirm = 'Y'
+		and m.address like '%'||#{depart}||'%'
+		and mem2.cnt = 4
+		and m.id = mem2.m_id
+		and ROUND((sysdate - c.outtime) * 24, 2) > 4
+		and m.eid is null
+		order by c.outtime, m_name
+	</select>
+	
+	<select id="selectEmergencyNextVal" resultType="int">
+	select EMERGENCY_SEQ.nextVal
+	from dual
+	</select>	
+		
+	<update id="insertEmergencySituation">
+		insert into emergency
+        (scode, stype, occurTime, confirmCheck, reportCheck, id, wid)
+        values
+        (#{scode}, #{paramGubun}, sysdate, 'Y', 'N', #{mid}, #{wid})
+	</update>
+	
+	<update id="updateMemberEid">
+		update member
+		set eid = #{wid}
+		where id = #{mid}
+	</update>
+</mapper>

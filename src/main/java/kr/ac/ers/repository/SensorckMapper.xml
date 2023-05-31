@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="kr.ac.ers.repository.SensorckMapper">
+	<select id="getSensorck" resultType="SensorckVO">
+		select *
+		from sensorck
+		where id=#{id}
+	</select>
+	<select id="selectOutconfirm" resultType="String">
+		select outconfirm
+		from sensorck
+		where id=#{id}
+	</select>
+	<update id="updateMemberStatusToY">
+		update sensorck
+		set outconfirm='Y',
+    	outtime=sysdate
+		where id=#{id}
+	
+	</update>
+	<update id="updateMemberStatusToN">
+		update sensorck
+		set outconfirm='N',
+    	activetime=sysdate
+		where id=#{id}
+	</update>
+	<update id="updateActivetime">
+		update sensorck
+		set activetime=sysdate
+		where id=#{id}
+	</update>
+</mapper>

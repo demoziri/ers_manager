@@ -81,4 +81,11 @@ public class LocalHouseholdController {
 		
 		return emanagerList;
 	}
+	
+	@GetMapping("/commandEmanager")
+	@ResponseBody
+	public void commandEmanager (String wcode, String mem_id, String m_name, String mstatus) {
+		
+		centerEquipmentCheckService.modifyEquipmentCheck(wcode, mem_id, m_name ,mstatus);
+	}
 }

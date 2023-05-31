@@ -61,7 +61,7 @@
 	
 	<update id="updateLsupporter">
 		update member
-		set wid=#{wid}
+		set wid=#{wid},status='1'
 		where id=#{id}
 	</update>
 	
@@ -96,5 +96,11 @@
 		values(#{id})
 	</insert>
 	
+	
+	<select id="selectMember" resultType="MemberVO">
+		select *
+		from member
+		where id=#{i}
+	</select>
 	
 </mapper>

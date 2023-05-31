@@ -28,7 +28,7 @@
 	
 		<button class="btn btn-dark m-3">뒤로가기</button>
 			
-		<div class="div_group flex--center mt-3 ">
+		<div class="div_group flex mt-3 ">
 			<select name="searchType" class="input_date input_borderRadius mr-2">
 				<option value="nrvf">선택</option>
 				<option value="n">대상자 명</option>
@@ -46,7 +46,7 @@
 		</div>
 		
 		<div class="justify-end">
-			<button class="btn btn-primary">등록</button>
+			<button class="btn btn-primary" onclick="location.href='/ers/esupporter/reportForm?afterUrl=2'">등록</button>
 			<button class="btn btn-danger m-3">삭제</button>
 		</div>
 		
@@ -70,12 +70,13 @@
 					
 					<thead>
 						<tr>
-							<th class="tableHeadFont "></th>
+							<th class="tableHeadFont "><input type="checkbox" id="selectAll">전체선택</th>
 							<th class="tableHeadFont ">대상자 명</th>
 							<th class="tableHeadFont ">대상자 주소</th>
 							<th class="tableHeadFont ">보고서 작성 상태</th>
 							<th class="tableHeadFont ">열람여부</th>
 							<th class="tableHeadFont ">대상자상태</th>
+							<th class="tableHeadFont " >응급상황일자</th>
 							<th class="tableHeadFont " >파일첨부여부</th>
 						</tr>
 					</thead>
@@ -83,8 +84,8 @@
 						<c:forEach var="emergencyReport" items="${emergencyReportList}">
 							<fmt:formatDate var="occurTime" pattern="yyyy-MM-dd" value="${emergencyReport.occurTime}"/>
 							<tr class="tableBodyFont">
-								<td>${emergencyReport.occurType}</td>
-								<td class="reportname" onclick="emergencyReportDetail(${emergencyReport.RNo});">${emergencyReport.name}</td>
+								<td><input type="checkbox" class="text-center check_box checkbox"/></td>
+								<td class="reportname" onclick="emergencyDetail(${emergencyReport.RNo});">${emergencyReport.name}</td>
 								<td>${emergencyReport.address}</td>
 								<td>
 									
@@ -98,6 +99,7 @@
 									<c:if test="${emergencyReport.viewCheck ne 0 }">열람함</c:if>
 								</td>
 								<td>${occurTime}</td>
+								<td></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -128,6 +130,37 @@
 			method:'get'
 		}).submit();
 	}
+	
+	 // Get the "전체선택" checkbox element
+	  var selectAllCheckbox = document.getElementById("selectAll");
+
+	  // Get all other checkboxes in the table
+	  var checkboxes = document.getElementsByClassName("check_box");
+
+	  // Add an event listener to the "전체선택" checkbox
+	  selectAllCheckbox.addEventListener("change", function () {
+	    // Loop through all checkboxes and set their checked property to match the "전체선택" checkbox
+	    for (var i = 0; i < checkboxes.length; i++) {
+	      checkboxes[i].checked = selectAllCheckbox.checked;
+	    }
+	  });
+
+	  // Add event listeners to the other checkboxes to update the "전체선택" checkbox
+	  for (var i = 0; i < checkboxes.length; i++) {
+	    checkboxes[i].addEventListener("change", function () {
+	      // Check if all other checkboxes are checked
+	      var allChecked = true;
+	      for (var j = 0; j < checkboxes.length; j++) {
+	        if (!checkboxes[j].checked) {
+	          allChecked = false;
+	          break;
+	        }
+	      }
+
+	      // Update the "전체선택" checkbox based on the state of the other checkboxes
+	      selectAllCheckbox.checked = allChecked;
+	    });
+	  }
 </script>
 
 <div style="height: 700px;"></div>

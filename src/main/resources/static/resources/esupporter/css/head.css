@@ -74,11 +74,19 @@ li, .item_bar {
 	padding-top: 20px;
 }
 
-.selectOption {
-	background-color: inherit;
+.img_size {
+  width: 30px;
+  height: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
-.img_size{
-	width: 40px;
-	height: 40px;
+.status_img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.select_bottom{
+	bottom: 10px;
 }

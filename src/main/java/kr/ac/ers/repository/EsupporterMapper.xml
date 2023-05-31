@@ -6,6 +6,15 @@
 		<if test="cri.searchType == 'n'.toString()">
 			and m.name like '%'||#{cri.keyword}||'%'			
 		</if>
+		<if test="cri.searchType == 'nbg'.toString()">
+			and (
+			m.name like '%'||#{cri.keyword}||'%'
+			or
+			m.birth like '%'||#{cri.keyword}||'%'		
+			or
+			m.gender like '%'||#{cri.keyword}||'%'	
+			)
+		</if>
 		<if test="cri.searchType == 'nrv'.toString()">
 			and (
 			m.name like '%'||#{cri.keyword}||'%'
@@ -46,28 +55,22 @@
 	</sql>
 	
 	<select id="esupporterStateChange" resultType="int" parameterType="String">
-		select count(*) from esupporter
-		where status = '출동중'
-		and wId = #{wId}
+		select count(*) from emergency 
+		where reportcheck = 'N'
+		and wid = #{wId}
 	</select>
 	
 	<select id="emergencyDispatchNotification" resultType="EmergencyVO" parameterType="String">
-		select e.scode as sCode, e.stype as sType, e.occurtime as occurTime, e.confirmcheck as confirmCheck, e.reportcheck as reportCheck, e.id as id, e.wid as wId,
+		select e.scode, e.stype as sType, e.occurtime as occurTime, e.confirmcheck as confirmCheck, e.reportcheck as reportCheck, e.id as id, e.wid as wId,
 			   m.name as name, m.birth as birth, m.address as address, m.phone as phone, m.caution as caution, m.pacemaker as pacemaker, m.equipment as equipment,
-			   m.memtype as memType, m.gender as gender, s.outconfirm as outConfirm
-		  from emergency e, member m, sensorck s
+			   m.memtype as memType, m.gender as gender
+		  from emergency e, member m
 		 where e.id = m.id
-		   and m.id = s.id
-		   and wId = #{wId}
+		 and e.reportcheck = 'N'
+		   and e.wId = #{wId}
 	</select>
 	
-	<update id="checkEmergencyDispatchNotification" parameterType="EmergencyVO">
-		update emergency
-		set confirmCheck = #{confirmCheck}
-		where sCode = #{sCode}
-	</update>
-	
-	<update id="afterReportEmergencyDispatchNotification" parameterType="EmergencyVO">
+	<update id="checkEmergencyDispatchNotification" >
 		update emergency
 		set reportCheck = #{reportCheck}
 		where sCode = #{sCode}
@@ -75,43 +78,85 @@
 	
 	<select id="selectEsupportByWId" resultType="EsupporterVO" parameterType="String">
 		select f.wcode, f.name, f.birth, f.phone, f.picture, f.wtype, f.gender, f.email, e.wId, e.status, e.pwd, e.cnum
-		from fieldstaff f , esupporter e
-		where f.wcode = e.wcode
-		and wId = #{wId}
+		  from fieldstaff f , esupporter e
+		 where f.wcode = e.wcode
+		   and wId = #{wId}
 	</select>
 	
-	<select id="selectEmergencyList" resultType="DispatchVO" >
-		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, e.wId as wId
-		from emergency e, member m
-		where e.id = m.id
-		<include refid="search"/>
-		and e.wId = #{wId}
+	<select id="selectDispatchList" resultType="DispatchVO" >
+		select e.sCode, e.sType, e.occurTime, m.address, m.pacemaker, m.name, r.redone, r.viewcheck, e.wId, r.rno, e.id
+		  from emergency e
+	 left join report r
+			on e.scode = r.scode
+	inner join member m
+			on e.id = m.id
+			<include refid="search"/>
+		   and e.wid = #{wId}
 	</select>
 	
-	<select id="selectEmergencyDetail" resultType="DispatchVO" parameterType="int">
-		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, e.wId as wId
-		from emergency e, member m
-		where e.id = m.id
-		and e.sCode = #{sCode}
+	<select id="selectDispatchDetail" resultType="DispatchVO" parameterType="int">
+		select e.sCode, e.sType, e.occurTime, m.address, m.pacemaker, m.name, r.redone, r.viewcheck, e.wId, r.rno, e.id
+		  from emergency e
+	 left join report r
+			on e.scode = r.scode
+	inner join member m
+			on e.id = m.id
+		   and e.sCode = #{sCode}
 	</select>
 	
-	<select id="selectEmergencyReportYNList" resultType="DispatchReportVO" >
-		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, r.redone as redone,
-			   r.viewcheck as viewcheck, e.wId as wId, r.rno as rno
-		from emergency e, member m, report r, fieldstaff f
-		where e.id = m.id
-		and f.wcode = r.wcode
-		<include refid="search"/>
-		and e.wId = #{wId}
+	<select id="selectFireCount" resultType="int" parameterType="String">
+		select count(*)
+		  from emergency
+		 where stype = '3'
+		   and wid = #{wId}
+		   and occurtime = TRUNC(SYSDATE)
 	</select>
 	
-	<select id="selectEmergencyReportYNDetail" resultType="DispatchReportVO" parameterType="int">
-		select e.sCode as sCode, e.sType as sType, e.occurTime as occurTime, m.address as address, m.pacemaker as pacemaker, m.name as name, r.redone as redone,
-			   r.viewcheck as viewcheck, e.wId as wId, r.rno as rno
-		from emergency e, member m, report r, fieldstaff f
-		where e.id = m.id
-		and f.wcode = r.wcode
-		and e.sCode = #{sCode}
+	<select id="selectEmergencyCount" resultType="int" parameterType="String">
+		SELECT COUNT(*)
+		  FROM emergency
+		 WHERE (stype = '1' OR stype = '2' OR stype = '3' OR stype = '4' OR stype = '5')
+		   and wid = #{wId}
+		   AND occurtime = TRUNC(SYSDATE)
+	</select>
+	
+	<select id="selectDispatchCount" resultType="int" parameterType="String">
+		SELECT COUNT(*)
+		  FROM emergency
+		 WHERE wid = #{wId}
+		   AND occurtime = TRUNC(SYSDATE)
+	</select>
+	
+	<select id="selectGatewayStockCount" resultType="int" parameterType="int">
+		select count(*) from machine m, center c
+		 where m.cnum = c.cnum
+		   and m.mstatus = '재고'
+		   and m.mcode = 'M01'
+		   and c.cnum = #{cnum}
+	</select>
+	
+	<select id="selectActivityDetectorStockCount" resultType="int" parameterType="int">
+		select count(*) from machine m, center c
+		 where m.cnum = c.cnum
+		   and m.mstatus = '재고'
+		   and m.mcode = 'M02'
+		   and c.cnum = #{cnum}
+	</select>
+	
+	<select id="selectDoorDetectorsStockCount" resultType="int" parameterType="int">
+		select count(*) from machine m, center c
+		 where m.cnum = c.cnum
+		   and m.mstatus = '재고'
+		   and m.mcode = 'M03'
+		   and c.cnum = #{cnum}
+	</select>
+	
+	<select id="selectFireDetectorStockCount" resultType="int" parameterType="int">
+		select count(*) from machine m, center c
+		 where m.cnum = c.cnum
+		   and m.mstatus = '재고'
+		   and m.mcode = 'M04'
+		   and c.cnum = #{cnum}
 	</select>
 	
 	<select id="selectEmergencyReportList" resultType="EmergencyReportVO">
@@ -122,7 +167,6 @@
 		 <include refid="search"/>
 		   and r.retype = '1'
 		   and r.wcode= #{wCode}
-		   
 		 order by r.regDate desc
 	</select>
 	
@@ -139,7 +183,7 @@
 		select r.rno, r.regdate, r.content, r.id, r.wcode, r.redone, r.viewcheck, r.retype, r.occurtime, r.occurtype, r.callcheck, m.name, m.address
 		  from report r, member m
 		 where r.id = m.id
-           and retype = '1'
+           and r.retype = '1'
 		   and rno = #{rNo}
 	</select>
 	
@@ -149,18 +193,43 @@
 		where r.rno = s.rno
 		<include refid="search"/>
         and r.id = m.id
+        and r.retype = '7'
+		and r.wcode= #{wCode}
+	</select>
+	
+	<select id="selectEquipmentReportCount" resultType="int">
+		select count(*)
+		from report r, selectmachine s, member m
+		where r.rno = s.rno
+		<include refid="search"/>
+        and r.id = m.id
+        and r.retype = '7'
 		and r.wcode= #{wCode}
 	</select>
 	
 	<select id="selectEquipmentReportDetail" resultType="EquipmentReportVO">
-		select r.rno, r.regdate, r.content, r.id, r.wcode, r.redone, r.viewcheck, r.retype, r.occurTime, r.occurtype, r.callcheck, s.mnum, s.mstatus
-		from report r, selectmachine s
+		select r.rno, r.regdate, r.content, r.id, r.wcode, r.redone, r.viewcheck, r.retype, r.occurTime, r.occurtype, r.callcheck, s.mnum, s.mstatus, m.name, m.address
+		from report r, selectmachine s, member m
 		where r.rno = s.rno
+		and r.id = m.id
 		and r.rno = #{rNo}
 	</select>
 	
-	<select id="selectEsupporterReportAll">
+	<select id="selectMemberNameSearch" resultType="MemberNameSearchVO" >
+		select e.scode, e.stype, e.occurtime, e.reportcheck, e.id, e.wid, m.name, m.gender, m.birth, m.picture
+		  from emergency e, member m
+		 where e.id = m.id
+		   <include refid="search"/>
+		   and e.wid = #{wId}
+	</select>
 	
+	<select id="selectMemberNameSearchCount" resultType="int">
+		select count(*)
+		  from emergency e, member m
+		 where e.id = m.id
+		   and e.reportcheck = 'N'
+		   <include refid="search"/>
+		   and e.wid = #{wId}
 	</select>
 	
 	<select id="selectDayEmergencyReport">
@@ -185,5 +254,25 @@
 		insert into report(rNo,content,id,wCode,reDone,viewCheck,reType,occurTime,occurType,callCheck)
 		values(#{rNo},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},#{occurType},#{callCheck})
 	</update>
+	
+	<update id="updateEsupporterStatus" parameterType="int">
+		update esupporter
+		   set status = '대기중'
+		 where wcode = #{wCode}
+	</update>
+	
+	<update id="updateMemberEId" parameterType="String">
+		<![CDATA[
+      UPDATE member
+      SET eid = NULL
+      where id = #{id}
+    ]]>
+	</update>
+	
+	<select id="">
+		select * from member me , machine ma
+		 where me.id = ma.id
+		   and me.id = #{id}
+	</select>
 	
 </mapper>

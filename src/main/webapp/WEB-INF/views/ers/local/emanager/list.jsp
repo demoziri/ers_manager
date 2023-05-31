@@ -5,7 +5,7 @@
 <c:set var="emanagerList" value="${dataMap.emanagerList}"/>
 <c:set var="pageMaker" value="${dataMap.pageMaker}"/>
 <c:set var="cri" value="${pageMaker.cri}"/>
-<div style="height: 100%; overflow-y: scroll;">
+<div style="height: 100%; overflow-y: auto;">
 	<div class="pt-2 pb-2 pr-5 pl-5">
 		<div class="row">
 		<div class="col-12">
@@ -45,7 +45,7 @@
 						<input type="text" name="keyword" placeholder="응급요원이름을 입력하세요." value="${cri.keyword}" class="w-100" onkeyup="if(window.event.keyCode==13){elist_go(1,null);}"/>
 					</div>
 					<i class="fa-solid fa-magnifying-glass" onclick="javascript:elist_go(1,null);"></i>
-					<input type="hidden" id="perPageNum" value="10"/>
+					<input type="hidden" id="perPageNum" value="8"/>
 					<input type="hidden" id="gubunVal" value="center_emanager"/>
 				</div>
 			</div>
@@ -68,7 +68,9 @@
 					<c:forEach var="emanager" items="${emanagerList }" varStatus="status">
 					
 						<tr style="font-size: 0.73rem; font-weight: bold;" class="${status.index % 2 eq '0' ? 'bg-skyblue' : ''}" onclick="popOpen('${emanager.wcode}');">
-							<th class="text-center pt-2 pb-2">${emanager.picture}</th>
+							<th class="text-center">
+								<span class="centerEmanagerPictureThumb mx-auto" data-id="${emanager.wcode}" style="display:block;width:50px;height:50px;"></span>
+							</th>
 							<td class="py-1 text-center">${emanager.e_name }</td>
 							<td class="text-center py-2">${emanager.l_name}</td>
 							<td class="text-center">${emanager.c_name}</td>
@@ -100,7 +102,11 @@
 	<div class="modal-body">
 		<div class="row">
 			<div class="col-6 h-100">
-					<div style="height:270px; width:100%; border:1px solid red;">사진</div>
+					<div class="d-flex justify-content-center align-items-center"style="height:270px; width:100%;">
+						<span id="detail_picture" style="width: 70%; height:100%">
+						
+						</span>
+					</div>
 			</div>
 			<div class="col-6">
 				<div class="row my-1">
@@ -151,6 +157,14 @@ function popOpen(wcode) {
 	    		if(data.status == '출동중'){
 	    			$('#detail_status').addClass('text-red');
 	    		}
+	    		
+	    		var target = document.getElementById('detail_picture');
+	    		console.log(target);
+	    		target.style.backgroundImage="url('/ers/center/emanager/getPicture?wcode="+data.wcode+"')";
+	    		target.style.backgroundPosition="center";
+	    		target.style.backgroundRepeat="no-repeat";
+	    		target.style.backgroundSize="cover";
+	    		
 	    	},error:function(error){
 				alert(error.status);
 			}
@@ -190,6 +204,10 @@ function elist_go(page,url){
 		action:url,
 		method:'get'
 	}).submit();
+}
+
+window.onload=function(){
+	CenterEmanagerPictureThumb('${pageContext.request.contextPath}');
 }
 
 </script>

@@ -77,54 +77,48 @@
                 </tr>
                 <thead>
                 <tbody class="table-group-divider" style="overflow:auto;">
+                <c:forEach items="${reportList }" var="report">
                   <tr onclick="reportDetail_go();">
-                    <td>2034</td>
+                    <td>${report.RNo }</td>
+                    <c:if test="${report.WType eq 2 }">
+                    <td>응급관리요원</td>
+                    </c:if>
+                    <c:if test="${report.WType eq 1 }">
                     <td>생활지원사</td>
+                    </c:if>
+                     <c:if test="${report.reType eq 1 }">
+                    <td>응급상황</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 2 }">
                     <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 3 }">
+                    <td>건강상태</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 4 }">
+                    <td >서비스취소</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 5 }">
+                    <td >장기부재</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 6 }">
+                    <td >악성대상자신고</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 7 }">
+                    <td>장비점검</td>
+                    </c:if>
+                    <td>${report.name }</td>
+                     <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
+                    <td style="font-size:0.8rem;vertical-align:middle;">${regDate }</td>
+                    <c:if test="${report.viewCheck eq 0 }">
                     <td>미열람</td>
+                    </c:if>
+                    <c:if test="${report.viewCheck eq 1 }">
+                    <td>열람</td>
+                    </c:if>
                   </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
+                 </c:forEach>
+                 
                 </tbody>
             </table>
         </div>

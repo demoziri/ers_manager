@@ -64,7 +64,7 @@
 							</a>
 					</li>
 					<li class="nav-item">
-						<a href="${pageContext.request.contextPath }/ers/local" class="nav-link">
+						<a href="${pageContext.request.contextPath}/ers/local/emergencyReport/list" class="nav-link">
 							<i class="fa-solid fa-bell dashboard_icon"></i>
 								<p class="pl-2">
 								응급발생처리현황
@@ -72,7 +72,7 @@
 							</a>
 					</li>
 					<li class="nav-item">
-						<a href="${pageContext.request.contextPath }/ers/local" class="nav-link">
+						<a href="${pageContext.request.contextPath }/ers/local/censorCheck/list?gubunVal=active" class="nav-link">
 							<i class="fa-solid fa-person-walking-with-cane dashboard_icon"></i>
 								<p class="pl-2">
 								대상자활동현황

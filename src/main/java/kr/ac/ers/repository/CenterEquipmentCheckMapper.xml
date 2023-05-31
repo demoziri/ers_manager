@@ -11,6 +11,7 @@
 	and ma.lnum = l.lnum
 	and ma.mstatus = '미수신'
 	and l.name=#{lname}
+	and m.eid is null
 	order by ma.unconnecttime
 </select>
 	
@@ -27,6 +28,7 @@
 	 group by m.name
 	) cnt
 	where m.status = 1
+	and m.eid is null
 	and m.name = cnt.name
 </select>
 
@@ -37,6 +39,7 @@
 	and ma.lnum = l.lnum
 	and l.name=#{lname}
 	and ma.id = m.id
+	and m.eid is null
 	group by m.id, m.name, m.address, '['|| decode(m.status, '1' ,'독거노인', '장애인')||'] ' || m.name, decode(m.status, '1' ,'독거노인', '장애인'), 
 	m.status, '1', '독거노인', '장애인', '] ', 
 	m.name, m.phone
@@ -50,5 +53,14 @@
 	    where ma.id = m.id
 	)
 	and m.address like '%'||#{lname}||'%'
+	and m.eid is null
 </select>
+
+<update id ="insertEmergencyByMtype">
+	insert into emergency
+	(scode, stype, occurTime, confirmCheck, reportCheck, id, wid)
+	values
+	(#{scode}, #{occurType}, sysdate, 'Y', 'N', #{mem_id}, #{wid})
+</update>
+
 </mapper>

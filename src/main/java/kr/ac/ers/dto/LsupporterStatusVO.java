@@ -15,8 +15,8 @@ public class LsupporterStatusVO {
 		private String wid;
 		private String pwd;
 		private String email;
+		private String id;
 		private String gender;
-		
 
 		public LsupporterStatusVO toLsupporterStatusVO() {
 			//MemberVO setting

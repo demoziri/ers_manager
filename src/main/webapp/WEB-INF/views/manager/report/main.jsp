@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle" value="보고서 관리" />
 <%@include file="../common/head.jspf" %>
 
@@ -28,14 +29,14 @@
             <div class="border h-100 col-6 d-inline-block pt-0">
               <div class="row text-center bg-success text-light"><span class="fs-5 border">장비 미처리 보고서</span></div>
               <div class="row h-75">
-                <h3 class="d-flex m-0 justify-content-center align-items-center">N<span class="fs-4">&nbsp;건</span></h3>
+                <h3 class="d-flex m-0 justify-content-center align-items-center">${machineReportCount }<span class="fs-4">&nbsp;건</span></h3>
               </div>
             </div>
             <!-- 대상자 미처리 보고서 -->
             <div class="border h-100 col-6 d-inline-block pt-0">
               <div class="row text-center bg-primary text-light"><span class="fs-5 border">대상자 미처리 보고서</span></div>
               <div class="row h-75"  onclick="location.href='../member/main'">
-                <h3 class="d-flex m-0 justify-content-center align-items-center">N<span class="fs-4">&nbsp;건</span></h3>
+                <h3 class="d-flex m-0 justify-content-center align-items-center">${memberReportCount}<span class="fs-4">&nbsp;건</span></h3>
               </div>
             </div>
 
@@ -74,142 +75,50 @@
                 </tr>
                 <thead>
                 <tbody style="overflow:auto;">
+                  <c:if test="${not empty reportList }">
+                <c:forEach items="${reportList }" var="report">
+                <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
                   <tr onclick="reportDetail_go();">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
+                    <td style="font-size:0.8rem;">${report.RNo }</td>
+                    <c:if test="${report.WType eq 2 }">
+                    <td style="font-size:0.8rem;">응급관리요원</td>
+                    </c:if>
+                    <c:if test="${report.WType eq 1 }">
+                    <td style="font-size:0.8rem;">생활지원사</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 1 }">
+                    <td style="font-size:0.8rem;">응급상황</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 2 }">
+                    <td style="font-size:0.8rem;">고객면담</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 3 }">
+                    <td style="font-size:0.8rem;">건강상태</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 4 }">
+                    <td style="color:red;font-weight:bold;font-size:0.8rem;">서비스취소</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 5 }">
+                    <td style="color:red;font-weight:bold;font-size:0.8rem;">장기부재</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 6 }">
+                    <td style="color:red;font-weight:bold;font-size:0.8rem;">악성대상자신고</td>
+                    </c:if>
+                    <c:if test="${report.reType eq 7 }">
+                    <td>장비점검</td>
+                    </c:if>
+                    <td style="font-size:0.8rem;">${report.name }</td>
+                    <td style="font-size:0.8rem;">${regDate }</td>
+                    <c:if test="${report.viewCheck eq 1 }">
+                    <td>열람</td>
+                    </c:if>
+                    <c:if test="${report.viewCheck eq 0 }">
                     <td>미열람</td>
+                    </c:if>
+                    
                   </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
-                  <tr onclick="">
-                    <td>2034</td>
-                    <td>생활지원사</td>
-                    <td>고객면담</td>
-                    <td>이정호</td>
-                    <td style="font-size:0.8rem;vertical-align:middle;">2023-05-14</td>
-                    <td>미열람</td>
-                  </tr>
+                 </c:forEach>
+                </c:if>
                 </tbody>
             </table>
           </div>

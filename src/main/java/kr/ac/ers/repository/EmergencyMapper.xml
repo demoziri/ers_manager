@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.EmergencyMapper">
+	<insert id ="insertEmergency">
+		insert 
+		into emergency(scode, stype, id)
+		values(#{scode},#{stype},#{id})
+	</insert>
+	
+	<select id="emergency_seq" resultType="int">
+		select EMERGENCY_SEQ.nextVal
+      	from dual
+	</select>
+	<select id="selectNewEmergency" resultType="emergencyVO">
+	select *
+	from(
+   	select *
+   	from emergency
+   	order by OCCURTIME DESC
+	)
+	where ROWNUM = 1 and id=#{id}
+	</select>
+</mapper>

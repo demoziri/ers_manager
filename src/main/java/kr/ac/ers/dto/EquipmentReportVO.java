@@ -23,4 +23,5 @@ public class EquipmentReportVO {
 	private int mnum;
 	private	String mstatus;
 
+
 }

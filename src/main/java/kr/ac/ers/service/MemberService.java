@@ -134,6 +134,13 @@ public class MemberService {
 	public ApplyFileVO getApplyFile(String id) {
 		return applyFileMapper.selectApplyFileByAfNo(id);
 	}
+
+
+	public MemberVO getMember(int i) {
+		return memberMapper.selectMember(i);
+		
+		
+	}
 	
 	
 	  

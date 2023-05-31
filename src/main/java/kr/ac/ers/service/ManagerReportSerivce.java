@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.ac.ers.command.ManagerReportSearchCriteria;
+import kr.ac.ers.dto.ReportFileVO;
 import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.repository.ManagerReportMapper;
 
@@ -15,6 +16,7 @@ public class ManagerReportSerivce {
 
 	@Autowired
 	private ManagerReportMapper managerReportMapper;
+	
 	 public List<ReportVO> getReportListToMemberMain(ManagerReportSearchCriteria cri) {
 	  
 	 RowBounds rowbounds = new
@@ -25,6 +27,17 @@ public class ManagerReportSerivce {
 	 return reportList;
 	 
 	 }
+	 
+	 public List<ReportVO> getReportListToReportMain(ManagerReportSearchCriteria cri,String viewcheck) {
+		  
+		
+		 
+		 List<ReportVO> reportList = managerReportMapper.selectReportListToReportMain(cri);
+			
+		 return reportList;
+		 
+		 }
+	 
 	 
 	 
 	 public ReportVO getReportByRno(String rno) {
@@ -44,4 +57,20 @@ public class ManagerReportSerivce {
 		 List<ReportVO> reportList = managerReportMapper.selectReportListToMain(rowbounds);
 		 return reportList;
 	 }
+	 
+	 public ReportFileVO getReportFileByRno(int rno) {
+		 return managerReportMapper.selectReportFileByRno(rno);
+	 }
+	 
+	 public int getMemberReportCount() {
+		 return managerReportMapper.selectMemberReportCount();
+	 }
+	 public int getMachineReportCount() {
+		 return managerReportMapper.selectMachineReportCount();
+	 }
+	 
+	 
+	 
+	
+	 
 }

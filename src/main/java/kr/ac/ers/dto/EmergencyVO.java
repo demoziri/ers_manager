@@ -25,6 +25,5 @@ public class EmergencyVO {
 	private String equipment;
 	private String memType;
 	private String gender;
-	private String outConfirm;
 
 }

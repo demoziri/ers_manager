@@ -29,6 +29,28 @@
         from emergency em, member m
         where m.id = em.id
         and m.address like '%'||#{depart}||'%'
-        and em.reportcheck = 'N'
+        and em.wid is null
+	</select>
+	
+	<select id="selectWidByWcode" resultType="String">
+		select wid from esupporter
+        where wcode = #{wcode}
+	</select>
+	
+	<update id="updateEmergencyInsertWid">
+		update emergency
+        set wid = #{wid}
+        where scode = #{scode}
+	</update>
+	
+	<update id="updateEmanagerChangeStatus">
+		update esupporter
+        set status = '출동중'
+        where wid = #{wid}
+	</update>
+	
+	<select id="selectLocalList" resultType="LocalVO">
+		select name from local
+		order by lnum
 	</select>
 </mapper>

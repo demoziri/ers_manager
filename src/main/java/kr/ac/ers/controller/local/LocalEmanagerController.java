@@ -1,10 +1,15 @@
 package kr.ac.ers.controller.local;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +39,7 @@ public class LocalEmanagerController {
 		ManagerVO manager = (ManagerVO)session.getAttribute("loginManager");
 		
 		if(cri.getPage()<1) cri.setPage(１);
-		if(cri.getPerPageNum()<1) cri.setPerPageNum(10);
+		if(cri.getPerPageNum()<1) cri.setPerPageNum(8);
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("dong", dong);
 		returnMap.put("status", status);
@@ -56,5 +61,23 @@ public class LocalEmanagerController {
 		CenterEmanagerVO emanager = centerEmanagerService.getEmanagerByWcode(wcode);
 		
 		return emanager;
+	}
+	
+	@Value("${emPicturePath}")
+	private String picturePath;
+	
+	@GetMapping("/getPicture")
+	@ResponseBody
+	public byte[] getPicture(int wcode) throws Exception {
+		CenterEmanagerVO emanager = centerEmanagerService.getEmanagerByWcode(wcode);
+		if(emanager == null) return null;
+		
+		String picture = emanager.getPicture();
+		String imgPath = picturePath;
+		
+		InputStream in = new FileInputStream(new File(imgPath, picture));
+		System.out.println(in);
+		return IOUtils.toByteArray(in);
+		
 	}
 }

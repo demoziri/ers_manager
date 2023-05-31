@@ -28,6 +28,47 @@
 </nav>
     	
     	
+    	
 	</body>
+	
+	<script>
+    function datesearch() {
+    	var startDate = document.getElementsByName("startday")[0].value;
+    	var endDate = document.getElementsByName("endday")[0].value;
+
+
+      var startArray = startDate.split('-');
+
+      var endArray = endDate.split('-');   
+
+      //배열에 담겨있는 연,월,일을 사용해서 Date 객체 생성
+
+      var start_date = new Date(startArray[0], startArray[1], startArray[2]);
+
+      var end_date = new Date(endArray[0], endArray[1], endArray[2]);
+
+        //날짜를 숫자형태의 날짜 정보로 변환하여 비교한다.
+
+      if(start_date.getTime() > end_date.getTime()) {
+
+          alert("종료날짜보다 시작날짜가 작아야합니다.");
+
+          return false;
+
+      }
+     	
+    }
+	
+  	
+  </script>
+  
+  <script>
+	window.onload=function(){
+		lsupporterPictureThumb('<%=request.getContextPath()%>');
+	}
+	
+	
+</script>
+
 
 </html>

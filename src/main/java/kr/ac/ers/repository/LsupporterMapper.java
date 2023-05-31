@@ -10,6 +10,7 @@ import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
+import kr.ac.ers.dto.MemberEmergencyReportVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
@@ -33,9 +34,9 @@ public interface LsupporterMapper {
 	 int selectLsupportBypwd(String name, String email, String wid);	
 	 //여기까지
 	 
-	//모달창의 대상자 조회
+	//생활지원사에게 배정된 대상자의 보고서 리스트
 	List<MemberReportLsupporterVO> selectSearchMemberList(Map<String, Object> returnMap, RowBounds rowbounds);
-	int selectSearchMemberListCount(SearchCriteria cri, String wid);
+	int selectSearchMemberListCount(Map<String, Object> returnMap);
 	//여기까지
 	
 	//보고서리스트
@@ -62,15 +63,18 @@ public interface LsupporterMapper {
 	
 	int selectmaineducationnotmachine(String wid);
 
-	int selectmainemergancyall(String wid);
+	int selectmainemergencyall(String wid);
 
-	int selectmainemergancyno(String wid);
+	int selectmainemergencymiss(String wid);
+
+	int selectmainemergencyclear(String wid);
+
 	//여기까지
 
 	//응급발생현황리스트
-	List<MemberReportLsupporterVO> selectemergancyList(Map<String, Object> returnMap, RowBounds rowbounds);
+	List<MemberReportLsupporterVO> selectemergencyList(Map<String, Object> returnMap, RowBounds rowbounds);
 
-	int selectemergancyListCount(Map<String, Object> returnMap);
+	int selectemergencyListCount(Map<String, Object> returnMap);
 	//여기까지
 	
 	//대상자상세
@@ -97,5 +101,34 @@ public interface LsupporterMapper {
 	ReportVO selectreportdetail(int rNo);
 
 	ReportVO selectReportModifyForm(int rNo);
+
+	MemberReportLsupporterVO selectLsupporterreport(int rNo);
+
+	void updatereport(MemberReportLsupporterVO reportlsupporterfile);
+
+	void remove(int rNo);
+
+	MemberVO selectMemberById(String id);
+	
+	//응급상황내역에서 보고서 작성시 대상자조회 멤버 리스트
+	List<MemberEmergencyReportVO> selectSearchemergencyMemberList(Map<String, Object> returnMap, RowBounds rowbounds);
+	
+	//응급상황내역에서 보고서 작성시 대상자조회 멤버 리스트카운트
+	int selectSearchemergencyMemberListCount(Map<String, Object> returnMap);
+
+	List<MemberReportLsupporterVO> selectNowReportList(Map<String, Object> returnMap, RowBounds rowbounds);
+
+	int selectNowReportListCount(Map<String, Object> returnMap);
+
+	int educationreportCount(String wid);
+
+	int lifereportCount(String wid);
+
+	int falsereportCount(String wid);
+
+	int longreportCount(String wid);
+
+	int devilreportCount(String wid);
+
 
 }

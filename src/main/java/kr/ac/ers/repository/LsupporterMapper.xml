@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="kr.ac.ers.repository.LsupporterMapper">
+
 <sql id="search">	
 		<if test="cri.searchType == 'all'.toString()">
 			and (
@@ -9,15 +10,10 @@
 			m.birth like '%'||#{cri.keyword}||'%'		
 			or
 			m.gender like '%'||#{cri.keyword}||'%'		
-			or
-		    r.reType like '%'||#{cri.keyword}||'%'	
-			or
-			r.regDate like '%'||#{cri.keyword}||'%'	
-			or
-			r.viewCheck like '%'||#{cri.keyword}||'%'
-			or
-			r.reDone like '%'||#{cri.keyword}||'%'		
 			)			
+		</if>
+		<if test="cri.searchType == 'rp'.toString()">
+			and f.name like '%'||#{cri.keyword}||'%'			
 		</if>
 		<if test="cri.searchType == 'n'.toString()">
 			and m.name like '%'||#{cri.keyword}||'%'			
@@ -31,18 +27,15 @@
 		<if test="cri.searchType == 'g'.toString()">
 			and m.gender like '%'||#{cri.keyword}||'%'			
 		</if>
-		<if test="cri.searchType == 'r'.toString()">
-			and r.reType like '%'||#{cri.keyword}||'%'			
-		</if>
-		<if test="cri.searchType == 'rd'.toString()">
-			and r.regDate like '%'||#{cri.keyword}||'%'			
-		</if>	
-		<if test="cri.searchType == 'vc'.toString()">
-			and r.viewCheck like '%'||#{cri.keyword}||'%'			
-		</if>	
-		<if test="cri.searchType == 'rD'.toString()">
-			and r.reDone like '%'||#{cri.keyword}||'%'			
-		</if>	
+		<if test="cri.searchType == 'date'.toString()">
+  <![CDATA[AND r.regDate >= TO_DATE('cri.keyword', 'YYYY-MM-DD') AND r.regDate < TO_DATE('cri.keyword', 'YYYY-MM-DD') + 1]]>
+</if>
+<if test="cri.searchType == 'occurdate'.toString()">
+  <![CDATA[AND e.occurTime >= TO_DATE('cri.keyword', 'YYYY-MM-DD') AND e.occurTime < TO_DATE('cri.keyword', 'YYYY-MM-DD') + 1]]>
+</if>
+
+
+		
 	</sql>	
 	
 	<select id="selectLsupportBywid" resultType="LsupporterVO" parameterType="String">
@@ -69,17 +62,20 @@
 	</select>
 	<!--생활지원사에게 배정된 대상자의 보고서 리스트 뽑아주는 쿼리  -->
 	<select id="selectSearchMemberList" resultType="MemberReportLsupporterVO" >
-		select DISTINCT r.rno, m.picture, m.name, m.gender, r.retype, r.regdate, r.viewcheck
+		select DISTINCT r.rno, m.picture, m.name, m.gender, r.retype, r.regdate, r.viewcheck, m.id
 		from member m , report r, lsupporter l
 		where m.id = r.id and m.wid = l.wid and l.wid= #{wid} and m.id is not null
+		<if test="startday != null and startday != ''.toString()"> 
+		and r.regdate between to_date(#{startday}) and to_date(#{endday}) + 0.99999
+		</if>
 		<include refid="search" />
 		order by r.regDate desc
 	</select>
 <!--생활지원사에게 배정된 대상자의 보고서 리스트 숫자 뽑아주는 쿼리  -->
 	<select id="selectSearchMemberListCount" resultType="int" >
 	select count(*)
-	from member m, fieldstaff fs, lsupporter l
-	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
+		from member m , report r, lsupporter l
+		where m.id = r.id and m.wid = l.wid and l.wid= 'xee1000' and m.id is not null
 	<include refid="search" />
 	</select>
 	<!--생화맂원사에게 배정된 대상자 카운터  -->
@@ -103,9 +99,10 @@
 		    WHERE l.wid = #{wid}
 		</select>
 		<update id="insertMemberReport" parameterType="MemberReportLsupporterVO">
-		    insert into
-		    report(rNo,id,content,wCode,reDone,viewCheck,reType,occurTime,occurType)
-		    values(#{rNo},#{id},#{content},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},${occurType})
+		 INSERT INTO report (rNo, id, content, wCode, reDone, viewCheck, reType, occurTime, occurType, sCode)
+		VALUES (#{rNo}, #{id}, #{content}, #{wCode}, #{reDone}, #{viewCheck}, #{reType}, #{occurTime}, ${occurType},
+        CASE WHEN ${sCode} = 0 THEN NULL ELSE ${sCode} END)
+
 		</update>
 
 		<select id="selectReportSequenceNextValue" resultType="int">
@@ -113,7 +110,7 @@
 		from dual
 		</select>
 		<select id="selectmembereducationList" resultType="MembereducationVO" parameterType="String">
-			SELECT m.id, r.rno, m.picture, m.name, m.birth, m.gender, ss.activetime, r.regdate
+			SELECT m.id, r.rno, m.picture, m.name, m.birth, m.gender, ss.activetime, r.regdate,m.memtype
 			FROM member m
 			JOIN lsupporter l ON m.wid = l.wid
 			JOIN report r ON r.wcode = l.wcode
@@ -127,6 +124,9 @@
 			    WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
 			    GROUP BY m.id
 )
+<if test="startday != null and startday != ''.toString()"> 
+		and r.regdate between to_date(#{startday}) and to_date(#{endday}) + 0.99999
+		</if>
 		<include refid="search" /> 
 		</select>
 		<select id="selectmembereducationListCount" resultType="int" parameterType="String">
@@ -147,126 +147,97 @@
 		<include refid="search" /> 
 		</select>
 <select id="selectmaineducationfutureDate" resultType="int" parameterType="String">
-
-  SELECT COUNT(*)
-  FROM member m
-  JOIN lsupporter l ON m.wid = l.wid
-  JOIN report r ON r.wcode = l.wcode
-  JOIN sensorck ss ON ss.id = m.id
-  WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
-  AND (m.id, TRUNC(r.regdate)) IN (
-      SELECT m.id, MAX(TRUNC(r.regdate))
-      FROM member m
-      JOIN lsupporter l ON m.wid = l.wid
-      JOIN report r ON r.wcode = l.wcode
-      WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
-    <![CDATA[
-  AND TRUNC(r.regdate) <> TRUNC(SYSDATE)
-  AND TRUNC(ss.activetime) = TRUNC(SYSDATE)
-  ]]>
-      GROUP BY m.id
-  )
+SELECT count(*)
+FROM report r, lsupporter l, sensorck ss
+WHERE r.wcode = l.wcode
+  AND l.wid = #{wid} and r.retype =2
+      <![CDATA[
+  AND TRUNC(r.regdate + 14) - TRUNC(SYSDATE) = 1
+  and TRUNC(ss.activetime) = TRUNC(SYSDATE)
+    ]]>
 </select>
 <select id="selectmaineducationclearDate" resultType="int" parameterType="String">
-  SELECT COUNT(*)
-  FROM member m
-  JOIN lsupporter l ON m.wid = l.wid
-  JOIN report r ON r.wcode = l.wcode
-  JOIN sensorck ss ON ss.id = m.id
-  WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
-  AND (m.id, TRUNC(r.regdate)) IN (
-      SELECT m.id, MAX(TRUNC(r.regdate))
-      FROM member m
-      JOIN lsupporter l ON m.wid = l.wid
-      JOIN report r ON r.wcode = l.wcode
-      WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
-    <![CDATA[
-  AND TRUNC(r.regdate) = TRUNC(SYSDATE)
+SELECT count(*)
+FROM report r, lsupporter l, sensorck ss
+WHERE r.wcode = l.wcode
+  AND l.wid = #{wid} and r.retype =2
+       <![CDATA[
+  AND TRUNC(r.regdate) =TRUNC(SYSDATE)
   AND TRUNC(ss.activetime) = TRUNC(SYSDATE)
-  ]]>
-      GROUP BY m.id
-  )
+      ]]>
 </select>
 <select id="selectmaineducationnotmachine" resultType="int" parameterType="String">
-  SELECT COUNT(*)
-  FROM member m
-  JOIN lsupporter l ON m.wid = l.wid
-  JOIN report r ON r.wcode = l.wcode
-  JOIN sensorck ss ON ss.id = m.id
-  WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
-  AND (m.id, TRUNC(r.regdate)) IN (
-      SELECT m.id, MAX(TRUNC(r.regdate))
-      FROM member m
-      JOIN lsupporter l ON m.wid = l.wid
-      JOIN report r ON r.wcode = l.wcode
-      WHERE l.wid = #{wid} AND r.retype = '2' AND r.id = m.id
-    <![CDATA[
-  AND TRUNC(r.regdate) <> TRUNC(SYSDATE)
-  AND TRUNC(ss.activetime) <> TRUNC(SYSDATE)
-  ]]>
-      GROUP BY m.id
-  )
+SELECT count(*)
+FROM report r, lsupporter l, sensorck ss, member m
+WHERE r.wcode = l.wcode
+  AND l.wid = #{wid} and r.retype =2
+  and m.wid = l.wid and m.id = r.id and ss.id = m.id
+         <![CDATA[
+  AND TRUNC(r.regdate + 14) - TRUNC(SYSDATE) = 1
+  and TRUNC(ss.activetime) <> TRUNC(SYSDATE)
+        ]]>
 </select>
-<select id="selectmainemergancyall" resultType="int" parameterType="String">
-SELECT COUNT(*)
-FROM member m
-JOIN lsupporter l ON m.wid = l.wid
-JOIN report r ON r.wcode = l.wcode
-JOIN sensorck ss ON ss.id = m.id
-JOIN emergency e ON e.id = m.id
-WHERE l.wid = #{wid} 
-  AND r.retype = '7' 
-  AND r.id = m.id
-  AND (m.id, TRUNC(r.regdate)) IN (
-    SELECT m.id, MAX(TRUNC(r.regdate))
-    FROM member m
-    JOIN lsupporter l ON m.wid = l.wid
-    JOIN report r ON r.wcode = l.wcode
-    WHERE l.wid = #{wid}
-      AND r.retype = '7' 
-      AND r.id = m.id
-      AND TRUNC(e.occurtime) BETWEEN TRUNC(r.regdate) AND TRUNC(r.regdate)+2
-      
-    GROUP BY m.id
-  )
+<!--응급발생 전체 -->
+<select id="selectmainemergencyall" resultType="int" parameterType="String">
+select count(*)
+from member m, lsupporter l, emergency e
+where m.wid = l.wid and e.id = m.id and l.wid = #{wid}
+         <![CDATA[
+  AND e.occurtime >= TRUNC(SYSDATE) - 2
+    ]]>
 </select>
-<select id="selectmainemergancyno" resultType="int" parameterType="String">
-SELECT COUNT(*)
-FROM member m
+<!-- 응급발생중 미처리건 --> 
+<select id="selectmainemergencymiss" resultType="int" parameterType="String">
+SELECT count(*)
+FROM emergency e
+JOIN member m ON e.id = m.id
 JOIN lsupporter l ON m.wid = l.wid
-JOIN report r ON r.wcode = l.wcode
-JOIN emergency e ON e.id = m.id
+LEFT JOIN report r ON e.scode = r.scode
+WHERE l.wid = #{wid} AND r.scode IS NULL
+ <![CDATA[
+  AND e.occurtime >= TRUNC(SYSDATE) - 2
+    ]]>
+</select>
+
+<select id="selectmainemergencyclear" resultType="int" parameterType="String">
+SELECT count(*)
+FROM emergency e
+JOIN member m ON e.id = m.id
+JOIN lsupporter l ON m.wid = l.wid
+LEFT JOIN report r ON e.scode = r.scode
+WHERE l.wid = #{wid} AND r.scode IS NOT NULL
+ <![CDATA[
+  AND e.occurtime >= TRUNC(SYSDATE) - 2
+    ]]>
+</select>
+
+
+<select id="selectemergencyList" resultType="MemberEmergencyReportVO" parameterType="String">	
+SELECT e.*, r.retype, r.viewcheck, r.rno, m.*
+FROM emergency e
+JOIN member m ON e.id = m.id
+JOIN lsupporter l ON m.wid = l.wid
+LEFT JOIN report r ON e.scode = r.scode
 WHERE l.wid = #{wid}
-  AND r.retype = '2' 
-  AND r.id = m.id
-  AND (m.id, TRUNC(r.regdate)) IN (
-    SELECT m.id, MAX(TRUNC(r.regdate))
-    FROM member m
-    JOIN lsupporter l ON m.wid = l.wid
-    JOIN report r ON r.wcode = l.wcode
-    WHERE l.wid = #{wid}
-      AND r.retype = '2' 
-      AND r.redone ='0'
-      AND r.id = m.id
-      AND TRUNC(e.occurtime) BETWEEN TRUNC(r.regdate) AND TRUNC(r.regdate) + 2
-    GROUP BY m.id
-  )
-</select> 
-<select id="selectemergancyList" resultType="MemberEmergancyReportVO" parameterType="String">	
-select DISTINCT m.id,r.rno,m.picture, m.name, m.gender, e.occurtime, r.redone, r.viewcheck
-from member m, report r, lsupporter l, emergency e
-where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
+<if test="startday != null and startday != ''.toString()"> 
+		and r.regdate between to_date(#{startday}) and to_date(#{endday}) + 0.99999
+		</if>
 <include refid="search" /> 
 </select>
-<select id="selectemergancyListCount" resultType="int" parameterType="String">	
-select count(*)
-from member m, report r, lsupporter l, emergency e
-where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
+<select id="selectemergencyListCount" resultType="int" parameterType="String">	
+SELECT count(*)
+FROM emergency e
+JOIN member m ON e.id = m.id
+JOIN lsupporter l ON m.wid = l.wid
+LEFT JOIN report r ON e.scode = r.scode
+WHERE l.wid = #{wid}
+<include refid="search" />
 </select>
 	<select id="selectMemberDetail" resultType="MemberDetailVO">
-	SELECT DISTINCT m.id, m.name, m.birth, m.address, m.phone, m.caution, m.pacemaker, m.memtype, m.orgdisease,m.drug, m.mentalstatus,m.fam_rel  
+		SELECT DISTINCT m.id, m.name, m.birth, m.address, m.phone, m.caution, m.pacemaker, m.memtype, m.orgdisease,m.drug, m.mentalstatus,m.fam_rel,f.name  
 	FROM member m
 	JOIN lsupporter l ON m.wid = l.wid
+    JOIN fieldstaff f ON l.wcode = f.wcode
 	WHERE m.id = #{id} AND l.wid = #{wid}
     
 	</select>
@@ -297,9 +268,13 @@ where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 	</select>
 	
 	<select id="selectReportList" resultType="MemberReportLsupporterVO">
-	select DISTINCT r.rno, r.regdate, fs.name, r.retype, r.viewcheck
+	select DISTINCT r.rno, r.regdate, fs.name, r.retype, r.viewcheck, m.id
 	from member m, report r, lsupporter l, fieldstaff fs
 	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and m.id = #{id}
+	order by r.regDate desc
+	<if test="startday != null and startday != ''.toString()"> 
+		and r.regdate between to_date(#{startday}) and to_date(#{endday}) + 0.99999
+		</if>
 	<include refid="search" /> 
 	</select>
 	
@@ -316,16 +291,17 @@ where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 		where rNo = #{rNO}
 	</select>
 	
-	<select id="selectreportdetail" resultType="ReportVO">
+	<select id="selectLsupporterreport" resultType="MemberReportLsupporterVO" parameterType="int">
 				select *
 				from report r, member m
 				where rno= #{rNo} and r.id = m.id
+					
 	</select>
 	
-	<update id="modifyreport" parameterType="int" >
+	<update id="updatereport" >
 		update report 
 		set 
-		viewCheck=#{viewCheck},occurTime=#{occurTime},occurType=#{occurType},
+		occurTime=#{occurTime},occurType=#{occurType},
 		callCheck=#{callCheck},content=#{content}
 		where rNo=#{rNo}
 	</update>
@@ -335,4 +311,101 @@ where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 		from report r, member m
         where r.id = m.id and r.rno=#{rNo}
 	</select>
+	<update id="remove" parameterType="int">
+	delete 
+	from report
+	where rNo = #{rNo}
+	</update>
+	
+	<select id="selectMemberById" parameterType="String" resultType="MemberVO">
+	select *
+	from member
+	where id = #{id}
+	</select>
+	
+	<select id="selectSearchemergencyMemberList" parameterType="String" resultType="MemberEmergencyReportVO">
+	SELECT e.scode,e.stype, m.id, m.birth, m.gender, m.name, m.picture
+	FROM member m
+	JOIN lsupporter l ON m.wid = l.wid
+	LEFT JOIN emergency e ON e.id = m.id
+	WHERE l.wid = #{wid}
+		<include refid="search" />
+	</select>
+	
+	<select id="selectSearchemergencyMemberListCount" parameterType="String" resultType="int">
+		SELECT count(*)
+	FROM member m
+	JOIN lsupporter l ON m.wid = l.wid
+	LEFT JOIN emergency e ON e.id = m.id
+	WHERE l.wid = #{wid}
+		<include refid="search" />
+	</select>
+	<select id="selectNowcareList" parameterType="String" resultType="MembereducationVO">
+		SELECT m.picture, m.name, r.retype, r.viewcheck, ss.activetime, r.rno 
+	FROM member m
+	JOIN lsupporter l ON m.wid = l.wid
+    JOIN sensorck ss ON m.id = ss.id
+	LEFT JOIN report r ON r.id = m.id
+	WHERE l.wid = #{wid}
+	</select>
+	<select id="selectNowReportList" parameterType="String" resultType="MemberReportLsupporterVO">
+	SELECT DISTINCT r.rno, m.picture, m.name, m.gender, r.retype, r.regdate, r.viewcheck, m.id
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE)
+	  <include refid="search" />
+	</select>
+	<select id="selectNowReportListCount" parameterType="String" resultType="int">
+	SELECT count(*)
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE)
+	  <include refid="search" />
+	</select>
+	
+	<select id="educationreportCount" parameterType="String" resultType="int">
+	SELECT count(*)
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 2
+	</select>
+	<select id="lifereportCount" parameterType="String" resultType="int">
+	SELECT count(*)
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 3
+	</select>
+	<select id="falsereportCount" parameterType="String" resultType="int">
+	SELECT count(*)
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 4
+	</select>
+	<select id="longreportCount" parameterType="String" resultType="int">
+	SELECT count(*)
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 5
+	</select>
+	<select id="devilreportCount" parameterType="String" resultType="int">
+	SELECT count(*)
+	FROM member m
+	JOIN report r ON m.id = r.id
+	JOIN lsupporter l ON m.wid = l.wid
+	WHERE l.wid = #{wid} AND m.id IS NOT NULL
+	  AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 6
+	</select>
+	
 	</mapper>

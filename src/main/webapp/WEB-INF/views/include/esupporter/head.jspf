@@ -29,61 +29,14 @@
 <script src="/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/bootstrap/dist/js/adminlte.min.js?v=3.2.0"></script>
 
-<script>
-	//페이지 로드 시 쿼리문 실행
-	window.onload = function() {
-		executeQuery();
-	};
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
-	function showNotification(message) {
-		var notification = document.getElementById('notification');
-		notification.innerText = message;
-		notification.style.display = 'block';
-	}
 
-	// 알림 숨기는 함수
-	function hideNotification() {
-		var notification = document.getElementById('notification');
-		notification.innerText = '';
-		notification.style.display = 'none';
-	}
-
-	// 알림을 주는 엔티티에서 호출
-	showNotification('알림 메시지');
-
-	// 일정 시간이 지나면 알림 숨김
-	setTimeout(hideNotification, 5000); // 5초 후에 숨김
-	
-	function executeQuery() {
-		// AJAX 요청 생성
-		var xhr = new XMLHttpRequest();
-		
-		alert(xhr);
-		
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-		    	// AJAX 요청이 완료되고 응답이 성공인 경우 처리할 작업
-		    	var response = xhr.responseText;
-		    	
-		    	// 결과값 확인 후 알림 표시
-		    	if (response === '1') {
-					showNotification('알림 메시지');
-				} else {
-			    	hideNotification();
-				}
-			}
-		};
-
-		// AJAX 요청 설정
-		xhr.open('GET', 'emergency', true);
-		xhr.send();
-	}
-	
-</script>
 
 </head>
 <body class="body">
-	
+	<%@include file="checkEmergency.jsp"%>
 	<!-- 알림 영역 -->
     <div id="notification" style="display: none;"></div>
 	
@@ -107,11 +60,20 @@
 				</li>
 				<!-- 현재상태 -->
 				<li class="item-bar">
-					<img class="img_size" src="/resources/esupporter/img/대기중아이콘.png" />
-					<select class="selectOption header_menu_name" style="">
-						<option value="">대기중</option>
-						<option value="">퇴근</option>
-						<option value="">출동중</option>
+					<c:if test="${loginUser.status eq '대기중' or eStatus eq '대기중'}">
+						<img class="" src="/resources/esupporter/img/대기중.png" style="width: 40px; height: 40px; margin-top: 13px; margin-bottom: 8px;"/>
+					</c:if>
+					<c:if test="${loginUser.status eq '퇴근' or eStatus eq '퇴근'}">
+						<img class="" src="/resources/esupporter/img/퇴근.png" style="width: 40px; height: 40px; margin-top: 15px; margin-bottom: 7px;"/>
+					</c:if>
+					<c:if test="${loginUser.status eq '출동중' or eStatus eq '출동중'}">
+						<img class="status_img" src="/resources/esupporter/img/출동중.png"/>
+					</c:if>
+					
+					<select class="header_menu_name select_bottom" style="">
+						<option value="대기중" ${loginUser.status eq '대기중' ? 'selected':''}>대기중</option>
+						<option value="퇴근" ${loginUser.status eq '퇴근' ? 'selected':''}>퇴근</option>
+						<option value="출동중" ${loginUser.status eq '출동중' ? 'selected':''}>출동중</option>
 					</select>
 				</li>
 				<!--공지사항  -->

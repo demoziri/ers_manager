@@ -86,3 +86,56 @@ li, .item_bar {
 .reportname:hover {
 	color: blue;
 }
+
+.input_date {
+	border: 1px solid black;
+	font-size: 2rem;
+}
+
+.search-bar {
+	width: 300px;
+	height: 45px;
+	border: solid 1px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	z-index: 1;
+	opacity: 1;
+}
+
+.search-bar__input {
+	width: 40%;
+	border: none;
+	-webkit-appearance: none;
+	text-align: center;
+	margin-left: 10px;
+	overflow: auto;
+	z-index: -1;
+	font-size: 1.25rem;
+	border-radius: 5px;
+}
+
+.search-bar__input:focus {
+	outline: none;
+	width: 100%;
+	text-align: left;
+}
+
+.fa-search {
+	font-size: 2rem;
+	border:1px solid black;
+}
+
+.text--center {
+	margin: 0 auto;
+	font-family: 'MinSans-Regular';
+}
+
+.flex--center {
+	justify-content: center;
+}
+
+.input_borderRadius{
+	border-radius: 5px;
+	font-family: 'MinSans-Regular';
+}

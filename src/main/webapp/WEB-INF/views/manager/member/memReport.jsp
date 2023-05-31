@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div style="height:100%;width:100%;">
+<div  style="height:100%;width:100%;margin-top:10px;">
   <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
 
   <div>
@@ -19,7 +19,7 @@
     	<c:if test="${report.reType eq 7 }">장비점검</c:if>
     </span>
   </div>
-  <div style="height:100%;width:100%;">
+  <div id="reportDetail" style="height:100%;width:100%;">
     <table class="table table-bordered">
       <tr>
         <th>작성자</th>
@@ -36,7 +36,11 @@
       </tr>
       <tr>
         <th>첨부파일</th>
-        <td>첨부파일.pdf<i class="bi bi-file-earmark-text-fill"></i></td>
+        <td>
+        ${report.reportfile.filename.split("\\$\\$")[1]}
+        
+        
+        <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/lsupporter/getFile?sfNo=${report.reportfile.sfNo }'"></i></td>
         <th>비고</th>
         <td>-</td>
       </tr>

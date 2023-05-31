@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/lheader.jspf"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div style="height: 100%; overflow-y: scroll;">
+<div style="height: 100%; overflow-y: auto;">
 <div class="pt-2 pb-2 pr-5 pl-5">
 	<div class="row">
 		<div class="col-12">
@@ -39,7 +39,7 @@
 					<c:forEach var="household" items="${householdList }" varStatus="status">
 					<fmt:formatDate value="${household.unconnectTime}" pattern="yyyy-MM-dd" var="uctime1"/>
 					<fmt:formatDate value="${household.unconnectTime}" pattern="HH:mm:ss" var="uctime2"/>
-					<tr style="font-size: 0.73rem; font-weight: bold; cursor: pointer;" onclick="popOpen('${status.index}','${uctime1}','${uctime2}')">
+					<tr style="font-size: 0.73rem; font-weight: bold; cursor: pointer;" onclick="popOpen('${status.index}','${uctime1}','${uctime2}','${household.id }','${household.ma_name }','${household.mstatus }')">
 						<td class="text-center">${status.index+1}</td>
 						<th class="text-center pt-2 pb-2">${household.m_name}</th>
 						<td class="pl-2">${household.address}</td>
@@ -114,7 +114,7 @@
 		</div>
 	</div>
 	<div class="modal-footer justify-content-center">
-	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="popClose()">업무지시</button>
+	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="command_go()">업무지시</button>
 	<button type="button" class="btn btn-light" data-dismiss="modal" onclick="popClose()">취소</button>
 	</div>
 	</div>
@@ -130,7 +130,7 @@
 
 <script type="text/x-handlebars-template"  id="emanager-list-template" >
 {{#each .}}
-	<option>{{e_name}}</option>
+	<option value="{{wcode}}">{{e_name}}</option>
 {{/each}}
 </script>
 
@@ -158,6 +158,9 @@ Handlebars.registerHelper({
 
 <script>
 let center_val = '';
+let mem_id = '';
+let m_name = '';
+let m_mstatus = '';
 function printData(replyArr,target,templateObject){
 	var template=Handlebars.compile(templateObject.html());
 	var html = template(replyArr);	
@@ -165,10 +168,12 @@ function printData(replyArr,target,templateObject){
 	
 }
 
-function popOpen(index,uctime1, uctime2) {
+function popOpen(index,uctime1, uctime2, id, ma_name, mstatus) {
     var modalPop = $('.modal_wrap');
     var modalBg = $('.modal_bg'); 
-	
+	mem_id = id;
+	m_name = ma_name;
+	m_mstatus = mstatus;
     $.ajax({
     	url:"detail?indexNum=" + index,
 		method:"get",
@@ -213,7 +218,31 @@ function popOpen(index,uctime1, uctime2) {
 	    })
 	}
 
-
+function command_go(){
+	var wcode = $('#emanagerList').val();
+	if(wcode){
+		if(confirm("응급 요원을 지정하시겠습니까?")){
+			$.ajax({
+				url : "commandEmanager?wcode=" + wcode + "&mem_id=" + mem_id + "&m_name=" + m_name + "&mstatus=" + m_mstatus,
+				success:function(){
+					alert("응급 요원 지정이 완료되었습니다.")
+				},error:function(error){
+					alert(error);
+				}
+			})
+			setTimeout(function() {	
+					history.go(); }, 500);
+				
+		}else{
+			return;
+		}
+	}else{
+		alert("응급요원을 지정해주세요.");
+		return;
+	}
+	
+}
+	
  function popClose() {
    var modalPop = $('.modal_wrap');
    var modalBg = $('.modal_bg');

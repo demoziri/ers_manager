@@ -20,8 +20,5 @@ public class CenterCenterVO {
 	private boolean bg_color = false;
 	private boolean checked = false;
 	
-	
 	private List<CenterEquipmentVO> equipmentList;
-
-
 }

@@ -7,11 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.ac.ers.dto.CenterEmanagerVO;
+import kr.ac.ers.dto.CenterEmergencyReportCommandVO;
 import kr.ac.ers.dto.CenterEquipmentVO;
+import kr.ac.ers.dto.LocalVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.service.CenterEmanagerService;
+import kr.ac.ers.service.CenterEmergencyReportService;
+import kr.ac.ers.service.CenterEmergencyService;
 import kr.ac.ers.service.CenterEquipmentService;
 import kr.ac.ers.service.CenterNoticeService;
 
@@ -25,12 +30,17 @@ public class CenterMainController {
 	private CenterNoticeService centerNoticeService;
 	@Autowired
 	private CenterEmanagerService centerEmanagerService;
+	@Autowired
+	private CenterEmergencyReportService centerEmergencyReportService;
+	@Autowired
+	private CenterEmergencyService centerEmergencyService;
 	
 	@GetMapping("/main")
 	public void main(Model model) {
 		List<CenterEquipmentVO> equipmentList = centerEquipmentService.getEquipmentListWithCount(null);
 		List<NoticeVO> noticeList = centerNoticeService.getNoticeListToMain();
 		List<CenterEmanagerVO> emanagerList = centerEmanagerService.getEmanagerListToMain();
+		List<LocalVO> localList = centerEmergencyService.getEmergencyListToMain();
 		
 		int totalCount = 0;
 		if(emanagerList!= null && emanagerList.size()>0)
@@ -41,7 +51,14 @@ public class CenterMainController {
 		model.addAttribute("equipmentList", equipmentList);
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("emanagerList", emanagerList);
+		model.addAttribute("localList",localList);
 	}
 	
-	
+	@GetMapping("/checkEmergencyView")
+	@ResponseBody
+	public List<CenterEmergencyReportCommandVO> checkEmergencyView() {
+		List<CenterEmergencyReportCommandVO> emergenctReportList = centerEmergencyReportService.getEmergencyReportListToMain("");
+		
+		return emergenctReportList;
+	}
 }

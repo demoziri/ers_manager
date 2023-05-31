@@ -22,7 +22,7 @@
   }
 
   body {
-      zoom: 100%;
+      zoom: 105%;
     }
 	 
   html>body,
@@ -91,19 +91,19 @@
           <div class="li-title" style="width:85%;margin:0 auto;">
             <ul class="menu nav d-flex justify-content-around mx-lg-auto px-5 ">
               <li class="nav-item">
-                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/member/main">대상자관리</a>
+                <a class="nav-link text-light targetManage" href="<%=request.getContextPath()%>/ers/manager/member/main">대상자관리</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/staff/main">직원관리</a>
+                <a class="nav-link text-light workerManage" href="<%=request.getContextPath()%>/ers/manager/staff/main">직원관리</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/machine/main">장비관리</a>
+                <a class="nav-link text-light machineManage" href="<%=request.getContextPath()%>/ers/manager/machine/main">장비관리</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/report/main">보고서조회</a>
+                <a class="nav-link text-light reportManage" href="<%=request.getContextPath()%>/ers/manager/report/main">보고서조회</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light" href="<%=request.getContextPath()%>/ers/manager/notice/main">공지사항</a>
+                <a class="nav-link text-light noticeMange" href="<%=request.getContextPath()%>/ers/manager/notice/main">공지사항</a>
               </li>
             </ul>
           </div>
@@ -111,3 +111,37 @@
       </div>
     </nav>
     <!-- Close Header -->
+    
+    
+ <script>
+  var url = window.location.pathname; // 현재 URL 경로 가져오기
+  var navLinks = document.querySelectorAll('.nav-link'); // 모든 링크 요소 가져오기
+
+  // 링크를 순회하면서 현재 URL과 일치하는 경우 active 클래스 추가
+  for (var i = 0; i < navLinks.length; i++) {
+    if (navLinks[i].getAttribute('href') === url) {
+    	if(navLinks[i].getAttribute('href').split('/')[3] === 'member'){
+           navLinks[i].innerHTML += "<i class='bi bi-emoji-smile-fill'></i>";
+    	}else if(navLinks[i].getAttribute('href').split('/')[3] === 'staff'){
+    		navLinks[i].innerHTML += "<i class='bi bi-file-person-fill'></i>";
+    	}else if(navLinks[i].getAttribute('href').split('/')[3] === 'machine'){
+    		navLinks[i].innerHTML += "<i class='bi bi-cpu'></i>";
+    	}else if(navLinks[i].getAttribute('href').split('/')[3] === 'report'){
+    		navLinks[i].innerHTML += "<i class='bi bi-clipboard'></i>";
+    	}else if(navLinks[i].getAttribute('href').split('/')[3] === 'notice'){
+    		navLinks[i].innerHTML += "<i class='bi bi-chat-left-text-fill'></i>";
+    	}
+      break; // 일치하는 링크를 찾으면 반복문 종료
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+

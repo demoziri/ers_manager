@@ -7,12 +7,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.ac.ers.command.SearchCriteria;
-import kr.ac.ers.dto.DispatchReportVO;
 import kr.ac.ers.dto.DispatchVO;
 import kr.ac.ers.dto.EmergencyReportVO;
 import kr.ac.ers.dto.EmergencyVO;
 import kr.ac.ers.dto.EquipmentReportVO;
 import kr.ac.ers.dto.EsupporterVO;
+import kr.ac.ers.dto.MemberNameSearchVO;
 
 @Mapper
 public interface EsupporterMapper {
@@ -21,19 +21,29 @@ public interface EsupporterMapper {
 	
 	EmergencyVO emergencyDispatchNotification(String wId);
 	
-	void checkEmergencyDispatchNotification(EmergencyVO mergency);
+	void checkEmergencyDispatchNotification(int sCode, String reportCheck);
 	
 	void afterReportEmergencyDispatchNotification(EmergencyVO mergency);
 	
 	EsupporterVO selectEsupportByWId(String wId);
 	
-	List<DispatchVO> selectEmergencyList(SearchCriteria cri, String wId);
+	List<DispatchVO> selectDispatchList(SearchCriteria cri, String wId);
 	
-	DispatchVO selectEmergencyDetail();
+	DispatchVO selectDispatchDetail(int sCode);
 	
-	List<DispatchReportVO> selectEmergencyReportYNList(SearchCriteria cri, String wId);
+	int selectFireCount(String wId);
 	
-	DispatchReportVO selectEmergencyReportYNDetail();
+	int selectEmergencyCount(String wId);
+	
+	int selectDispatchCount(String wId);
+	
+	int selectGatewayStockCount(int cNum);
+	
+	int selectActivityDetectorStockCount(int cNum);
+	
+	int selectDoorDetectorsStockCount(int cNum);
+	
+	int selectFireDetectorStockCount(int cNum);
 	
 	List<EmergencyReportVO> selectEmergencyReportList(Map<String, Object> returnMap, RowBounds rowBounds);
 	
@@ -41,8 +51,14 @@ public interface EsupporterMapper {
 	
 	EmergencyReportVO selectEmergencyReportDetail(int rno);
 	
-	List<EquipmentReportVO> selectEquipmentReportList(SearchCriteria cri, int wcode);
+	List<EquipmentReportVO> selectEquipmentReportList(Map<String, Object> returnMap, RowBounds rowBounds);
 	
+	int selectEquipmentReportCount(Map<String, Object> returnMap);
+	
+	List<MemberNameSearchVO> selectMemberNameSearch(Map<String, Object> returnMap, RowBounds rowBounds);
+	
+	int selectMemberNameSearchCount(Map<String, Object> returnMap);
+
 	EquipmentReportVO selectEquipmentReport(int rno);
 	
 	int selectReportSequenceNextValue();
@@ -50,5 +66,9 @@ public interface EsupporterMapper {
 	void insertEquipmentReport(EquipmentReportVO equipmentReport);
 	
 	void insertEmergencyReport(EmergencyReportVO emergencyReport);
+	
+	void updateEsupporterStatus(int wCode);
+	
+	void updateMemberEId(String id);
 	
 }

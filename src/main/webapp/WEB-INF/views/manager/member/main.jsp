@@ -64,6 +64,7 @@
                 <th>등록일</th>
                 <th>장비설치</th>
                 <th>생활지원사</th>
+                <th>상태</th>
               </tr>
               <thead>
               <tbody class="table-group-divider">
@@ -88,6 +89,18 @@
                       <td style="color:#e65054;">
                         배정완료
                       </td>
+                    </c:if>
+                    <c:if test="${member.status eq 1 }">
+                    <td style="font-size:0.8rem;">서비스 이용중</td>
+                    </c:if>
+                    <c:if test="${member.status eq 2 }">
+                    <td style="color:red;font-size:0.8rem;">해지</td>
+                    </c:if>
+                    <c:if test="${member.status eq 3 }">
+                    <td style="font-size:0.8rem;">장기부재</td>
+                    </c:if>
+                    <c:if test="${empty member.status}">
+                    <td style="color:gray;font-size:0.8rem;">등록 진행중</td>
                     </c:if>
                   </tr>
                 </c:forEach>
@@ -151,6 +164,12 @@
     <!-- 보고서 상세 -->
     <div class="col-7">
       <div class="card card-body pt-0 mt-3" id="memReport_detail" style="border:1px solid gray;height:250px;">
+       <div style="margin-top:10px;">
+    	 <span class="fs-3" style="border-bottom:2px solid gray;">보고서 상세</span>
+	   </div>
+	    <div id="reportDetail" style="height:100%;width:100%;background-color:#dfdfdf;margin-top:10px;">
+	   	 <div class="h-100 d-flex justify-content-center align-items-center">보고서를 선택해주세요.</div>
+	    </div>
         
       </div>
     </div>
@@ -499,8 +518,7 @@
 	  var start_day = $('input[name="start_day"]').val();
 	  var end_day = $('input[name="end_day"]').val();
 	  var id = $('input[name="id"]').val();
- 	  alert(start_day);
- 	  alert(end_day);
+ 	  
       repSearchInfo = {
 		"reType":reType,
 		"start_day":start_day,
@@ -518,9 +536,8 @@
     			  $('#report_list').html("<div class='h-100 d-flex justify-content-center align-items-center' style='background-color:#dfdfdf;'>등록된 보고서가 없습니다.</div>"); 
     		  }
     		  
-    		  alert(data);
-    		  console.log(data);
-    		  alert("성공");
+    		  
+    		  
     		 
     		  data.forEach(function(item) {
     	            var date = new Date(item.regDate);
@@ -598,10 +615,11 @@
         $("#memDetail").css('background-color', "");
         $("#memDetail").html(data);
         $(".mem_title").html("<span class='regist_text'>대상자 정보(등록)</span>");
-        $("#reList").html('');
-        $("#reList").append('<div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf">대상자를 선택해주세요.</div>');
-        $("#memReport_detail").html('');
-        $("#memReport_detail").append('<div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf">-</div>');
+        $("#re_List").html('');
+        $("#re_List").append('<div class="h-100 d-flex justify-content-center align-items-center" style="background-color:#dfdfdf">대상자를 선택해주세요.</div>');
+        $("#reportDetail").html('');
+        $("#reportName").html('');
+        $("#reportDetail").html('<div class="d-flex justify-content-center align-items-center mt-2" style="background-color:#dfdfdf;height:160px;">보고서를 선택해주세요.</div>');
         $("#reg-btn").hide();
         // modal open(비상연락망)
         $('#openRegPhoneModal').on('click', function() {
@@ -639,6 +657,10 @@
         // 대상자 관련 보고서 리스트
         $("#reList").css('background-color', "");
         $("#report_col").html(f);
+        
+        $("#reportDetail").html("<div class='d-flex justify-content-center align-items-center mt-2' style='background-color:#dfdfdf;height:160px;'>보고서를 선택해주세요.</div>");
+        $("#reportName").html('');
+        
         if ($("#reg-btn").css('display', 'none')) {
           $("#reg-btn").css('display', 'inline');
         }
@@ -766,9 +788,9 @@
     })
   }
 
-  function memReport_go(id) {
+  function memReport_go(rno) {
     $.ajax({
-      url: "reDetail?id="+id,
+      url: "reDetail?rno="+rno,
       type: "get",
       datatype: "text",
       success: function(data) {
@@ -780,7 +802,7 @@
   }
 
   function picture_go() {
-    //alert("changed file");
+    
     var form = $('form[role="imageForm"]');
     var picture = form.find('[name=pictureFile]')[0]; //jqery객체 0번지에 javascript객체있음
     //find : 자손 선택자중에 찾아줌
@@ -868,7 +890,7 @@
   }
 
   function changePicture_go() {
-    alert("picture changed");
+
     var picture = $('input[id="inputFile"]')[0];
     if (picture.files && picture.files[0]) {
       var reader = new FileReader();

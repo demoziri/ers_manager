@@ -5,6 +5,8 @@
 <c:set var="pageTitle" value="게시물 내용"/>
 
 
+
+
 	<!-- 대상자 상세정보 -->
       <div class="col-7">
     
@@ -25,7 +27,13 @@
             </div>
             <!-- 대상자 상세정보 -->
             <div class="col-9 border">
-              <table class="table table-bordered mb-0 mt-1" style="height:75%;">
+              <table class="table table-bordered mb-0 mt-1 " style="height:75%;">
+              <colgroup>
+              	<col width="18%">
+              	<col width="26%">
+              	<col width="18%">
+              	<col width="38%">
+              </colgroup>
                 <tr>
                   <th>대상자 구분</th>
                   <td>${member.memType }</td>
@@ -65,8 +73,9 @@
                 </tr>
                 <tr>
                   <th>신청서</th>
-                 
-                  <td>${member.applyfile.filename.split("\\$\\$")[1]}<i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/manager/member/getFile?id=${member.applyfile.id }'"></i></td>
+                  <td>${member.applyfile.filename.split("\\$\\$")[1]}
+                  <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/manager/member/getFile?id=${member.applyfile.id }'"></i>
+                  </td>
                   <th>생활지원사</th>
                   <td id="lsName" style="text-align:center;">
                   <c:if test="${empty member.wid && member.machineCk eq 4}">

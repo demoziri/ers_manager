@@ -1,5 +1,6 @@
 package kr.ac.ers.controller.esupporter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.SearchCriteria;
-import kr.ac.ers.dto.DispatchReportVO;
 import kr.ac.ers.dto.DispatchVO;
 import kr.ac.ers.dto.EmergencyReportVO;
 import kr.ac.ers.dto.EmergencyVO;
@@ -30,87 +31,94 @@ public class EsupporterController {
 	public EsupporterController(EsupporterService esupporterService) {
 		this.esupporterService = esupporterService;
 	}
-	@RequestMapping("/ers/esupporter/emergency")
-	public String emergency(Model model, HttpSession session, HttpServletRequest request) {
+	@RequestMapping("/ers/esupporter/checkEmergency")
+	@ResponseBody
+	public Map<String, Object> checkEmergency(String depart) {
 		
-		session = request.getSession();			
-		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		
-		String wId = loginUser.getWid();
+		int esupporterState = esupporterService.getEsupporterStateChange(depart);
 		
-		int esupporterState = esupporterService.getEsupporterStateChange(wId);
-		
+		String title = "";
 		String message = "";
+		String notice = "";
+		int sCode = 0;
+		String sType ="";
 		
 		if(esupporterState != 0) {
-			EmergencyVO emergency = esupporterService.getEmergencyDispatchNotification(wId);
+			EmergencyVO emergency = esupporterService.getEmergencyDispatchNotification(depart);
 			String pacemaker = emergency.getPacemaker();
-			if(pacemaker.equals("Y")) {
-				message = "심장질환과 기계부착여부로 인해 CPR기기 사용시 주의바랍니다.";
-			}
-			String outConfirm = emergency.getOutConfirm();
-			if(outConfirm.equals("Y")) {
-				message = "외출시간 넘김 대상자를 찾아주시기 바랍니다.";
+			
+			sType = emergency.getSType();
+			if(sType.equals("2")) {
+				title = "119 응급상황 발생!";
+				message = "119 응급상황입니다. 출동바랍니다.";
+				if(pacemaker.equals("N")) {
+					notice = "심장질환과 기계부착여부로 인해 CPR기기 사용시 주의바랍니다.";
+				}
+			}else if(sType.equals("3")) {
+				title = "화재 상황 발생!";
+				message = "연락후 대상자 상태를 확인 바랍니다.";
+				if(pacemaker.equals("N")) {
+					notice = "심장질환과 기계부착여부로 인해 CPR기기 사용시 주의바랍니다.";
+				}
+			}else if(sType.equals("4")) {
+				title = "활동미감지 발생!";
+				message = "활동이 미감지 되었습니다. 연락후 방문바랍니다.";
+				if(pacemaker.equals("N")) {
+					notice = "심장질환과 기계부착여부로 인해 CPR기기 사용시 주의바랍니다.";
+				}
+			}else if(sType.equals("5")) {
+				title = "장기외출";
+				message = "외출시간이 초과되었습니다. 연락후 방문바랍니다.";
+				if(pacemaker.equals("N")) {
+					notice = "심장질환과 기계부착여부로 인해 CPR기기 사용시 주의바랍니다.";
+				}
+			}else if(sType.equals("6")) {
+				title = "장비 게이트웨이";
+				message = "장비가 미수신이 되었습니다. 연락후 방문바랍니다.";
+			}else if(sType.equals("7")) {
+				title = "장비 활동감지기";
+				message = "장비가 미수신이 되었습니다. 연락후 방문바랍니다.";
+			}else if(sType.equals("8")) {
+				title = "장비 출입문감지기";
+				message = "장비가 미수신이 되었습니다. 연락후 방문바랍니다.";
+			}else if(sType.equals("9")) {
+				title = "장비 화재감지기";
+				message = "장비가 미수신이 되었습니다. 연락후 방문바랍니다.";
+			}else if(sType.equals("10")) {
+				title = "장비 연결차단 해제";
+				message = "연결차단이 해제 되었습니다. 연락후 방문바랍니다.";
+			}else if(sType.equals("11")) {
+				title = "장비 회수";
+				message = "연락후 장비 회수를 하시기 바랍니다.";
+			}else if(sType.equals("12")) {
+				title = "신규가입 ";
+				message = "신규가입이 되었습니다. 연락후 방문바랍니다.";
+			}else {
+				title = "응급상황 발생!";
+				message = "응급상황입니다. 출동바랍니다.";
+				if(pacemaker.equals("N")) {
+					notice = "심장질환과 기계부착여부로 인해 CPR기기 사용시 주의바랍니다.";
+				}
 			}
 			
+			sCode = emergency.getSCode();
 		}
 		
-		 // 데이터를 준비
-	    String ajaxContent = "<script>"
-	    		+"function showNotification(message) {\r\n"
-	    		+ "		var notification = document.getElementById('notification');\r\n"
-	    		+ "		notification.innerText = message;\r\n"
-	    		+ "		notification.style.display = 'block';\r\n"
-	    		+ "	}\r\n"
-	    		+ "\r\n"
-	    		+ "	// 알림 숨기는 함수\r\n"
-	    		+ "	function hideNotification() {\r\n"
-	    		+ "		var notification = document.getElementById('notification');\r\n"
-	    		+ "		notification.innerText = '';\r\n"
-	    		+ "		notification.style.display = 'none';\r\n"
-	    		+ "	}\r\n"
-	    		+ "\r\n"
-	    		+ "	// 알림을 주는 엔티티에서 호출\r\n"
-	    		+ "	showNotification('알림 메시지');\r\n"
-	    		+ "\r\n"
-	    		+ "	// 일정 시간이 지나면 알림 숨김\r\n"
-	    		+ "	setTimeout(hideNotification, 5000); // 5초 후에 숨김\r\n"
-	    		+ "	\r\n"
-	    		+ "	function executeQuery() {\r\n"
-	    		+ "		// AJAX 요청 생성\r\n"
-	    		+ "		var xhr = new XMLHttpRequest();\r\n"
-	    		+ "		\r\n"
-	    		+ "		xhr.onreadystatechange = function() {\r\n"
-	    		+ "			if (xhr.readyState === 4 && xhr.status === 200) {\r\n"
-	    		+ "		    	// AJAX 요청이 완료되고 응답이 성공인 경우 처리할 작업\r\n"
-	    		+ "		    	var response = xhr.responseText;\r\n"
-	    		+ "		    	\r\n"
-	    		+ "		    	// 결과값 확인 후 알림 표시\r\n"
-	    		+ "		    	if (response === '1') {\r\n"
-	    		+ "					showNotification('알림 메시지');\r\n"
-	    		+ "				} else {\r\n"
-	    		+ "			    	hideNotification();\r\n"
-	    		+ "				}\r\n"
-	    		+ "			}\r\n"
-	    		+ "		};\r\n"
-	    		+ "\r\n"
-	    		+ "		// AJAX 요청 설정\r\n"
-	    		+ "		xhr.open('GET', 'emergency', true);\r\n"
-	    		+ "		xhr.send();\r\n"
-	    		+ "	}\r\n"
-	    		+ "	\r\n"
-	    		+ "	// 페이지 로드 시 쿼리문 실행\r\n"
-	    		+ "	window.onload = function() {\r\n"
-	    		+ "		executeQuery();\r\n"
-	    		+ "	};"
-	    		+ "</script>";
-
-	    // 모델에 데이터를 추가
-	    model.addAttribute("ajaxContent", ajaxContent);
-	    model.addAttribute("message", message);
+		dataMap.put(title, title);
+	    dataMap.put("message", message);
+	    dataMap.put("sCode", sCode);
+	    dataMap.put("sType", sType);
 		
-		return "common/esupporter/head";
+		return dataMap;
 		
+	}
+	
+	@GetMapping("ers/esupporter/emergencyUpdate")
+	@ResponseBody
+	public void emergencyUpdate(int sCode, String reportCheck) {
+		esupporterService.getCheckEmergency(sCode, reportCheck);
 	}
 	
 	@GetMapping("/ers/esupporter/dispatchList")
@@ -120,7 +128,6 @@ public class EsupporterController {
 		
 		session = request.getSession();			
 		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
-		String wid = loginUser.getWid();
 		
 		SearchCriteria cri = new SearchCriteria();
 		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
@@ -132,32 +139,27 @@ public class EsupporterController {
 		cri.setSearchType(searchType);
 		cri.setKeyword(keyword);
 		
-		List<DispatchReportVO> dispatchReortList = esupporterService.getEmergencyReportYNList(cri, wid);
+		List<DispatchVO> dispatchList = esupporterService.getDispatchList(cri, loginUser.getWid());
 		
-		List<DispatchVO> dispatchList = esupporterService.getEmergencyList(cri, wid);
-		
-		DispatchReportVO dispatchReport = esupporterService.getEmergencyReportYNDetail();
-		int rNo = dispatchReport.getRNo();
-		
-		model.addAttribute("dispatchReortList", dispatchReortList);
 		model.addAttribute("dispatchList", dispatchList);
-		model.addAttribute("rNo", rNo);
+		model.addAttribute("eStatus", loginUser.getStatus());
 		
 		return url;
 		
 	}
 	
 	@GetMapping("/ers/esupporter/dispatchDetail")
-	public String dispatchDetail(Model model) {
+	public String dispatchDetail(int sCode, Model model, HttpSession session, HttpServletRequest request) {
 		
 		String url = "esupporter/dispatchDetail";
 		
-		DispatchVO dispatch = esupporterService.getEmergencyDetail();
+		session = request.getSession();			
+		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
 		
-		DispatchReportVO dispatchReport = esupporterService.getEmergencyReportYNDetail();
+		DispatchVO dispatch = esupporterService.getDispatchDetail(sCode);
 		
-		model.addAttribute("dispatchReport", dispatchReport);
 		model.addAttribute("dispatch", dispatch);
+		model.addAttribute("eStatus", loginUser.getStatus());
 		
 		return url;
 		
@@ -183,25 +185,51 @@ public class EsupporterController {
 		Map<String, Object> dataMap = esupporterService.getEmergencyReportList(cri, wCode);
 		
 		model.addAttribute("dataMap", dataMap);
+		model.addAttribute("eStatus", loginUser.getStatus());
 		
 		return "esupporter/emergencyList";
 		
 	}
 	
 	@GetMapping("/ers/esupporter/emergencyDetail")
-	public String emergencyDetail(Model model, int rNo) {
+	public String emergencyDetail(Model model, int rNo, HttpSession session) {
+		
+		
+		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
 		
 		EmergencyReportVO emergencyReport = esupporterService.getEmergencyReportDetail(rNo);
 		
 		model.addAttribute("emergencyReport", emergencyReport);
+		model.addAttribute("eStatus", loginUser.getStatus());
 		
 		return "esupporter/emergencyDetail";
 		
 	}
 	
 	@GetMapping("/ers/esupporter/equipmentList")
-	public String equipmentList() {
+	public String equipmentList(String searchType,String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
+		
+		session = request.getSession();			
+		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
+		int wCode = loginUser.getWCode();
+		
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		
+		Map<String, Object> dataMap = esupporterService.getEquipmentReportList(cri, wCode);
+		
+		model.addAttribute("dataMap", dataMap);
+		model.addAttribute("eStatus", loginUser.getStatus());
+		
 		return "esupporter/equipmentList";
+		
 	}
 	
 	@GetMapping("/ers/esupporter/equipmentDetail")
@@ -210,7 +238,7 @@ public class EsupporterController {
 	}
 	
 	@GetMapping("/ers/esupporter/reportForm")
-	public String reportForm(Model model, HttpSession session, HttpServletRequest request /*int afterUrl, int sCode*/) {
+	public String reportForm(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request, /* int rNo, */ String id) {
 		
 		String url = "esupporter/reportForm";
 		
@@ -218,9 +246,24 @@ public class EsupporterController {
 		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
 		
 		int wCode = loginUser.getWCode();
+		String wId = loginUser.getWid();
 		
-		model.addAttribute("loginUser", loginUser);
-		model.addAttribute("wCode", wCode);
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		
+		Map<String, Object> dataMap = esupporterService.getMemberNameSearch(cri, wId);
+		dataMap.put("wCode", wCode);
+		
+		model.addAttribute("id",id);
+		model.addAttribute("eStatus", loginUser.getStatus());
+		model.addAttribute("dataMap", dataMap);
 		/*
 		 * model.addAttribute("afterUrl", afterUrl); model.addAttribute("sCode", sCode);
 		 */
@@ -228,8 +271,33 @@ public class EsupporterController {
 		return url;
 	}
 	
+	@GetMapping("/ers/esupporter/memberSearch")
+	@ResponseBody
+	public Map<String, Object> memberSearch(String searchType,String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
+		
+		session = request.getSession();			
+		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
+		
+		String wId = loginUser.getWid();
+		
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		
+		Map<String, Object> dataMap = esupporterService.getMemberNameSearch(cri, wId);
+		
+		return dataMap;
+		
+	}
+	
 	@PostMapping("/ers/esupporter/report")
-	public String report(EquipmentReportVO equipmentReport, EmergencyReportVO emergencyReport, int afterUrl /*int sCode*/) {
+	public String report(EquipmentReportVO equipmentReport, EmergencyReportVO emergencyReport) {
 		
 		String url = "";
 		
@@ -237,30 +305,15 @@ public class EsupporterController {
 		
 		if(retype.equals("1")) {
 			esupporterService.insertEmergencyReport(emergencyReport);
+			return url = "redirect:/ers/esupporter/emergencyList";
 		}else {
 			esupporterService.insertEquipmentReport(equipmentReport);
+			if(equipmentReport.getRedone().equals("0")) {
+				return url = "redirect:/ers/esupporter/equipmentList";
+			}else {
+				return url = "redirect:/ers/esupporter/memberInformation?id="+equipmentReport.getId();
+			}
 		}
-			
-		
-		
-		/* 어디서 왔냐에 따라다르다. 
-		 * 예
-		 * 1. 출동상세
-		 * 2. 응급상황 리스트
-		 * 3. 장비점검 리스트
-		 * 위 3개의 곳으로 각각 보내줘야 한다.
-		 */
-		
-		switch (afterUrl) {
-		case 1: 
-			return url = "redirect:/ers/esupporter/dispatchDetail?scode"/*+sCode*/;
-		case 2:
-			return url = "redirect:/ers/esupporter/emergencyList";
-		case 3:
-			return url = "redirect:/ers/esupporter/equipmentList";
-		}
-		
-		return url;
 		
 	}
 	
@@ -293,9 +346,39 @@ public class EsupporterController {
 		return "esupporter/noticeDetail";
 	}
 	
+	@GetMapping("/ers/esupporter/memberInformation")
+	public String memberInformation(String id) {
+		
+		
+		
+		return "/esupporter/memberInformation";
+	}
+	
 	@GetMapping("/ers/esupporter/main")
-	public String main() {
+	public String main(Model model, HttpSession session, HttpServletRequest request) {
+		
+		session = request.getSession();			
+		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
+		
+		int fireCount = esupporterService.getFireCount(loginUser.getWid());
+		int emergencyCount = esupporterService.getEmergencyCount(loginUser.getWid());
+		int dispatchCount = esupporterService.getDispatchCount(loginUser.getWid());
+		int gatewayStockCount = esupporterService.getGatewayStockCount(loginUser.getCNum());
+		int activityDetectorStockCount = esupporterService.getActivityDetectorStockCount(loginUser.getCNum());
+		int doorDetectorsStockCount = esupporterService.getDoorDetectorsStockCount(loginUser.getCNum());
+		int fireDetectorStockCount = esupporterService.getFireDetectorStockCount(loginUser.getCNum());
+		
+		model.addAttribute("eStatus", loginUser.getStatus());
+		model.addAttribute("fireCount", fireCount);
+		model.addAttribute("emergencyCount", emergencyCount);
+		model.addAttribute("dispatchCount", dispatchCount);
+		model.addAttribute("gatewayStockCount", gatewayStockCount);
+		model.addAttribute("activityDetectorStockCount", activityDetectorStockCount);
+		model.addAttribute("doorDetectorsStockCount", doorDetectorsStockCount);
+		model.addAttribute("fireDetectorStockCount", fireDetectorStockCount);
+		
 		return "esupporter/main";
+		
 	}
 	
 	@GetMapping("/ers/esupporter/loginForm")

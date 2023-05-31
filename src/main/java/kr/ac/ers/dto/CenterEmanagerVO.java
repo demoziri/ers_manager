@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CenterEmanagerVO {
 	
+	private String wid;
 	private String wcode;
 	private String picture;
 	private String e_name;

@@ -53,7 +53,7 @@
 		<nav class="mt-5">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 					<li class="nav-item">
-						<a href="${pageContext.request.contextPath }/ers/center/emergancy/list" class="nav-link">
+						<a href="${pageContext.request.contextPath }/ers/center/emergencyReport/list" class="nav-link">
 							<i class="fa-regular fa-bell dashboard_icon"></i>
 								<p class="pl-2">
 								응급발생목록

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="memberList" value="${dataMap.memberList }"/>
@@ -6,6 +6,7 @@
 <c:set var="cri" value="${pageMaker.cri }"/>
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/carelist.css">
+
 <!-- Content Wrapper. Contains page content -->
 
 
@@ -43,9 +44,19 @@
   
  <div class="row flex text-start">
  <div class="col-12">
-  <button type="button" class="btn btn-dark btn-lg backbtn mb-1" onclick="location.href='/usr/home/main'">뒤로가기</button>
+  <button type="button" class="btn btn-dark btn-lg backbtn mb-1" onclick="history.back();">뒤로가기</button>
  </div>
  </div>
+<div class="row col-12">
+
+  <h5 style="font-weight: bold; text-align: center;">본 대상자의 상태가 노인인 경우</h5>
+  <h5 style="text-align: center;">정기상담일은 상담등록일로부터 30일로 진행됩니다.</h5>
+  <h5 style="font-weight: bold; text-align: center;">장애인의 경우</h5>
+  <h5 style="text-align: center;">
+    정기상담일은 상담등록일로부터 14일로 등록됩니다.
+  </h5>
+</div>
+
   
   </div>
 </div>
@@ -68,48 +79,54 @@
     <th class="tg-yj5y">번호</th>
     <th class="tg-yj5y">사진</th>
     <th class="tg-yj5y">대상자명</th>
-    <th class="tg-yj5y">생년월일</th>
+    <th class="tg-yj5y">나이</th>
     <th class="tg-yj5y">성별</th>
     <th class="tg-yj5y">활동여부</th>
     <th class="tg-yj5y">남은정기상담일</th>
   </tr>
- <c:forEach items="${memberList}" var="member">
-  <fmt:formatDate value="${member.activeTime}" pattern="yy-MM-dd" var="activeTime"/>
-  <fmt:formatDate value="${member.regDate}" pattern="yy-MM-dd" var="regDate"/>
-  <fmt:formatDate value="<%= new java.util.Date() %>" pattern="yy-MM-dd" var="currentDate" />
-
-  <tr>
-    <td class="tg-3xi5">
-      ${member.RNo}
-    </td>
-    <td class="tg-3xi5">
-      ${member.picture}
-    </td>
-    <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">
-      ${member.name}
-    </td>
-    <td class="tg-3xi5">
-      ${member.birth}
-    </td>
-    <td class="tg-3xi5">
-      ${member.gender}
-    </td>
-    <td class="tg-3xi5">
-      <c:choose>
-        <c:when test="${activeTime == currentDate}">
-          Y
-        </c:when>
-        <c:otherwise>
-          N
-        </c:otherwise>
-      </c:choose>
-    </td>
-
-    <td class="tg-3xi5">
-      <span id="regDate" class="regDate">${regDate}</span>
-    </td>
-  </tr>
-</c:forEach>
+	<c:set var="specialDayCount" value="0" scope="session" />
+	 <c:forEach items="${memberList}" var="member">
+	  <fmt:formatDate value="${member.activeTime}" pattern="yy-MM-dd" var="activeTime"/>
+	  <fmt:formatDate value="${member.regDate}" pattern="yy-MM-dd" var="regDate"/>
+	  <fmt:formatDate value="<%= new java.util.Date() %>" pattern="yy-MM-dd" var="currentDate" />
+	  <tr>
+	  	<td style="display:none;">
+	  	<span id="memType">${member.memType }</span>
+	  
+	  	</td>
+	    <td class="tg-3xi5">
+	      ${member.RNo}
+	      	<span id="memType">${finalDay }</span>
+	    </td>
+	    <td class="tg-3xi5">
+	      ${member.picture}
+	    </td>
+	    <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">
+	      ${member.name}
+	    </td>
+	    <td class="tg-3xi5" id="member_birth_${member.id}">
+	      ${member.age}
+	    </td>
+	    <td class="tg-3xi5">
+	      ${member.gender}
+	    </td>
+	    <td class="tg-3xi5">
+	      <c:choose>
+	        <c:when test="${activeTime == currentDate}">
+	          활동중
+	        </c:when>
+	        <c:otherwise>
+	          미활동
+	        </c:otherwise>
+	      </c:choose>
+	    </td>
+	
+	    <td class="tg-3xi5">
+	      <span id="regDate" class="regDate">${regDate}</span>일
+	    </td>
+	  </tr>
+	
+	</c:forEach>
 </table>
 </form>
 </div>
@@ -125,28 +142,12 @@
 <!--foot -->
 
 
-<script>
-function list_go(page,url){
-	
-	if(!url) url="carelist";
-	
-	$("form#jobForm input[name='page']").val(page);
-	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
-	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
-	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
-	
-	$('form#jobForm').attr({
-		action:url,
-		method:'get'
-	}).submit();
-}
-</script>
 
 <Script>
 var regDateElements = document.querySelectorAll("#regDate");
 
 //Iterate over each regDate span element
-regDateElements.forEach(function(regDateElement) {
+regDateElements.forEach(function (regDateElement) {
 // Get the current date value from the regDate span tag
 var regDate = regDateElement.textContent;
 
@@ -159,23 +160,38 @@ var currentDate = new Date();
 // Get the day of the current date
 var currentDay = currentDate.getDate();
 
-// Calculate the final day count based on the conditions
+// Get the memType value from the span tag
+var memType = regDateElement.parentNode.parentNode.querySelector("#memType").textContent;
+
+// Calculate the final day count based on memType
 var finalDay;
-if (day === currentDay) {
- // Set the day count to 14 for the current day
- finalDay = 14;
-} else {
- // Add 14 and subtract the original day count for previous dates
- finalDay = day + 14 - currentDay;
+if (memType === "독거노인") {
+ if (day === currentDay) {
+   // Set the day count to 30 for the current day
+   finalDay = 30;
+ } else {
+   // Add 30 and subtract the original day count for previous dates
+   finalDay = day + 30 - currentDay;
+ }
+} else if (memType === "장애인") {
+ if (day === currentDay) {
+   // Set the day count to 14 for the current day
+   finalDay = 14;
+ } else {
+   // Add 14 and subtract the original day count for previous dates
+   finalDay = day + 14 - currentDay;
+ }
 }
 
 // Update the span tag with the new day value
 regDateElement.textContent = finalDay.toString();
 if (finalDay <= 1) {
-    regDateElement.style.color = "red";
-  }
+ regDateElement.style.color = "red";
+}
 });
+
 </Script>
+
 
 <%@include file="../include/lsupporter/foot.jspf"%>
 

@@ -24,3 +24,16 @@ function list_go(page,url){
 		method:'get'
 	}).submit();
 }
+
+function CenterEmanagerPictureThumb(contextPath) {
+	for(var target of document.querySelectorAll('.centerEmanagerPictureThumb')){
+		var wcode = target.getAttribute('data-id');
+		
+		target.style.backgroundImage="url('"+contextPath+"/ers/center/emanager/getPicture?wcode="+wcode+"')";
+		target.style.backgroundPosition="center";
+		target.style.backgroundRepeat="no-repeat";
+		target.style.backgroundSize="cover";
+	}
+}
+
+

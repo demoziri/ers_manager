@@ -1,7 +1,10 @@
 package kr.ac.ers.controller.lsupporter;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -9,13 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -32,24 +37,28 @@ public class LsupporterController {
 	 @Autowired
 	 private LsupporterService lsupporterService;
 	 
-
+	 @Value("${lsuppPicturePath}")
+		private String lsuppPicturePath;
 	
 	@RequestMapping("/ers/lsupporter/main")
 	public String Showmain(Model model, HttpServletRequest request,HttpSession session) {
 		session= request.getSession();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 
+		 LsupporterStatusVO lsupporterstatus = lsupporterService.selectlsupporterStatus(loginUser.getWid());
 		int futureDate =  lsupporterService.getmaineducationfutureDate(loginUser.getWid());
 		int clearDate =  lsupporterService.getmaineducationclearDate(loginUser.getWid());
 		int notmachine =  lsupporterService.getmaineducationnotmachine(loginUser.getWid());
-		int emergancyall = lsupporterService.getmainemergancyall(loginUser.getWid());
-		int emergancyno = lsupporterService.getmainemergancyno(loginUser.getWid());
+		int emergencyall = lsupporterService.getmainemergencyall(loginUser.getWid());
+		int emergencymiss = lsupporterService.getmainemergencymiss(loginUser.getWid());
+		int emergencyclear = lsupporterService.getmainemergencyclear(loginUser.getWid());
 		
+		model.addAttribute("lsupporterstatus",lsupporterstatus);
 		model.addAttribute("futureDate",futureDate);
 		model.addAttribute("clearDate",clearDate);
 		model.addAttribute("notmachine",notmachine);
-		model.addAttribute("emergancyall",emergancyall);
-		model.addAttribute("emergancyno",emergancyno);
+		model.addAttribute("emergencyall",emergencyall);
+		model.addAttribute("emergencymiss",emergencymiss);
+		model.addAttribute("emergencyclear",emergencyclear);
 		
 		return "lsupporter/main";
 	}
@@ -97,11 +106,6 @@ public class LsupporterController {
 		 return "lsupporter/memberdetail";
 	}
 	
-	
-	@RequestMapping("/ers/lsupporter/reportForm")
-	public String ShowreportFormh() {
-		return "lsupporter/reportForm";
-	}
 	@RequestMapping("/ers/lsupporter/idcheckForm")
 	public String ShowidcheckForm() {
 		return "lsupporter/idcheckForm";
@@ -120,6 +124,19 @@ public class LsupporterController {
 	    model.addAttribute("lsupporter", lsupporter);
 	    return "lsupporter/lsupporterstatus";
 	}
+	
+	 @GetMapping("/ers/lsupporter/getLsuppPicture")
+     @ResponseBody
+     public byte[] getPicture(String wid)throws Exception{
+    	 LsupporterStatusVO lsupporterstatus = lsupporterService.selectlsupporterStatus(wid);
+    	 if(lsupporterstatus ==null)
+    		 return null;
+    	 
+    	 String picture = lsupporterstatus.getPicture();
+    	 String imaPath = this.lsuppPicturePath;
+    	 InputStream in = new FileInputStream(new File(imaPath, picture));
+    			 return IOUtils.toByteArray(in);
+     }
 	
 	@GetMapping("/ers/lsupporter/lsupporterstatusForm")
 	public String showLsupporterStatus() {

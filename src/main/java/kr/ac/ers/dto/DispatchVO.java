@@ -11,11 +11,14 @@ public class DispatchVO {
 	
 	private int sCode;
 	private String sType;
-	private Date ocurTime;
+	private Date occurTime;
 	private String address;
 	private String pacemaker;
 	private String name;
 	private int id;
 	private String wid;
+	private String reDone;
+	private String viewCheck;
+	private int rNo;
 
 }
