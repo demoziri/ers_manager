@@ -33,6 +33,7 @@ function CenterEmanagerPictureThumb(contextPath) {
 		target.style.backgroundPosition="center";
 		target.style.backgroundRepeat="no-repeat";
 		target.style.backgroundSize="cover";
+		target.style.borderRadius="50%";
 	}
 }
 

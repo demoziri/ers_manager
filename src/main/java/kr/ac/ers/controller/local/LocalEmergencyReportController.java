@@ -1,11 +1,16 @@
 package kr.ac.ers.controller.local;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,4 +62,21 @@ public class LocalEmergencyReportController {
 	public CenterEmergencyReportVO detail(String rno) {
 		return centerEmergencyReportService.getEmergencyReportByRno(rno);
 	}
+	
+	@Value("${picturePath}")
+	private String picturePath;
+	
+	@GetMapping("/getPicture")
+	   @ResponseBody
+	   public byte[] getPicture(String rno) throws Exception {
+		CenterEmergencyReportVO member = centerEmergencyReportService.getEmergencyReportByRno(rno);
+	      if(member == null) return null;
+	      
+	      String picture = member.getPicture();
+	      String imgPath = this.picturePath;
+	      
+	      InputStream in = new FileInputStream(new File(imgPath, picture));
+	      
+	      return IOUtils.toByteArray(in);
+	   }
 }

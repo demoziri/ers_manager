@@ -15,7 +15,7 @@
 					<div class="emergany_status_list">
 						<div class="col-lg-3 col-3">
 							<div class="small-box firestatus">
-								<div class="inner">
+								<div class="inner" id="fireEmergency">
 									<h3>화재건수</h3>
 									<h3>${fireCount}건</h3>
 								</div>
@@ -23,7 +23,7 @@
 						</div>
 						<div class="col-lg-3 col-3">
 							<div class="small-box emergancystatus">
-								<div class="inner">
+								<div class="inner" id="emergencyCount">
 									<h3>응급건수</h3>
 									<h3>${emergencyCount}건</h3>
 								</div>
@@ -31,7 +31,7 @@
 						</div>
 						<div class="col-lg-3 col-3">
 							<div class="small-box callstatus">
-								<div class="inner">
+								<div class="inner" id="dispatchCount">
 									<h3>출동건수</h3>
 									<h3>${dispatchCount}건</h3>
 								</div>
@@ -53,7 +53,7 @@
 							<div class="emergany_status_list">
 								<div class="col-lg-3 col-3">
 									<div class="small-box firestatus">
-										<div class="inner">
+										<div class="inner" id="gatwayCount">
 											<h3>게이트웨이</h3>
 											<h3>${gatewayStockCount}개</h3>
 										</div>
@@ -61,7 +61,7 @@
 								</div>
 								<div class="col-lg-3 col-3">
 									<div class="small-box emergancystatus">
-										<div class="inner">
+										<div class="inner" id="fireAramyCount">
 											<h3>화재감지기</h3>
 											<h3>${activityDetectorStockCount}개</h3>
 										</div>
@@ -69,7 +69,7 @@
 								</div>
 								<div class="col-lg-3 col-3">
 									<div class="small-box emergancystatus">
-										<div class="inner">
+										<div class="inner" id="doorCount">
 											<h3>출입감지기</h3>
 											<h3>${doorDetectorsStockCount}개</h3>
 										</div>
@@ -77,7 +77,7 @@
 								</div>
 								<div class="col-lg-3 col-3">
 									<div class="small-box callstatus">
-										<div class="inner">
+										<div class="inner" id="modeCount">
 											<h3>활동감지기</h3>
 											<h3>${fireDetectorStockCount}개</h3>
 										</div>
@@ -141,6 +141,21 @@
 	
 </section>
 <!--foot -->
+
+<script>
+function autoRefresh_div()
+{
+var currentLocation = window.location;
+$("#fireEmergency").load(currentLocation + ' #fireEmergency');
+$("#emergencyCount").load(currentLocation + ' #emergencyCount');
+$("#dispatchCount").load(currentLocation + ' #dispatchCount');
+$("#gatwayCount").load(currentLocation + ' #gatwayCount');
+$("#fireAramyCount").load(currentLocation + ' #fireAramyCount');
+$("#modeCount").load(currentLocation + ' #modeCount');
+$("#doorCount").load(currentLocation + ' #doorCount');
+}
+setInterval('autoRefresh_div()', 3000);
+</script>
 
 
 <%@include file="../include/esupporter/foot.jspf"%>

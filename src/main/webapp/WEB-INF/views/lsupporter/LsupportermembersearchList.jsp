@@ -92,7 +92,7 @@
       
       
       <td class="modal_content">
-        <img style="display:inline-block;" src="/resources/lsupporter/img/노인1.png" >
+        <span class="manPicture" data-id="${member.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
       </td>
       <td class="modal_content">
         <a href="#" onclick="selectMember('${member.id}', '${member.name}', '${member.SCode}')">${member.name}</a>
@@ -179,4 +179,12 @@ function CloseWindow(parentURL){
 }
 </script>
 
+
+<script>
+	window.onload=function(){
+		MemberPictureThumb('<%=request.getContextPath()%>');
+	}
+	
+	
+</script>
 

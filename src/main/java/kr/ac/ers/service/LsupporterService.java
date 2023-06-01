@@ -185,6 +185,7 @@ public class LsupporterService {
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
 
 		List<MemberReportLsupporterVO> emergencyList = lsupportMapper.selectemergencyList(returnMap, rowbounds);
+		
 		dataMap.put("emergencyList", emergencyList);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);

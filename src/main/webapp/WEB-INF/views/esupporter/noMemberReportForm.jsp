@@ -36,7 +36,89 @@
 				  	<tr>
 				    	<td class="tg-aur8 tableHeadFont">대상자명</td>
 				    	<td class="tg-0lax text-center">
-							<input type="text" class="w-full text-2xl" name="memberName" style="text-align:center;" readonly value="${name}">
+					    	<div class="search_container">
+								<input onclick="modalopen();" value="" class="searchinput text-center" type="text" id="searchInput" name="name" required>
+								<button type="submit" class="search_button">
+							    	<i class="fa fa-search mr-1" id="popupBtn"></i>
+								</button>
+							</div>
+							<div id="modalWrap">
+								<div id="modalContent">
+									<div id="modalBody">
+										<span id="closeBtn">&times;</span>
+										<!--모달창  -->
+										<div class="callist">
+											<div class="row">
+												<div class="col-12">
+													<h3 class="caltitle mt-2">대상자 이름조회</h3>
+												</div>
+											</div>
+											<form id="searchForm">
+												<table class="tg table table_list" style="table-layout: fixed; width: 100%;">
+													<colgroup>
+															<col style="width: 150.333333px">
+															<col style="width: 300px">
+													</colgroup>
+													<tr>
+														<th class="tg-l8qj">
+															<select class="form-control" style="font-size: 1.5rem; height: auto;" name="searchType" id="searchType">
+																<option value="nbg" ${cri.searchType=='nbg' ? "selected":"" }>전체</option>
+																<option value="n" ${cri.searchType=='n' ? "selected":"" }>대상자명</option>
+																<option value="b" ${cri.searchType=='b' ? "selected":"" }>나이</option>
+																<option value="g" ${cri.searchType=='g' ? "selected":"" }>성별</option>
+															</select>
+														</th>
+														<th class="tg-l8qj">
+															<div class="search_container flex">
+																<input onclick="modalopen();" value="" class="searchinput w-full" type="text" id="mSearchinput" name="keyword" required>
+																<button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+																	<i class="fa fa-search" id="mSearch"></i>
+																</button>
+															</div>
+														</th>
+													</tr>
+													</tbody>
+												</table>
+											</form>
+
+											<div class="row">
+												<div class="col-12">
+													<table class="tg searchlist" id="modalTable" style="table-layout: fixed;">
+														<colgroup>
+															<col style="width: 100px">
+															<col style="width: 100.333333px">
+															<col style="width: 70.333333px">
+															<col style="width: 70.333333px">
+														</colgroup>
+														<thead>
+															<tr>
+																<th class="tg-uqo3">이미지</th>
+																<th class="tg-2xpi">대상자명</th>
+																<th class="tg-2xpi">성별</th>
+																<th class="tg-uqo3">나이</th>
+															</tr>
+														</thead>
+														<c:forEach var="member" items="${memberNameSearchList }">
+															<tbody>
+																<tr>
+																	<td style="display: none" class="modal_content" id="memberid">
+																		<input type="hidden" class="member-id" value="${member.id}" />
+																	</td>
+																	<td class="modal_content">${member.picture }</td>
+																	<td class="modal_content" id="modalname">${member.name }</td>
+																	<td class="modal_content">${member.gender }</td>
+																	<td class="modal_content">${member.birth }</td>
+																</tr>
+															</tbody>
+														</c:forEach>
+													</table>
+													<%@include file="../include/esupporter/pagination.jsp"%>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 				    	</td>
 				  	</tr>
 				  	<tr>
@@ -95,23 +177,23 @@
 							  	<tr>
 							    	<td class="tg-aur8 tableHeadFont">발생구분</td>
 							    	<td class="tg-0lax">
-							    		<input class="tableBodyFont" type="radio" name="occurType" value="1" checked="checked"> <label>응급</label>
-							    		<input class="tableBodyFont" type="radio" name="occurType" value="2" checked="${sType == '2' ? checked : ''}"> <label>119</label>
-							    		<input class="tableBodyFont" type="radio" name="occurType" value="3" checked="${sType == '3' ? checked : ''}"> <label>화재</label>
+							    		<input class="tableBodyFont" type="radio" name="occurType" value="1"> <label>응급</label>
+							    		<input class="tableBodyFont" type="radio" name="occurType" value="2"> <label>119</label>
+							    		<input class="tableBodyFont" type="radio" name="occurType" value="3"> <label>화재</label>
 							    	</td>
 							  	</tr>
 							  	<tr>
 							    	<td class="tg-aur8 tableHeadFont">처리내용</td>
 							    	<td class="tg-0lax">
-							    		<textarea name="content" class="tableBodyFont" rows="" cols="" style="width:100%;height:300px;">
+							    		<textarea name="content" class="tableBodyFont" rows="" cols="">
 	
 										</textarea>
 							    	</td>
 							  	</tr>
-							  	<!-- <tr>
+							  	<tr>
 							    	<td class="tg-aur8 tableHeadFont">파일첨부</td>
 							    	<td class="tg-0lax"></td>
-							  	</tr> -->
+							  	</tr>
 							</tbody>
 						</table>
 					</form>
@@ -647,6 +729,108 @@
 		}
 	}
 	
+	const btn = document.getElementById('popupBtn');
+	const modal = document.getElementById('modalWrap');
+	const closeBtn = document.getElementById('closeBtn');
+
+	btn.onclick = function() {
+	  modal.style.display = 'block';
+	}
+
+	closeBtn.onclick = function() {
+	  modal.style.display = 'none';
+	}
+
+	window.onclick = function(event) {
+	  if (event.target === modal) {
+	    modal.style.display = 'none';
+	  }
+	}
+
+	function modalopen() {
+	  modal.style.display = 'block';
+	}
+
+	modal.style.display = 'none';
+	
+	$(document).ready(function() {
+		// .modal_content 클릭 이벤트 처리
+		$(document).on('click', '.modal_content', function() {
+		    const modalname = $(this).text().trim();
+		    $('#searchInput').val(modalname);
+		    $('#modalWrap').hide();
+		    
+		});
+		
+		// .modal_content#modalname 클릭 이벤트 처리
+		$(document).on('click', '.modal_content#modalname', function() {
+			var memberId = $(this).closest('tr').find('.member-id').val();
+		    var memberName = $(this).text();
+		    $('input[name="id"]').val(memberId);
+		    
+		    const modalname = $(this).text().trim();
+		    $('#searchInput').val(modalname);
+		    $('#modalWrap').hide();
+		});
+	});
+	
+	
+	
+	$(document).ready(function() {
+		
+		// 돋보기 아이콘 클릭 이벤트 처리
+		$('#mSearch').click(function() {
+			var data = {
+					"searchType" : $("#searchType").val(),
+					"keyword" : $('#mSearchinput').val(),
+					"perPageNum" : 5,
+					"page" : 1
+			}
+			
+		    // 검색 수행
+		    if($('#mSearchinput').val().trim() !== ''){
+			    performSearch(data);
+		    }
+			
+			// 입력된 키워드를 name="keyword"에 설정
+		    $('#mSearchinput').val(keyword);
+		});
+
+	});
+		
+	function performSearch(data) {
+		  $.ajax({
+		    url: '/ers/esupporter/memberSearch',
+		    method: 'GET',
+		    data: data,
+		    dataType: 'json',
+		    async: true,
+		    contentType: 'application/json',
+		    success: function(response) {
+		      var table = $('.searchlist');
+		      table.find('tbody').empty();
+
+		      $.each(response.memberList, function(index, member) {
+		        var row = '<tr>' +
+		          '<td class="modal_content">' + member.picture + '</td>' +
+		          '<td class="modal_content">' + member.name + '</td>' +
+		          '<td class="modal_content">' + member.gender + '</td>' +
+		          '<td class="modal_content">' + member.birth + '</td>' +
+		          '</tr>';
+		        table.find('tbody').append(row);
+
+		        // Add an attribute to the row for easy access to the member ID
+		        var lastRow = table.find('tbody tr:last-child');
+		        lastRow.attr('data-member-id', member.id);
+		      });
+
+		      modal.style.display = 'block';
+		    },
+		    error: function(xhr, status, error) {
+		      console.error(error);
+		    }
+		  });
+		}
 </script>
 
 <%@include file="../include/esupporter/foot.jspf"%>

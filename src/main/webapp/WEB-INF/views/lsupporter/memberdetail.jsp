@@ -27,7 +27,7 @@
 
 <div class="card card-primary card-outline">
 <div class="card-body box-profile">
-<div class="text-center" style="width:300px;height:300px;">
+<div class="text-center" >
 <span class="manPicture" data-id="${memberdetail.id }" style="width:200px;height:200px;display:block;margin:0 auto;"></span>
 </div>
 <h3 class="profile-username text-center" style="color:black;">${memberdetail.name }</h3>

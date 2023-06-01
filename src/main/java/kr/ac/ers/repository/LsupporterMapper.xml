@@ -245,14 +245,14 @@ WHERE l.wid = #{wid}
 	<select id="selectemergencyCount" resultType="int">
 	select count(e.id)
 	from member m, emergency e, lsupporter l
-	where m.wid = l.wid and e.scode='1' and l.wid= #{wid} and m.id= #{id}
+	where m.wid = l.wid and e.sType='1' and l.wid= #{wid} and m.id= #{id}
 	</select>
 	
 	<!--대상자정보페이지 화재카운트  -->
 	<select id="selectfireCount" resultType="int">
 	select count(e.id)
 	from member m, emergency e, lsupporter l
-	where m.wid = l.wid and e.scode='3' and l.wid= #{wid} and m.id= #{id}
+	where m.wid = l.wid and e.sType='3' and l.wid= #{wid} and m.id= #{id}
 	</select>
 	
 	<select id="selectMemberDetailmachine" resultType="MemberDetailVO">

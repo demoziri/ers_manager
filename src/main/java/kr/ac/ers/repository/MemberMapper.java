@@ -37,4 +37,6 @@ public interface MemberMapper {
 	void insertMemberIdToSensorCk(String id);
 
 	MemberVO selectMember(int i);
+
+	void updateMemberStatus(String id, String status);
 }

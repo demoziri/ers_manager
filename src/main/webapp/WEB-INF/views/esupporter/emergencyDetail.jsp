@@ -16,8 +16,8 @@
 		<div class="col-12">
 			<div class="buttons mb-1">
 				<button type="button" id="" class="btn btn-dark button-left" >뒤로가기</button>
-				<button type="button" id="" class="btn bg-green" >수정</button>
-				<button type="button" id="" class="btn btn-primary" >등록</button>
+				<button type="button" id="" class="btn bg-green" onclick="location.href='/ers/esupporter/reportForm?afterUrl=2&rNo=${emergencyReport.RNo}'">수정</button>
+				<button type="button" id="" class="btn btn-primary" onclick="location.href='/ers/esupporter/reportForm?afterUrl=2'">등록</button>
 			</div>
 		</div>
 	</div>

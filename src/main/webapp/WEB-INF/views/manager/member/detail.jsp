@@ -68,22 +68,21 @@
                   <td>서비스 이용중</td>
                   </c:if>
                   <c:if test="${member.status eq 2}">
-                  <td>장기부재</td>
+                  <td>해지</td>
                   </c:if>
                   <c:if test="${member.status eq 3}">
-                  <td>해지</td>
+                  <td>장기부재</td>
                   </c:if>
                 </tr>
                 <tr>
                   <th>신청서</th>
-                  <td>${member.applyfile.filename.split("\\$\\$")[1]}
+                  <td style="font-size:0.9rem;">${member.applyfile.filename.split("\\$\\$")[1]}
                    <c:if test="${not empty member.applyfile }">
-			        <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/lsupporter/getFile?sfNo=${report.reportfile.sfNo }'"></i>
+			        <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/manager/member/getFile?id=${member.applyfile.id }'"></i>
 			        </c:if>
 			        <c:if test="${empty member.applyfile }">
 			        <i class="bi bi-file-earmark-text-fill" ></i>
 			        </c:if>
-                  
                   </td>
                   <th>생활지원사</th>
                   <td id="lsName" style="text-align:center;">

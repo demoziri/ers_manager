@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import kr.ac.ers.dto.CenterEquipmentCheckVO;
 import kr.ac.ers.dto.CenterEquipmentReportVO;
+import kr.ac.ers.dto.CenterMachineCommandVO;
 
 @Mapper
 public interface CenterEquipmentCheckMapper {
@@ -23,5 +24,11 @@ public interface CenterEquipmentCheckMapper {
 	void insertEmergencyByMtype(int scode, String occurType, String mem_id, String wid);
 
 	List<CenterEquipmentReportVO> selectEquipmentReportListByDepart(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	int selectEquipmentReportListCountByDepart(Map<String, Object> paramMap);
+
+	CenterEquipmentReportVO selectEquipmentReportByRno(String rno);
+
+	List<CenterMachineCommandVO> selectMachineListByRno(String rno);
 
 }

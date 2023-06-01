@@ -180,9 +180,9 @@ public class EsupporterService {
 	
 	public void insertEquipmentReport(EquipmentReportVO equipmentReport) {
 		int rNo = esupporterMapper.selectReportSequenceNextValue();
-		equipmentReport.setRno(rNo);
+		equipmentReport.setRNo(rNo);
 		esupporterMapper.insertEquipmentReport(equipmentReport);
-		esupporterMapper.updateEsupporterStatus(equipmentReport.getWcode());
+		esupporterMapper.updateEsupporterStatus(equipmentReport.getWCode());
 		esupporterMapper.updateMemberEId(equipmentReport.getId());
 	}
 	

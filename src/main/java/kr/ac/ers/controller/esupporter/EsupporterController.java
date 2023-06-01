@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -115,6 +117,20 @@ public class EsupporterController {
 		
 	}
 	
+	@RequestMapping("/ers/esupporter/statusChange")
+	@ResponseBody
+	public Map<String, Object> statusChange(String depart){
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		EsupporterVO esupporter = esupporterService.getEsupporter(depart);
+		
+		dataMap.put("eStatus", esupporter.getStatus());
+		
+		return dataMap;
+		
+	}
+	
 	@GetMapping("ers/esupporter/emergencyUpdate")
 	@ResponseBody
 	public void emergencyUpdate(int sCode, String reportCheck) {
@@ -192,9 +208,9 @@ public class EsupporterController {
 	}
 	
 	@GetMapping("/ers/esupporter/emergencyDetail")
-	public String emergencyDetail(Model model, int rNo, HttpSession session) {
+	public String emergencyDetail(Model model, int rNo, HttpSession session, HttpServletRequest request) {
 		
-		
+		session = request.getSession();			
 		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
 		
 		EmergencyReportVO emergencyReport = esupporterService.getEmergencyReportDetail(rNo);
@@ -238,7 +254,7 @@ public class EsupporterController {
 	}
 	
 	@GetMapping("/ers/esupporter/reportForm")
-	public String reportForm(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request, /* int rNo, */ String id) {
+	public String reportForm(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request, /* int rNo, */ String id, String name, String sType) {
 		
 		String url = "esupporter/reportForm";
 		
@@ -262,13 +278,13 @@ public class EsupporterController {
 		dataMap.put("wCode", wCode);
 		
 		model.addAttribute("id",id);
+		model.addAttribute("name", name);
 		model.addAttribute("eStatus", loginUser.getStatus());
+		model.addAttribute("sType",sType);
 		model.addAttribute("dataMap", dataMap);
-		/*
-		 * model.addAttribute("afterUrl", afterUrl); model.addAttribute("sCode", sCode);
-		 */
 		
 		return url;
+		
 	}
 	
 	@GetMapping("/ers/esupporter/memberSearch")
@@ -277,7 +293,6 @@ public class EsupporterController {
 		
 		session = request.getSession();			
 		EsupporterVO loginUser = (EsupporterVO)session.getAttribute("loginUser");
-		
 		String wId = loginUser.getWid();
 		
 		SearchCriteria cri = new SearchCriteria();
@@ -308,11 +323,7 @@ public class EsupporterController {
 			return url = "redirect:/ers/esupporter/emergencyList";
 		}else {
 			esupporterService.insertEquipmentReport(equipmentReport);
-			if(equipmentReport.getRedone().equals("0")) {
 				return url = "redirect:/ers/esupporter/equipmentList";
-			}else {
-				return url = "redirect:/ers/esupporter/memberInformation?id="+equipmentReport.getId();
-			}
 		}
 		
 	}
@@ -352,6 +363,7 @@ public class EsupporterController {
 		
 		
 		return "/esupporter/memberInformation";
+		
 	}
 	
 	@GetMapping("/ers/esupporter/main")
@@ -368,7 +380,6 @@ public class EsupporterController {
 		int doorDetectorsStockCount = esupporterService.getDoorDetectorsStockCount(loginUser.getCNum());
 		int fireDetectorStockCount = esupporterService.getFireDetectorStockCount(loginUser.getCNum());
 		
-		model.addAttribute("eStatus", loginUser.getStatus());
 		model.addAttribute("fireCount", fireCount);
 		model.addAttribute("emergencyCount", emergencyCount);
 		model.addAttribute("dispatchCount", dispatchCount);
@@ -382,32 +393,37 @@ public class EsupporterController {
 	}
 	
 	@GetMapping("/ers/esupporter/loginForm")
-	public String loginForm() {
-		return "esupporter/loginForm";
+	public String loginForm(@RequestParam(value = "error", required = false) String error, Model model) {
+	    if (error != null) {
+	        // 에러 메세지에 따른 처리 로직
+	        if (error.equals("1")) {
+	            model.addAttribute("message", "아이디를 잘못 입력하셨습니다.");
+	        } else if (error.equals("2")) {
+	            model.addAttribute("message", "패스워드를 잘못 입력하셨습니다.");
+	        }
+	    }
+
+	    return "esupporter/loginForm";
 	}
 	
 	@PostMapping("/ers/esupporter/login")
-	public String login(String wid, String pwd, HttpSession session) throws Exception {
+	public String login(String wid, String pwd, HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
 		
 		String url = "redirect:/ers/esupporter/main";
-		
-		String message;
-		
+
 		int result = esupporterService.login(wid, pwd);
 		switch(result) {
-		case 0: //로그인 성공
-			EsupporterVO loginUser = esupporterService.getEsupporter(wid);
-			session.setAttribute("loginUser", loginUser);
-//			session.setMaxInactiveInterval(600 * 30);
-			return url;
-		case 1: // 아이디 불일치
-			 url="redirect:/ers/esupporter/loginForm";
-	         message="아이디를 잘못입력하셨습니다.";
-	         return message;
-		case 2: // 비밀번호 불일치
-			url="redirect:/ers/lsupporter/loginForm";
-	    	message="패스워드를 잘못입력하셨습니다.";
-	    	return message;
+		    case 0: // 로그인 성공
+		        EsupporterVO loginUser = esupporterService.getEsupporter(wid);
+		        session.setAttribute("loginUser", loginUser);
+		        // session.setMaxInactiveInterval(600 * 30);
+		        return url;
+		    case 1: // 아이디 불일치
+		        redirectAttributes.addFlashAttribute("error", "1");
+		        return "redirect:/ers/esupporter/loginForm";
+		    case 2: // 비밀번호 불일치
+		        redirectAttributes.addFlashAttribute("error", "2");
+		        return "redirect:/ers/esupporter/loginForm";
 		}
 		
 		return url;

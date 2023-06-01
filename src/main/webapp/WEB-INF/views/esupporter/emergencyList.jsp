@@ -46,7 +46,7 @@
 		</div>
 		
 		<div class="justify-end">
-			<button class="btn btn-primary" onclick="location.href='/ers/esupporter/reportForm?afterUrl=2'">등록</button>
+			<button class="btn btn-primary" onclick="location.href='/ers/esupporter/reportForm'">등록</button>
 			<button class="btn btn-danger m-3">삭제</button>
 		</div>
 		
@@ -82,7 +82,7 @@
 					</thead>
 					<tbody>
 						<c:forEach var="emergencyReport" items="${emergencyReportList}">
-							<fmt:formatDate var="occurTime" pattern="yyyy-MM-dd" value="${emergencyReport.occurTime}"/>
+							<fmt:formatDate var="occurTime" pattern="yy-MM-dd" value="${emergencyReport.occurTime}"/>
 							<tr class="tableBodyFont">
 								<td><input type="checkbox" class="text-center check_box checkbox"/></td>
 								<td class="reportname" onclick="emergencyDetail(${emergencyReport.RNo});">${emergencyReport.name}</td>
@@ -112,7 +112,7 @@
 <%@include file="../include/esupporter/pagination.jsp"%>
 
 <script>
-	function emergencyReportDetail(rNo) {
+	function emergencyDetail(rNo) {
 		location.href = "/ers/esupporter/emergencyDetail?rNo="+rNo;
 	}
 	

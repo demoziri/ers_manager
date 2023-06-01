@@ -18,7 +18,17 @@
              style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto; margin-bottom: 5px;"></div>
           <div class="input-group input-group-sm" >
              <label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">사진변경</label>
-             <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled value="${member.picture}" style="width:30px;"/>
+             
+            <c:choose>
+			  <c:when test="${fn:contains(member.picture, '$$')}">
+			    <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled value="${fn:split(member.picture, '\\$\\$')[1]}" style="width:30px;" />
+			  </c:when>
+			  <c:otherwise>
+			    <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled value="${member.picture}" style="width:30px;" />
+			  </c:otherwise>
+			</c:choose>
+             
+             
              <input name="uploadPicture" class="form-control" type="hidden" id="picture" />
           </div>
        </div>
@@ -109,12 +119,12 @@
         <select name="status"  id="statusSelect">
           <option value="" ${member.status eq '' ? 'selected' : "" } >등록 진행중</option>
           <option value="1" ${member.status eq '1' ? 'selected' : "" }>서비스 이용중</option>
-          <option value="2" ${member.status eq '2' ? 'selected' : "" }>장기부재</option>
+          <option value="3" ${member.status eq '3' ? 'selected' : "" }>장기부재</option>
           <c:if test="${loginManager.authority ne 1 }">
-          <option value="3" ${member.status eq '3' ? 'selected' : "" } disabled>해지</option>
+          <option value="2" ${member.status eq '2' ? 'selected' : "" } disabled>해지</option>
           </c:if>
           <c:if test="${loginManager.authority eq 1 }">
-          <option value="3" ${member.status eq '3' ? 'selected' : "" }>해지</option>
+          <option value="2" ${member.status eq '2' ? 'selected' : "" }>해지</option>
           </c:if>
         </select>
       </td>
@@ -154,10 +164,28 @@
   $(document).ready(function() {
     $("#statusSelect").change(function() {
       var selectedValue = $(this).val();
+      var mem_id = $("input[name=id]").val();
       
-      if (selectedValue === "3") {
-        var confirmResult = confirm("해지하시겠습니까?");
+      if (selectedValue === "2") {
+        var confirmResult = confirm("해지처리 하시겠습니까?");
         
+      if (selectedValue === "3" ) {
+        var confirmResult = confirm("장기부재처리 하시겠습니까");
+      }
+        
+       /*  sendData = {
+        		"id":mem_id,
+        		"mstatus":selectedValue
+        }
+        console.log(sendData);
+        	$.ajax({
+        		url:"memberModifyStatus",
+        		type:"post",
+        		data:sendData,
+        		success:function(data){
+        			alert(data+"님의 서비스를 해지했습니다.");
+        		}
+        	}) */
         if (!confirmResult) {
           // 이전 선택으로 되돌리기
           $(this).val("${member.status}");

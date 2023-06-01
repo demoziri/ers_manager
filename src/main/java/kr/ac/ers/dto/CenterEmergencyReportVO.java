@@ -13,7 +13,7 @@ public class CenterEmergencyReportVO {
 	private String m_name;
 	private String address;
 	private String phone;
-	private String pciture;
+	private String picture;
 	private String memType;
 	private String gender;
 	private String rno;

@@ -84,11 +84,9 @@
 	<tbody>
 			<tr>
 					<td class="tg-73oq">
-							<span class="manPicture" data-id="${emergancy.id }"
-									style="width: 80px; height: 80px; display: block; margin: 0 auto;"
-							></span>
+							<span class="manPicture" data-id="${emergency.id }" style="width: 80px; height: 80px; display: block; margin: 0 auto;"></span>
 					</td>
-					<td class="tg-73oq membername" onclick="location.href='/ers/lsupporter/memberdetail?id=${emergancy.id}'">
+					<td class="tg-73oq membername" onclick="location.href='/ers/lsupporter/memberdetail?id=${emergency.id}'">
 							${emergency.name }</td>
 					<td class="tg-73oq">${emergency.gender }</td>
 					<td class="tg-73oq">${occurTime }</td>
@@ -97,7 +95,7 @@
 					</c:if>
 
 					<c:if test="${emergency.RNo != 0 }">
-							<td class="tg-73oq" style="color:blue;text-decoration:underline;" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${emergency.RNo}">
+							<td class="tg-73oq" style="color:blue;text-decoration:underline;" onclick="location.href='/ers/lsupporter/reportdetail?rNo='${emergency.RNo}">
 									작성완료</td>
 					</c:if>
 

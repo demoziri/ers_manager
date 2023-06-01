@@ -7,7 +7,6 @@
 		$.ajax({
 			  url: '${pageContext.request.contextPath}/ers/esupporter/checkEmergency?depart=' + depart,
 			  success: function(data) {
-			    console.log(data);
 			    var title = data.title;
 			    var message = data.message;
 			    var sType = data.sType;

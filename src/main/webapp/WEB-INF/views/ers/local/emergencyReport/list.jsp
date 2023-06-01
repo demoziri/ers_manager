@@ -57,7 +57,7 @@
 								<col width="16%">
 								<col>
 								<col width="14%">
-								<col width="15%">
+								<col width="17%">
 							</colgroup>
 								<thead>
 									<tr>
@@ -76,11 +76,11 @@
 										<td>${report.changeRno}</td>
 										<td>${report.memType}</td>
 										<td>${report.m_name}</td>
-										<td>${report.occurType}</td>
+										<td class="text-red">${report.occurType}</td>
 										<td><fmt:formatDate value="${report.occurTime}" pattern="MM월dd일 HH시MM분"/> </td>
 										<td>${report.e_name}</td>
 										<td>
-											<button type="button" class="btn btn-block btn-outline-info m-auto p-0" style="width:50%;" onclick="popOpen('${report.rno}');">보기</button>
+											<button type="button" class="btn btn-block btn-outline-info m-auto p-0" style="width:50%;" onclick="popOpen('${report.rno}');">보고서보기</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -111,8 +111,11 @@
 	</button>
 	</div>
 	<div class="modal-body">
-		<div class="row" style="height: 300px;">
+		<div class="row" style="height: 500px;">
 			<div class="col-6">
+				<div class="row my-1 justify-content-center">
+					<div style="width:130px; height: 189px;" id="pictureView"></div>
+				</div>
 				<div class="row my-1">
 					<div class="col-6 modal-content-title">보고서 번호</div>
 					<div class="col-6 modal-content-content" id="changeRno"></div>
@@ -214,7 +217,11 @@ function popOpen(rno) {
 		}
     });
     
-    
+          var target = document.getElementById('pictureView');
+          target.style.backgroundImage = "url('getPicture?rno=" + rno + "')";
+          target.style.backgroundPosition = "center";
+          target.style.backgroundRepeat = "no-repeat";
+          target.style.backgroundSize = "cover";
     
     $(modalPop).show();
     $(modalBg).show();

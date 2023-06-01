@@ -35,7 +35,7 @@
             <!-- 대상자 미처리 보고서 -->
             <div class="border h-100 col-6 d-inline-block pt-0">
               <div class="row text-center bg-primary text-light"><span class="fs-5 border">대상자 미열람 보고서</span></div>
-              <div class="row h-75"  onclick="location.href='../member/main'">
+              <div class="row h-75">
                 <h3 class="d-flex m-0 justify-content-center align-items-center">${memberReportCount}<span class="fs-4">&nbsp;건</span></h3>
               </div>
             </div>

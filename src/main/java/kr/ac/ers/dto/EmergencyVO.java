@@ -2,13 +2,14 @@ package kr.ac.ers.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class EmergencyVO {
-
 	
 	private int sCode;
 	private String sType;
@@ -26,4 +27,5 @@ public class EmergencyVO {
 	private String equipment;
 	private String memType;
 	private String gender;
+
 }

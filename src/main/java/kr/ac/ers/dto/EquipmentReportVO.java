@@ -9,19 +9,20 @@ import lombok.Setter;
 @Setter
 public class EquipmentReportVO {
 	
-	private int rno; 
-	private Date regdate;
+	private int rNo; 
+	private Date regDate;
 	private String content;
 	private String id;
-	private int wcode;
-	private String redone; 
-	private String viewcheck;
-	private String retype;
-	private Date occurtime;
-	private String occurtype;
-	private String callcheck;
-	private int mnum;
+	private int wCode;
+	private String reDone; 
+	private String viewCheck;
+	private String reType;
+	private Date occurTime;
+	private String occurType;
+	private String callCheck;
+	private int mNum;
 	private	String mstatus;
-
+	private String name;
+	private String address;
 
 }

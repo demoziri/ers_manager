@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper   namespace="kr.ac.ers.repository.CenterEmergencyReportMapper">
-   <select id="selectEmergenctCount" resultType="int">
-      select count(*)
-      from member m, report r
-      where r.id = m.id
-      and r.regdate between to_date(to_char(sysdate,'yyyy-MM-dd')) and sysdate
-      and r.retype = 1
-      and r.occurtype = '1'
-      and m.address like '%'||#{depart}||'%'
-      and r.redone = 1
-      order by r.regdate desc
-   </select>
-   
-   <select id="selectAmbulanceCount" resultType="int">
-      select count(*)
-      from member m, report r
-      where r.id = m.id
-      and r.regdate between to_date(to_char(sysdate,'yyyy-MM-dd')) and sysdate
-      and r.retype = 1
-      and r.occurtype = '2'
-      and m.address like '%'||#{depart}||'%'
-      and r.redone = 1
-      order by r.regdate desc
-   </select>
-   
-   <select id="selectFireCount" resultType="int">
-      select count(*)
-      from member m, report r
-      where r.id = m.id
-      and r.regdate between to_date(to_char(sysdate,'yyyy-MM-dd')) and sysdate
-      and r.retype = 1
-      and r.occurtype = '3'
-      and m.address like '%'||#{depart}||'%'
-      and r.redone = 1
-      order by r.regdate desc
-   </select>
-   
-   <select id="selectEmergencyReportListByDepart" resultType="CenterEmergencyReportVO">
-      select m.id as m_id, m.name as m_name, m.address,m.phone, m.picture, m.memtype, m.gender, r.rno, r.regdate as r_regDate, r.content, r.wcode, r.occurtime, decode(r.occurtype, '1', '응급출동', '2', '119출동' ,'화재발생') as occurtype, f.name as e_name
-      from member m, report r, fieldstaff f
-      where r.id = m.id
+<mapper	namespace="kr.ac.ers.repository.CenterEmergencyReportMapper">
+	<select id="selectEmergenctCount" resultType="int">
+		select count(*)
+		from member m, report r
+		where r.id = m.id
+		and r.regdate between to_date(to_char(sysdate,'yyyy-MM-dd')) and sysdate
+		and r.retype = 1
+		and r.occurtype = '1'
+		and m.address like '%'||#{depart}||'%'
+		and r.redone = 1
+		order by r.regdate desc
+	</select>
+	
+	<select id="selectAmbulanceCount" resultType="int">
+		select count(*)
+		from member m, report r
+		where r.id = m.id
+		and r.regdate between to_date(to_char(sysdate,'yyyy-MM-dd')) and sysdate
+		and r.retype = 1
+		and r.occurtype = '2'
+		and m.address like '%'||#{depart}||'%'
+		and r.redone = 1
+		order by r.regdate desc
+	</select>
+	
+	<select id="selectFireCount" resultType="int">
+		select count(*)
+		from member m, report r
+		where r.id = m.id
+		and r.regdate between to_date(to_char(sysdate,'yyyy-MM-dd')) and sysdate
+		and r.retype = 1
+		and r.occurtype = '3'
+		and m.address like '%'||#{depart}||'%'
+		and r.redone = 1
+		order by r.regdate desc
+	</select>
+	
+	<select id="selectEmergencyReportListByDepart" resultType="CenterEmergencyReportVO">
+		select m.id as m_id, m.name as m_name, m.address,m.phone, m.picture, m.memtype, m.gender, r.rno, r.regdate as r_regDate, r.content, r.wcode, r.occurtime, decode(r.occurtype, '1', '응급출동', '2', '119출동' ,'화재발생') as occurtype, f.name as e_name
+		from member m, report r, fieldstaff f
+		where r.id = m.id
         and r.wcode = f.wcode
-      and r.regdate between to_date(#{startDate}) and to_date(#{endDate}) + 0.99999
-      and r.retype = 1
-      and m.address like '%'||#{depart}||'%'
-      and r.redone = 1
-      order by r.regdate desc
-   </select>
-   
-   <select id="selectEmergencyReportListCountByDepart" resultType="int">
-      select count(*)
-      from member m, report r, fieldstaff f
-      where r.id = m.id
+		and r.regdate between to_date(#{startDate}) and to_date(#{endDate}) + 0.99999
+		and r.retype = 1
+		and m.address like '%'||#{depart}||'%'
+		and r.redone = 1
+		order by r.regdate desc
+	</select>
+	
+	<select id="selectEmergencyReportListCountByDepart" resultType="int">
+		select count(*)
+		from member m, report r, fieldstaff f
+		where r.id = m.id
         and r.wcode = f.wcode
-      and r.regdate between to_date(#{startDate}) and to_date(#{endDate}) + 0.99999
-      and r.retype = 1
-      and m.address like '%'||#{depart}||'%'
-      and r.redone = 1
-      order by r.regdate desc
-   </select>
-   
-   <select id="selectEmergencyReportByRno" resultType="CenterEmergencyReportVO">
-      select m.id as m_id, m.name as m_name, m.address,m.phone, m.picture, m.memtype, m.gender, r.rno, r.regdate as r_regDate, r.content, r.wcode, r.occurtime, decode(r.occurtype, '1', '응급출동', '2', '119출동' ,'화재발생') as occurtype, f.name as e_name
-      from member m, report r, fieldstaff f
-      where r.id = m.id
+		and r.regdate between to_date(#{startDate}) and to_date(#{endDate}) + 0.99999
+		and r.retype = 1
+		and m.address like '%'||#{depart}||'%'
+		and r.redone = 1
+		order by r.regdate desc
+	</select>
+	
+	<select id="selectEmergencyReportByRno" resultType="CenterEmergencyReportVO">
+		select m.id as m_id, m.name as m_name, m.address,m.phone, m.picture, m.memtype, m.gender, r.rno, r.regdate as r_regDate, r.content, r.wcode, r.occurtime, decode(r.occurtype, '1', '응급출동', '2', '119출동' ,'화재발생') as occurtype, f.name as e_name
+		from member m, report r, fieldstaff f
+		where r.id = m.id
         and r.wcode = f.wcode
-      and r.retype = 1
-      and r.redone = 1
+		and r.retype = 1
+		and r.redone = 1
         and r.rno = #{rno}
-      order by r.regdate desc
-   </select>
+		order by r.regdate desc
+	</select>
 </mapper>

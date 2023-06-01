@@ -90,7 +90,7 @@
                       </td>
                     </c:if>
                     <c:if test="${not empty member.wid }">
-                      <td style="color:#e65054;">
+                      <td style="color:#4f94d4;">
                         배정완료
                       </td>
                     </c:if>
@@ -386,16 +386,17 @@
         contentType: false,
         success: function(data) {
           member_id = data;
-		    memDetail_go(member_id);
 		    $("#memList").load(location.href + " #memList");
+			memDetail_go(member_id);
 		    MemberPictureThumb('localhost');
         },
         error: function() {
-          alert("실패?");
+		  
         }
       });
     }
-    alert("등록이 완료되었습니다.");
+    
+		    alert("등록이 완료되었습니다.");
   }
 
   function modify_go() {
@@ -420,7 +421,6 @@
 		changePicture_go();
       },
       error: function() {
-        alert("실패");
       }
     });
   }
@@ -457,7 +457,6 @@
         data: ecallModiInfo,
         success: function() {},
         error: function() {
-          alert("안됨");
         }
       });
     }
@@ -634,82 +633,32 @@
         	 
 	         
 	      	    if(!$('#e_name_id_1').val()){
-	    			alert("모든 정보를 입력해주세요.");
+	    			alert("정보를 입력해주세요.");
 	    			$('#e_name_id_1').focus();
 	    			return;
 	    		}
 	      		if(!$('#rel_1').val()){
-	      			alert("모든 정보를 입력해주세요.");
+	      			alert("정보를 입력해주세요.");
 	      			$('#rel_1').focus();
 	      			return;
 	      		}
 	      		if(!$('#e_phone1_1').val()){
-	      			alert("모든 정보를 입력해주세요.");
+	      			alert("정보를 입력해주세요.");
 	      			$('#e_phone1_1').focus();
 	      			return;
 	      		} 
 	      		if(!$('#e_phone1_2').val()){
-	      			alert("모든 정보를 입력해주세요.");
+	      			alert("정보를 입력해주세요.");
 	      			$('#e_phone1_2').focus();
 	      			return;
 	      		} 
 	      		if(!$('#e_phone1_3').val()){
-	      			alert("모든 정보를 입력해주세요.");
+	      			alert("정보를 입력해주세요.");
 	      			$('#e_phone1_3').focus();
 	      			return;
 	      		} 
         	  
-	      	    if(!$('#e_name_id_2').val()){
-	    			alert("모든 정보를 입력해주세요.");
-	    			$('#e_name_id_2').focus();
-	    			return;
-	    		}
-	      		if(!$('#rel_2').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#rel_2').focus();
-	      			return;
-	      		}
-	      		if(!$('#e_phone2_1').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#e_phone2_1').focus();
-	      			return;
-	      		} 
-	      		if(!$('#e_phone2_2').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#e_phone2_2').focus();
-	      			return;
-	      		} 
-	      		if(!$('#e_phone2_3').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#e_phone2_3').focus();
-	      			return;
-	      		} 
-        	  
-	      	    if(!$('#e_name_id_3').val()){
-	    			alert("모든 정보를 입력해주세요.");
-	    			$('#e_name_id_3').focus();
-	    			return;
-	    		}
-	      		if(!$('#rel_3').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#rel_3').focus();
-	      			return;
-	      		}
-	      		if(!$('#e_phone3_1').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#e_phone3_1').focus();
-	      			return;
-	      		} 
-	      		if(!$('#e_phone3_2').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#e_phone3_2').focus();
-	      			return;
-	      		} 
-	      		if(!$('#e_phone3_3').val()){
-	      			alert("모든 정보를 입력해주세요.");
-	      			$('#e_phone3_3').focus();
-	      			return;
-	      		} 
+	      	   
         	  
         	  
         	  
@@ -793,12 +742,10 @@
                         $("#lsName").text(data);
                       },
                       error: function() {
-                        alert("실패지롱");
                       }
                     });
                   },
                   error: function(xhr, status, error) {
-                    alert("실패");
                   }
                 });
                 $('#modalBox').modal('hide');

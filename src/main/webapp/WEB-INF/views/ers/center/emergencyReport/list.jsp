@@ -113,8 +113,11 @@
 	</button>
 	</div>
 	<div class="modal-body">
-		<div class="row" style="height: 300px;">
+		<div class="row" style="height: 500px;">
 			<div class="col-6">
+				<div class="row my-1 justify-content-center">
+					<div style="width:130px; height: 189px;" id="pictureView"></div>
+				</div>
 				<div class="row my-1">
 					<div class="col-6 modal-content-title">보고서 번호</div>
 					<div class="col-6 modal-content-content" id="changeRno"></div>
@@ -211,12 +214,19 @@ function popOpen(rno) {
     		$('#occurTime2').text(hour1+"시 "+minute1+"분");
     		$('#r_regDate1').text(year2+"년"+month2+"월"+date2+"분");
     		$('#r_regDate2').text(hour2+"시 "+minute2+"분");
+    		
+    		
     	},error:function(error){
 			alert(error.status);
 		}
     });
     
     
+    var target = document.getElementById('pictureView');
+    target.style.backgroundImage = "url('getPicture?rno=" + rno + "')";
+    target.style.backgroundPosition = "center";
+    target.style.backgroundRepeat = "no-repeat";
+    target.style.backgroundSize = "cover";
     
     $(modalPop).show();
     $(modalBg).show();

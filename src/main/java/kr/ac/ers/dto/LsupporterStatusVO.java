@@ -17,6 +17,7 @@ public class LsupporterStatusVO {
 		private String email;
 		private String id;
 		private String oldPicture;
+		private String gender;
 
 	
 }

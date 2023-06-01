@@ -369,5 +369,18 @@ public class ManagerMemberController {
 		mnv.setViewName(url);
 		return mnv;
 	}
+	
+	
+	/*
+	 * @PostMapping("/memberModifyStatus")
+	 * 
+	 * @ResponseBody public String memberModifyStatus(String id, String status) {
+	 * 
+	 * System.out.println(id); MemberVO member = memberService.getMemberById(id);
+	 * memberService.modifyMember(id,status);
+	 * 
+	 * return member.getName(); }
+	 * 
+	 */
 
 }

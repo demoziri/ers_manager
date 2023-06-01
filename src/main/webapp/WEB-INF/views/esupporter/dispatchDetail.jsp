@@ -17,9 +17,9 @@
 			<div class="buttons mb-1">
 				<button type="button" class="btn btn-dark button-left" onclick="">뒤로가기</button>
 				<c:if test="${dispatch.RNo ne null} and ${dispatch.RNo eq 0}">
-					<button type="button" class="btn bg-green" onclick="reportyModify('${dispatch.RNo}');">보고서 수정</button>
+					<button type="button" class="btn bg-green" onclick="reportyModify('${dispatch.RNo}','${dispatch.name}');">보고서 수정</button>
 				</c:if>
-				<button type="button" class="btn btn-primary" onclick="reportRegist('${dispatch.id}');">보고서 등록</button>
+				<button type="button" class="btn btn-primary" onclick="reportRegist('${dispatch.id}','${dispatch.name}','${dispatch.SType}');">보고서 등록</button>
 			</div>
 		</div>
 	</div>
@@ -167,12 +167,12 @@
 </div>
 
 <script>
-	function reportyModify(rNo) {
-		location.href = "reportModify?&rNo="+rNo;
+	function reportyModify(rNo, name) {
+		location.href = "reportModify?rNo="+rNo+"&name="+name;
 	}
 	
-	function reportRegist(id) {
-		location.href = "reportForm?id="+id;
+	function reportRegist(id, name, sType) {
+		location.href = "reportForm?id="+id+"&name="+name+"&sType="+sType;
 	}
 </script>
 

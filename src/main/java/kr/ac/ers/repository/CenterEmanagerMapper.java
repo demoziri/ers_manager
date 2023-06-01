@@ -23,4 +23,5 @@ public interface CenterEmanagerMapper {
 
 	List<CenterEmanagerVO> selectEmanagerListByCnum(int cnum);
 
+
 }

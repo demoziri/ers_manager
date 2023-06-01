@@ -13,6 +13,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class MemberReportLsupporterVO {
 	private String id;
 	private String name;

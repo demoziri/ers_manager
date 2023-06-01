@@ -73,7 +73,7 @@
 										<td class="text-over-none">${person.address}</td>
 										<td>${person.phone}</td>
 										<td>
-											<button type="button" class="btn btn-block btn-outline-info m-auto p-0" style="width:50%;" onclick="popOpen('${person.address}','${person.mid}');">배정</button>
+											<button type="button" class="btn btn-block btn-outline-danger m-auto p-0" style="width:50%;" onclick="popOpen('${person.address}','${person.mid}');">배정</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -161,7 +161,7 @@
 {{#each .}}
 	<div class="custom-control custom-radio">
 		<input class="custom-control-input" type="radio" id="emanager_{{wcode}}" name="emanager_names" value="{{wcode}}">
-			<label for="emanager_{{wcode}}" class="custom-control-label text-center">{{e_name}}</label>
+			<label for="emanager_{{wcode}}" class="custom-control-label text-center d-flex">{{e_name}}<div class="centerEmanagerPictureThumb d-inline-block ml-2 mb-1" data-id="{{wcode}}" style="width:30px; height:40px;" ></div></label>
 	</div>
 {{/each}}
 </script>
@@ -181,7 +181,6 @@
 	}
 
 	function popOpen(address, mid) {
-		
 		var modalPop = $('.modal_wrap');
 		var modalBg = $('.modal_bg');
 		person_mid = mid;
@@ -215,6 +214,7 @@
 					$('#modal_emanager_list').html('<div class="text-center" style="font-size: 0.7rem;">조회된 응급관리요원이 없습니다.</div>');
 				}
 				$('#emergenctListCount').text(emanager_size);
+				CenterEmanagerPictureThumb('${pageContext.request.contextPath}');
 			},
 			error : function(error) {
 				alert(error);

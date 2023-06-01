@@ -61,6 +61,8 @@ public interface EsupporterMapper {
 
 	EquipmentReportVO selectEquipmentReport(int rno);
 	
+	EmergencyVO selectEmergencyOccurTime(int sCode);
+	
 	int selectReportSequenceNextValue();
 	
 	void insertEquipmentReport(EquipmentReportVO equipmentReport);

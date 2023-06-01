@@ -4,112 +4,112 @@
 
 <script type="text/x-handlebars-template" id="person-viewList-template">
 {{#each .}}
-   <div class="card dashboard_gray_content_box">
-      <div class="dashboard_gray_content_box_header">{{personStatus}}</div>
-      <div class="dashboard_gray_content_box_body px-5 {{textColor}}">{{cnt}}</div>
-   </div>
+	<div class="card dashboard_gray_content_box">
+		<div class="dashboard_gray_content_box_header">{{personStatus}}</div>
+		<div class="dashboard_gray_content_box_body px-5 {{textColor}}">{{cnt}}</div>
+	</div>
 {{/each}}
 </script>
 
 <script type="text/x-handlebars-template" id="emergencyReport-viewList-template">
 {{#each .}}
-                     <div class="card dashboard_gray_content_box">
-                        <div class="dashboard_gray_content_box_header">{{occurType}}</div>
-                        <div class="dashboard_gray_content_box_body">{{cnt}}</div>
-                     </div>
+							<div class="card dashboard_gray_content_box">
+								<div class="dashboard_gray_content_box_header">{{occurType}}</div>
+								<div class="dashboard_gray_content_box_body">{{cnt}}</div>
+							</div>
 {{/each}}
 </script>
 <script type="text/x-handlebars-template" id="emanager-viewList-template">
 {{#each .}}
-   <div class="pb-2">
-      <table class="table-bordered">
-         <tbody>
-            <tr>
-               <th class="text-center">{{status}}</th>
-            </tr>
-            <tr>
-               <td class="text-center  {{checkStatus status}} dashboard_emanager_count font-weight-bolder">{{totalCount}}</td>
-            </tr>
-         </tbody>
-      </table>
-   </div>
+	<div class="pb-2">
+		<table class="table-bordered">
+			<tbody>
+				<tr>
+					<th class="text-center">{{status}}</th>
+				</tr>
+				<tr>
+					<td class="text-center  {{checkStatus status}} dashboard_emanager_count font-weight-bolder">{{totalCount}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 {{/each}}
 </script>
 <script>
 Handlebars.registerHelper({
-   "checkStatus":function(status){
-      if(status == '출동중'){
-      return "text-red";           
-         
-      }else if(status == '대기중'){
-         return 'text-green';
-      }else{
-         return null;
-      }
-      
-   }
-    
+	"checkStatus":function(status){
+		if(status == '출동중'){
+		return "text-red";			  
+			
+		}else if(status == '대기중'){
+			return 'text-green';
+		}else{
+			return null;
+		}
+		
+	}
+	 
 });
 </script>
 
 <script>
-   function printData(replyArr, target, templateObject) {
-      var template = Handlebars.compile(templateObject.html());
-      var html = template(replyArr);
-      target.html(html);
-   }
-   window.onload=function(){
-      checkPersonView('${loginManager.depart}');
-      checkEmergencyReportView('${loginManager.depart}');
-      checkEmanagerView('${loginManager.depart}');
-   }
-   setInterval(() => checkPersonView('${loginManager.depart}'), 3000);
-   setInterval(() => checkEmergencyReportView('${loginManager.depart}'), 3000);
-   setInterval(() => checkEmanagerView('${loginManager.depart}'), 3000);
-   
-   function checkPersonView(depart) {
-      
-      $.ajax({
-         url : "checkPersonView?depart=" + depart,
-         method : "get",
-         contentType : "application/JSON",
-         success : function(list) {
-            printData(list, $('#personViewList'), $('#person-viewList-template'));
-         },
-         error : function(error) {
-            alert(error);
-         }
-      })
-   }
+	function printData(replyArr, target, templateObject) {
+		var template = Handlebars.compile(templateObject.html());
+		var html = template(replyArr);
+		target.html(html);
+	}
+	window.onload=function(){
+		checkPersonView('${loginManager.depart}');
+		checkEmergencyReportView('${loginManager.depart}');
+		checkEmanagerView('${loginManager.depart}');
+	}
+	setInterval(() => checkPersonView('${loginManager.depart}'), 3000);
+	setInterval(() => checkEmergencyReportView('${loginManager.depart}'), 3000);
+	setInterval(() => checkEmanagerView('${loginManager.depart}'), 3000);
+	
+	function checkPersonView(depart) {
+		
+		$.ajax({
+			url : "checkPersonView?depart=" + depart,
+			method : "get",
+			contentType : "application/JSON",
+			success : function(list) {
+				printData(list, $('#personViewList'), $('#person-viewList-template'));
+			},
+			error : function(error) {
+				alert(error);
+			}
+		})
+	}
 
 
-   function checkEmergencyReportView(depart) {
-      
-      $.ajax({
-         url : "checkEmergencyView?depart=" + depart,
-         method : "get",
-         contentType : "application/JSON",
-         success : function(list) {
-            printData(list, $('#emergencyRepotListView'), $('#emergencyReport-viewList-template'));
-         },
-         error : function(error) {
-            alert(error);
-         }
-      })
-   }
-   
-   function checkEmanagerView(depart) {
-      
-      $.ajax({
-         url : "checkEmanagerView?depart=" + depart,
-         method : "get",
-         contentType : "application/JSON",
-         success : function(list) {
-            printData(list, $('#emanagerListView'), $('#emanager-viewList-template'));
-         },
-         error : function(error) {
-            alert(error);
-         }
-      })
-   }
+	function checkEmergencyReportView(depart) {
+		
+		$.ajax({
+			url : "checkEmergencyView?depart=" + depart,
+			method : "get",
+			contentType : "application/JSON",
+			success : function(list) {
+				printData(list, $('#emergencyRepotListView'), $('#emergencyReport-viewList-template'));
+			},
+			error : function(error) {
+				alert(error);
+			}
+		})
+	}
+	
+	function checkEmanagerView(depart) {
+		
+		$.ajax({
+			url : "checkEmanagerView?depart=" + depart,
+			method : "get",
+			contentType : "application/JSON",
+			success : function(list) {
+				printData(list, $('#emanagerListView'), $('#emanager-viewList-template'));
+			},
+			error : function(error) {
+				alert(error);
+			}
+		})
+	}
 </script>

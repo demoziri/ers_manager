@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../include/esupporter/loginForm.jspf"%>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <body class="login-page">
 		<div class="login">
 				<div class="card card-outline card-primary">
@@ -65,4 +64,22 @@
 		}
 
 	}
+	
+	if(${error eq 1}){
+		Swal.fire({
+			icon : 'error', // Alert 타입
+			title : '아이디를 잘못입력', // Alert 제목
+			text : '${message}', // Alert 내용
+		});
+	}
+	
+	if(${error eq 2}){
+		Swal.fire({
+			icon : 'error', // Alert 타입
+			title : '비밀번호를 잘못입력', // Alert 제목
+			text : '${message}', // Alert 내용
+		});
+	}
+	
+	
 </script>

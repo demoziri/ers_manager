@@ -108,23 +108,25 @@
 		select count(*)
 		  from emergency
 		 where stype = '3'
-		   and wid = #{wId}
-		   and occurtime = TRUNC(SYSDATE)
+		   and occurtime <![CDATA[>=]]> TO_DATE(sysdate, 'YY/MM/DD')
+  		   and occurtime <![CDATA[<]]> TO_DATE(SYSDATE+1, 'YY/MM/DD')
 	</select>
 	
 	<select id="selectEmergencyCount" resultType="int" parameterType="String">
 		SELECT COUNT(*)
 		  FROM emergency
 		 WHERE (stype = '1' OR stype = '2' OR stype = '3' OR stype = '4' OR stype = '5')
-		   and wid = #{wId}
-		   AND occurtime = TRUNC(SYSDATE)
+		   AND wid = #{wId}
+		   AND occurtime <![CDATA[>=]]> TO_DATE(sysdate, 'YY/MM/DD')
+  		   AND occurtime <![CDATA[<]]> TO_DATE(SYSDATE+1, 'YY/MM/DD')
 	</select>
 	
 	<select id="selectDispatchCount" resultType="int" parameterType="String">
 		SELECT COUNT(*)
 		  FROM emergency
 		 WHERE wid = #{wId}
-		   AND occurtime = TRUNC(SYSDATE)
+		   AND occurtime <![CDATA[>=]]> TO_DATE(sysdate, 'YY/MM/DD')
+  		   AND occurtime <![CDATA[<]]> TO_DATE(SYSDATE+1, 'YY/MM/DD')
 	</select>
 	
 	<select id="selectGatewayStockCount" resultType="int" parameterType="int">
@@ -219,6 +221,7 @@
 		select e.scode, e.stype, e.occurtime, e.reportcheck, e.id, e.wid, m.name, m.gender, m.birth, m.picture
 		  from emergency e, member m
 		 where e.id = m.id
+		 and e.reportcheck = 'Y'
 		   <include refid="search"/>
 		   and e.wid = #{wId}
 	</select>
@@ -227,7 +230,7 @@
 		select count(*)
 		  from emergency e, member m
 		 where e.id = m.id
-		   and e.reportcheck = 'N'
+		   and e.reportcheck = 'Y'
 		   <include refid="search"/>
 		   and e.wid = #{wId}
 	</select>
@@ -240,19 +243,23 @@
 	
 	</select>
 	
+	<select id="selectEmergencyOccurTime" resultType="EmergencyVO" parameterType="int">
+		select occurtime from emergency where scode = #{sCode}
+	</select>
+	
 	<select id="selectReportSequenceNextValue" resultType="int">
 		select report_seq.nextVal
 		from dual
 	</select>
 	
 	<update id="insertEquipmentReport" parameterType="EquipmentReportVO">
-		insert into report(rNo,regDate,content,id,wCode,reDone,viewCheck,reType,occurTime,occurType,callCheck)
-		values(#{rNo},#{regDate},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},#{occurType},#{callCheck})
+		insert into report(rNo,regDate,content,id,wCode,reDone,viewCheck,reType,occurType,callCheck)
+		values(#{rNo},#{regDate},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurType},#{callCheck})
 	</update>
 	
 	<update id="insertEmergencyReport" parameterType="EmergencyReportVO">
-		insert into report(rNo,content,id,wCode,reDone,viewCheck,reType,occurTime,occurType,callCheck)
-		values(#{rNo},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},#{occurType},#{callCheck})
+		insert into report(rNo,content,id,wCode,reDone,viewCheck,reType,occurType,callCheck)
+		values(#{rNo},#{content},#{id},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurType},#{callCheck})
 	</update>
 	
 	<update id="updateEsupporterStatus" parameterType="int">

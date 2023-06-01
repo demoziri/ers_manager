@@ -141,6 +141,12 @@ public class MemberService {
 		
 		
 	}
+
+
+	public void modifyMember(String id, String status) {
+		memberMapper.updateMemberStatus(id,status);
+		
+	}
 	
 	
 	  

@@ -63,4 +63,50 @@
 	(#{scode}, #{occurType}, sysdate, 'Y', 'N', #{mem_id}, #{wid})
 </update>
 
+<select id="selectEquipmentReportListByDepart" resultType="CenterEquipmentReportVO">
+	SELECT 'R' || TO_CHAR(r.regDate, 'YYMMDD') || LPAD(r.rno, 4, '0') AS rno, r.regDate, r.content, m.id AS m_id, m.name AS m_name, m.memType, m.address, m.phone, f.name AS f_name, l.name AS l_name, DECODE(f.wtype, '1', '생활지원사', '2', '응급관리요원') AS wtype, c.name AS c_name, f.phone as e_phone
+	FROM report r, member m, fieldstaff f, local l, esupporter e, center c
+	WHERE r.retype = 7
+	AND r.regdate BETWEEN TO_DATE(#{startDate}) AND TO_DATE(#{endDate}) + 0.99999
+	AND r.id = m.id
+	AND r.wcode = f.wcode
+	AND m.lnum = l.lnum
+	AND l.name like '%'||#{depart}||'%'
+	AND f.wcode = e.wcode
+	AND e.cnum = c.cnum
+</select>
+
+<select id="selectEquipmentReportListCountByDepart" resultType="int">
+	select count(*)
+	from report r ,member m, fieldstaff f, local l, esupporter e, center c
+	where retype = 7
+	and r.regdate between to_date(#{startDate}) and to_date(#{endDate}) + 0.99999
+	and r.id = m.id
+	and r.wcode = f.wcode
+	and m.lnum = l.lnum
+	and l.name like '%'||#{depart}||'%'
+	and f.wcode = e.wcode
+	and e.cnum = c.cnum
+</select>
+
+<select id="selectEquipmentReportByRno" resultType="CenterEquipmentReportVO">
+	SELECT 'R' || TO_CHAR(r.regDate, 'YYMMDD') || LPAD(r.rno, 4, '0') AS rno, r.regDate, r.content, m.id AS m_id, m.name AS m_name, m.memType, m.address, m.phone, f.name AS f_name, l.name AS l_name, DECODE(f.wtype, '1', '생활지원사', '2', '응급관리요원') AS wtype, c.name AS c_name, f.phone as e_phone
+	FROM report r, member m, fieldstaff f, local l, esupporter e, center c
+	WHERE r.retype = 7
+	AND r.id = m.id
+	AND r.wcode = f.wcode
+	AND m.lnum = l.lnum
+	AND f.wcode = e.wcode
+	AND e.cnum = c.cnum
+	AND r.rno = #{rno}
+</select>
+
+<select id="selectMachineListByRno" resultType="CenterMachineCommandVO">
+	select mc.mcode, m.mnum, mc.name, s.mstatus
+	from selectmachine s, machine m, machinecode mc ,report r
+	where s.mnum = m.mnum
+	and mc.mcode = m.mcode
+	and s.rno = r.rno
+	and r.rno = #{rno}
+</select>
 </mapper>
