@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.ManagerStaffMapper">
+
+	<select id="selectManagerNeedApproval" resultType="ManagerVO">
+		select * from manager m
+		where m.status='N'
+		<if test="depart != null and depart != ''.toString()">
+		and m.depart='행정'
+		</if>
+		<if test="depart != null and depart == ''.toString()">
+		and m.depart!='행정'
+		</if>
+	</select>
+
+
+
+
+
+
+</mapper>

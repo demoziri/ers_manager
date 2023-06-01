@@ -43,119 +43,141 @@
   </div>
   <div class="row">
     <div class="col-5">
+    	<!-- 승인요청 -->
+    	<div class="row">
+	    	<div class="card card-body mt-1 pt-0" style="height:260px;">
+	    		<div>
+	            <span class="fs-3" style="border-bottom:2px solid gray;">승인 요청</span>
+	            &nbsp;
+	            <select name="memType" id="" style="height:30px;">
+	              <option value="" selected>직원구분</option>
+	              <option value="행정">행정</option>
+	              <option value="센터">센터</option>
+	            </select>
+	          </div>
+	    	  <div style="margin-top:5px;overflow:scroll;overflow-x:hidden;">
+	            <table class="table table-bordered border-2 mt-1 text-center staff_table" >
+	              <colgroup>
+	              	 <col width="20%">
+	              	 <col width="30%">
+	              	 <col width="20%">
+	              	 <col width="30%">
+	               </colgroup>
+	              <thead style="background-color:#dfdfdf;position:sticky;top:0;" id="sticky-header">
+	                <tr>
+	                  <th>직원구분</th>
+	                  <th>아이디</th>
+	                  <th>이름</th>
+	                  <th>생년월일</th>
+	                </tr>
+	              <thead>
+	                <tbody class="table-group-divider">
+	                 <c:forEach items="${managerList }" var="manager">
+	                  <tr onclick="staffDetail_go();">
+	                  <c:if test="${manager.depart eq '행정'}">
+	                    <td>${manager.depart }</td>
+	                  </c:if>
+	                  <c:if test="${manager.depart ne '행정'}">
+	                    <td>${manager.depart }센터</td>
+	                  </c:if>
+	                    <td>${manager.manid }</td>
+	                    <td>${manager.name }</td>
+	                    <td>${manager.birth }</td>
+	                  </tr>
+	                   </c:forEach>
+	                </tbody>
+	            </table>
+	          </div>
+	    	</div>
+    	
+    	</div>
       <!-- 직원목록 -->
-      
-        <div class="card card-body mt-1" style="border:1px solid gray;">
-          <div>
-            <span class="fs-3" style="border-bottom:2px solid gray;">직원 목록</span>
-          </div>
-          <div>
-            <select name="memType" id="" style="height:30px;">
-              <option value="" selected>직원구분</option>
-              <option value="">응급관리요원</option>
-              <option value="">생활지원사</option>
-            </select>
-            <select name="gu" id="" style="height:30px;width:70px;">
-              <option value="" selected>지역구</option>
-              <option value="">중구</option>
-              <option value="">동구</option>
-              <option value="">서구</option>
-              <option value="">대덕구</option>
-              <option value="">유성구</option>
-            </select>
-            <select name="dong" id="" style="height:30px;width:80px;">
-              <option value="" selected>동</option>
-            </select>
-            <input type="text" placeholder="이름" style="width:100px;" />
-            <button type="submit" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
-          </div>
-          <div>
-            <table class="table table-bordered border-2 mt-1 text-center staff_table">
-              <thead style="background-color:#dfdfdf;">
-                <tr>
-                  <th>직원구분</th>
-                  <th>지역구</th>
-                  <th>동이름</th>
-                  <th>직원명</th>
-                </tr>
-                <thead>
-                <tbody class="table-group-divider">
-                  <tr onclick="staffDetail_go();">
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                  <tr>
-                    <td>응급관리요원</td>
-                    <td>서구</td>
-                    <td>둔산동</td>
-                    <td>박제성</td>
-                  </tr>
-                </tbody>
-            </table>
-          </div>
-          <nav>
-            <ul class="pagination" style="justify-content: center;">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-
+      <div class="row">
+	        <div class="card card-body mt-1 pb-0 pt-0" style="border:1px solid gray;">
+	          <div>
+	            <span class="fs-3" style="border-bottom:2px solid gray;">직원 목록<span class="fs-6">(현장)</span></span>
+	          </div>
+	          <div>
+	            <select name="memType" id="" style="height:30px;">
+	              <option value="" selected>직원구분</option>
+	              <option value="">응급관리요원</option>
+	              <option value="">생활지원사</option>
+	            </select>
+	            <select name="gu" id="" style="height:30px;width:70px;">
+	              <option value="" selected>지역구</option>
+	              <option value="">중구</option>
+	              <option value="">동구</option>
+	              <option value="">서구</option>
+	              <option value="">대덕구</option>
+	              <option value="">유성구</option>
+	            </select>
+	            <select name="dong" id="" style="height:30px;width:80px;">
+	              <option value="" selected>동</option>
+	            </select>
+	            <input type="text" placeholder="이름" style="width:100px;" />
+	            <button type="submit" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
+	          </div>
+	          <div>
+	            <table class="table table-bordered border-2 mt-1 text-center staff_table m-0">
+	              <thead style="background-color:#dfdfdf;">
+		           
+	                <tr>
+	                  <th>직원구분</th>
+	                  <th>지역구</th>
+	                  <th>동이름</th>
+	                  <th>직원명</th>
+	                </tr>
+	                <thead>
+	                <tbody class="table-group-divider">
+	                  <tr onclick="staffDetail_go();">
+	                    <td>응급관리요원</td>
+	                    <td>서구</td>
+	                    <td>둔산동</td>
+	                    <td>박제성</td>
+	                  </tr>
+	                  <tr>
+	                    <td>생활지원사</td>
+	                    <td>서구</td>
+	                    <td>-</td>
+	                    <td>박제성</td>
+	                  </tr>
+	                  <tr>
+	                    <td>생활지원사</td>
+	                    <td>서구</td>
+	                    <td>-</td>
+	                    <td>박제성</td>
+	                  </tr>
+	                  <tr>
+	                    <td>응급관리요원</td>
+	                    <td>서구</td>
+	                    <td>둔산동</td>
+	                    <td>박제성</td>
+	                  </tr>
+	                 
+	                </tbody>
+	            </table>
+	          </div>
+	          <nav>
+	            <ul class="pagination m-0" style="justify-content: center;">
+	              <li class="page-item">
+	                <a class="page-link" href="#" aria-label="Previous">
+	                  <span aria-hidden="true">&laquo;</span>
+	                </a>
+	              </li>
+	              <li class="page-item"><a class="page-link" href="#">1</a></li>
+	              <li class="page-item"><a class="page-link" href="#">2</a></li>
+	              <li class="page-item"><a class="page-link" href="#">3</a></li>
+	              <li class="page-item">
+	                <a class="page-link" href="#" aria-label="Next">
+	                  <span aria-hidden="true">&raquo;</span>
+	                </a>
+	              </li>
+	            </ul>
+	          </nav>
+	
+	        </div>
         </div>
+        
 
     
 
@@ -244,6 +266,13 @@
       }
     });
   }
+  
+  
+  
+  
+  
+  
+  
   //오픈윈도우
   function openRegistForm_go() {
     popup = window.open('regist', '등록팝업', 'width=700px,height=700px,scrollbars=yes');

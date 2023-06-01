@@ -97,6 +97,7 @@
 
               <table class="table table-bordered  text-center re_table">
                 <thead style="background-color:#dfdfdf;position:sticky;top:0;">
+                
                   <tr>
                     <th>장비명</th>
                     <th>요청일자</th>	
@@ -225,7 +226,6 @@
                   </tr>
                   <thead>
                   <tbody class="table-group-divider">
-                    <%-- <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate" /> --%>
                     <c:forEach items="${stockList }" var="stock">
                       <tr>
                         <td>${stock.l_name }</td>
@@ -403,9 +403,9 @@
           let html = template(data);
           $('#asDetail').html(html);
           $('#template_title').text("AS 요청 상세");
-          // Check if the button already exists
+         
           if ($('#list').length === 0) {
-            // Add new button tag
+           
             $('#template_button').append("<button id='list' type='button' onclick=\"machineList_go(' ');\" class='btn btn-warning btn-sm mt-1' style='float:right;align-items:center;'>보유재고보기</button>");
           }
         }

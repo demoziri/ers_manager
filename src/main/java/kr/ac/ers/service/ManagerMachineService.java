@@ -69,5 +69,9 @@ public class ManagerMachineService {
 	}
 	
 	
+	public ManagerMachineVO getMachineAsGuCount() {
+		return managerMachineMapper.selectAsGuCount();
+	}
+	
 	
 }

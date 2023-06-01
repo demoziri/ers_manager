@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmergencyVO {
+
 	
 	private int sCode;
 	private String sType;
@@ -25,5 +26,4 @@ public class EmergencyVO {
 	private String equipment;
 	private String memType;
 	private String gender;
-
 }

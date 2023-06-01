@@ -176,16 +176,27 @@ public class LsupporterReportController {
 		return "lsupporter/nonmemberreportForm";
 	}
 	
-	@RequestMapping("/ers/lsupporter/emergencyreportForm")
-	public String ShowemergencymemberreportForm(String searchType, String keyword, String perPageNum, String page,
-			Model model, HttpSession session, HttpServletRequest request) {
+	@RequestMapping("/ers/lsupporter/carenonmemberreportForm")
+	public String ShowcarenonmemberreportForm(Model model, HttpSession session, HttpServletRequest request) {
 		session = request.getSession();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 		int wCode = loginUser.getWCode();
 		String wid = loginUser.getWid();
 		model.addAttribute("wCode", wCode);
 		model.addAttribute("wid", wid);
-		return "lsupporter/emergencyreportForm";
+		return "lsupporter/carenonmemberreportForm";
+	}
+	
+	
+	@RequestMapping("/ers/lsupporter/emergencynonmemberreportForm")
+	public String ShowemergencynonmemberreportForm(Model model, HttpSession session, HttpServletRequest request) {
+		session = request.getSession();
+		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		int wCode = loginUser.getWCode();
+		String wid = loginUser.getWid();
+		model.addAttribute("wCode", wCode);
+		model.addAttribute("wid", wid);
+		return "lsupporter/emergencynonmemberreportForm";
 	}
 	
 	@RequestMapping("/ers/lsupporter/LsupportermembersearchList")
@@ -250,7 +261,7 @@ public class LsupporterReportController {
 		return url;
 	}
 	
-	@PostMapping(value = "/ers/lsupporter/emergencyreportregist", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/ers/lsupporter/emergencynonmemberreportregist", produces = "text/plain;charset=utf-8")
 	public String emergencyregist(@DateTimeFormat(pattern = "yyyy-MM-dd")MemberReportLsupporterVO reportlsupporter,HttpSession session, HttpServletRequest request) throws Exception {
 		String url = "redirect:/ers/lsupporter/emergencylist";
 		session = request.getSession();
@@ -263,39 +274,24 @@ public class LsupporterReportController {
 			lsupporterService.reportregist(reportlsupporter,loginUser.getWid());
 		return url;
 	}
-
-	@GetMapping("/ers/lsupporter/nonmemberreportFormAction")
-	@ResponseBody
-	public Map<String, Object> shownonmemberreportFormAction(@RequestParam String searchType,
-			@RequestParam String keyword, HttpSession session, HttpServletRequest request) {
-
-		SearchCriteria cri = new SearchCriteria();
-
-		if (cri.getPerPageNum() == 0) {
-
-			cri.setPerPageNum(5);
-		}
-		if (cri.getPage() == 0) {
-			cri.setPage(1);
-		}
-		if (searchType == null || searchType.isEmpty()) {
-			cri.setSearchType("");
-		} else {
-			cri.setSearchType(searchType);
-		}
-		if (keyword == null || keyword.isEmpty()) {
-			cri.setKeyword("");
-		} else {
-			cri.setKeyword(keyword);
-		}
+	
+	@PostMapping(value = "/ers/lsupporter/carenonmemberreportregist", produces = "text/plain;charset=utf-8")
+	public String careregist(@DateTimeFormat(pattern = "yyyy-MM-dd")MemberReportLsupporterVO reportlsupporter,HttpSession session, HttpServletRequest request) throws Exception {
+		String url = "redirect:/ers/lsupporter/carelist";
 		session = request.getSession();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		Map<String, Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
-		return dataMap;
+		List<MultipartFile> multiFiles = reportlsupporter.getUploadFile();
+		String savePath = this.lsupporterfileUploadPath;		
+		List<ReportFileVO> reportfileList = saveFileToAttaches(multiFiles,savePath);
+			//DB 	
+			reportlsupporter.setReportFileList(reportfileList);
+			lsupporterService.reportregist(reportlsupporter,loginUser.getWid());
+		return url;
 	}
+
 	
-	@RequestMapping(value = "/ers/lsupporter/remove", produces = "text/plain;charset=utf-8")
-	public String remove(int rNo) throws Exception {
+	@RequestMapping(value = "/ers/lsupporter/reportlistremove", produces = "text/plain;charset=utf-8")
+	public String reportlistremove(int rNo) throws Exception {
 		String url = "redirect:/ers/lsupporter/reportlist";
 		MemberReportLsupporterVO reportlsupporter = lsupporterService.getReportByRNo(rNo);
 		List<ReportFileVO> reportFileList = reportlsupporter.getReportFileList();
@@ -313,4 +309,66 @@ public class LsupporterReportController {
 		lsupporterService.remove(rNo);
 		return url;
 	}
+	
+	@RequestMapping(value = "/ers/lsupporter/emergencyremove", produces = "text/plain;charset=utf-8")
+	public String emergencyremove(int rNo) throws Exception {
+		String url = "redirect:/ers/lsupporter/emergencylist";
+		MemberReportLsupporterVO reportlsupporter = lsupporterService.getReportByRNo(rNo);
+		List<ReportFileVO> reportFileList = reportlsupporter.getReportFileList();
+		if(reportFileList != null) for(ReportFileVO reportfile: reportFileList) {
+			
+			String savedPath = reportfile.getUploadpath();
+			String fileName = reportfile.getFilename();
+			
+			File file = new File(savedPath+File.separator+fileName);
+			
+			if(file.exists())file.delete();
+			
+		}
+
+		lsupporterService.remove(rNo);
+		return url;
+	}
+	
+	
+	@RequestMapping(value = "/ers/lsupporter/carelistremove", produces = "text/plain;charset=utf-8")
+	public String carelistremove(int rNo) throws Exception {
+		String url = "redirect:/ers/lsupporter/carelist";
+		MemberReportLsupporterVO reportlsupporter = lsupporterService.getReportByRNo(rNo);
+		List<ReportFileVO> reportFileList = reportlsupporter.getReportFileList();
+		if(reportFileList != null) for(ReportFileVO reportfile: reportFileList) {
+			
+			String savedPath = reportfile.getUploadpath();
+			String fileName = reportfile.getFilename();
+			
+			File file = new File(savedPath+File.separator+fileName);
+			
+			if(file.exists())file.delete();
+			
+		}
+
+		lsupporterService.remove(rNo);
+		return url;
+	}
+	
+	@RequestMapping(value = "/ers/lsupporter/nowreportListremove", produces = "text/plain;charset=utf-8")
+	public String nowreportlistremove(int rNo) throws Exception {
+		String url = "redirect:/ers/lsupporter/nowreportList";
+		MemberReportLsupporterVO reportlsupporter = lsupporterService.getReportByRNo(rNo);
+		List<ReportFileVO> reportFileList = reportlsupporter.getReportFileList();
+		if(reportFileList != null) for(ReportFileVO reportfile: reportFileList) {
+			
+			String savedPath = reportfile.getUploadpath();
+			String fileName = reportfile.getFilename();
+			
+			File file = new File(savedPath+File.separator+fileName);
+			
+			if(file.exists())file.delete();
+			
+		}
+
+		lsupporterService.remove(rNo);
+		return url;
+	}
+	
 }

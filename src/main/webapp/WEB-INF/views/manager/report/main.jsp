@@ -22,19 +22,19 @@
       <div class="row">
         <div class="card card-body border-0 mt-2" style="height:250px;">
           <div>
-            <span class="fs-3" style="border-bottom:2px solid gray;">미처리 보고서</span>
+            <span class="fs-3" style="border-bottom:2px solid gray;">미열람 보고서</span>
           </div>
           <div class="h-100 row card card-body  p-1">
             <!-- 장비 미처리 보고서 -->
             <div class="border h-100 col-6 d-inline-block pt-0">
-              <div class="row text-center bg-success text-light"><span class="fs-5 border">장비 미처리 보고서</span></div>
+              <div class="row text-center bg-success text-light"><span class="fs-5 border">장비 미열람 보고서</span></div>
               <div class="row h-75">
                 <h3 class="d-flex m-0 justify-content-center align-items-center">${machineReportCount }<span class="fs-4">&nbsp;건</span></h3>
               </div>
             </div>
             <!-- 대상자 미처리 보고서 -->
             <div class="border h-100 col-6 d-inline-block pt-0">
-              <div class="row text-center bg-primary text-light"><span class="fs-5 border">대상자 미처리 보고서</span></div>
+              <div class="row text-center bg-primary text-light"><span class="fs-5 border">대상자 미열람 보고서</span></div>
               <div class="row h-75"  onclick="location.href='../member/main'">
                 <h3 class="d-flex m-0 justify-content-center align-items-center">${memberReportCount}<span class="fs-4">&nbsp;건</span></h3>
               </div>
@@ -49,18 +49,27 @@
           <div>
             <span class="fs-3" style="border-bottom:2px solid gray;">보고서 목록</span>
           </div>
+          <form role="searchReport">
           <div class="mb-1">
-            <select name="reType" id="" style="height:100%;">
-              <option value="" selected>보고서 구분</option>
-              <option value="">고객면담</option>
-              <option value="">장비점검</option>
-              <option value="">서비스취소</option>
-              <option value="">악성대상자신고</option>
-              <option value="">응급보고서</option>
+          	<select name="viewcheck" onchange="viewcheck_go(this.value)">
+          		<option value="" ${viewcheck eq 'selected' ? 'selected' : "" }>선택</option>
+          		<option value="0" ${viewcheck eq '0' ? 'selected' : "" }>미열람</option>
+          		<option value="1" ${viewcheck eq '1' ? 'selected' : "" }>열람</option>
+          	</select>
+            <select name="reType" onchange="reTypeCheck_go(this.value)" style="height:100%;" >
+              <option value=""  ${cri.reType eq 'selected' ? 'selected' : "" }>보고서 구분</option>
+              <option value="2" ${cri.reType eq '2' ? 'selected' : "" }>고객면담</option>
+              <option value="7" ${cri.reType eq '7' ? 'selected' : "" }>장비점검</option>
+              <option value="4" ${cri.reType eq '4' ? 'selected' : "" }>서비스취소</option>
+              <option value="6" ${cri.reType eq '6' ? 'selected' : "" }>악성대상자신고</option>
+              <option value="1" ${cri.reType eq '1' ? 'selected' : "" }>응급보고서</option>
+              <option value="3" ${cri.reType eq '3' ? 'selected' : "" }>건강상태</option>
+              <option value="5" ${cri.reType eq '5' ? 'selected' : "" }>장기부재</option>
             </select>
-            &ensp;기간&nbsp;<input type="date" />&nbsp;-&nbsp;<input type="date" />
-            <button type="submit" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
+            &ensp;기간&nbsp;<input type="date" name="start_day" />&nbsp;-&nbsp;<input type="date" name="end_day"/>
+            <button type="button"  onclick="searchReportList_go();" class="btn btn-primary btn-sm" style="width:50px;float:right;">조회</button>
           </div>
+          </form>
           <div id="re_List" style="overflow:scroll;overflow-x:hidden;">
 
             <table class="table table-bordered  text-center re_table">
@@ -74,11 +83,11 @@
                   <th>열람여부</th>
                 </tr>
                 <thead>
-                <tbody style="overflow:auto;">
+                <tbody style="overflow:auto;" id="searchReportList">
                   <c:if test="${not empty reportList }">
                 <c:forEach items="${reportList }" var="report">
                 <fmt:formatDate value="${report.regDate }" pattern="yyyy-MM-dd" var="regDate" />
-                  <tr onclick="reportDetail_go();">
+                  <tr onclick="reportDetail_go('${report.RNo}');">
                     <td style="font-size:0.8rem;">${report.RNo }</td>
                     <c:if test="${report.WType eq 2 }">
                     <td style="font-size:0.8rem;">응급관리요원</td>
@@ -145,11 +154,15 @@
 </div>
 
 
+
+
+
+
 <script>
 	
-	function reportDetail_go(){
+	function reportDetail_go(rno){
 		$.ajax({
-			url:"detail",
+			url:"detail?rno="+rno,
 			type:"get",
 			datatype:"html",
 			success:function(data){
@@ -159,8 +172,50 @@
 		})
 		
 	}
+	
+	function viewcheck_go(viewcheck){
+		
+		$.ajax({
+			url:"searchReport?viewcheck="+viewcheck,
+			type:"get",
+			dataType:"text",
+			success:function(data){
+				$("#searchReportList").html(data);
+			}
+		})
+	}
+	
+	
+	
+	function searchReportList_go(){
+		var data = $('form[role=searchReport]').serialize();
+		
+		
+		$.ajax({
+			url:"searchReport",
+			type:"get",
+			data:data,
+			dataType:"text",
+			success:function(data){
+				$("#searchReportList").html(data);
+			}
+		})
+		
+		
+	}
 
 
+	function reTypeCheck_go(reType){
+		
+		$.ajax({
+			url:"searchReport?reType="+reType,
+			type:"get",
+			dataType:"text",
+			success:function(data){
+				$("#searchReportList").html(data);
+			}
+		})
+	}
 
 
 

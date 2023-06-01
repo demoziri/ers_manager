@@ -4,7 +4,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title mx-auto" id="staticBackdropLabel">비상연락망</h4>
+        <h4 class="modal-title mx-auto" id="staticBackdropLabel" onclick="ecallAutoRegist_go();">비상연락망</h4>
        <!--  <button id="addPhoneBtn" class="btn btn-primary btn-sm" type="button" style="float:right;">+추가</button> -->
       </div>
       <div class="modal-body">
@@ -65,8 +65,8 @@
                     <option value="010">010</option>
                     <option value="042">042</option>
                   </select>
-                  <input type="text" name="e_phone2" style="width:50px;" id="e_phone2_2"/>
-                  <input type="text" name="e_phone3" style="width:50px;" id="e_phone2_3"/>
+                  <input type="text" name="e_phone2" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" style="width:50px;" id="e_phone2_2"/>
+                  <input type="text" name="e_phone3" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" style="width:50px;" id="e_phone2_3"/>
                 </td>
               </tr>
               
@@ -91,8 +91,8 @@
                     <option value="010">010</option>
                     <option value="042">042</option>
                   </select>
-                  <input type="text" name="e_phone2" style="width:50px;" id="e_phone3_2"/>
-                  <input type="text" name="e_phone3" style="width:50px;" id="e_phone3_3"/>
+                  <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" name="e_phone2" style="width:50px;" id="e_phone3_2"/>
+                  <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 4);" name="e_phone3" style="width:50px;" id="e_phone3_3"/>
                 </td>
               </tr>
             </tbody>

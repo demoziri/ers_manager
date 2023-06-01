@@ -10,7 +10,7 @@
 <c:set var="pageMaker" value="${dataMap.pageMaker}"/>
 <c:set var="cri" value="${pageMaker.cri }"/>
 <%@include file="../include/lsupporter/head.jspf"%>
-<link rel="stylesheet" href="/resources/lsupporter/css/reportList.css">
+<link rel="stylesheet" href="/resources/lsupporter/css/emergencylist.css">
 <!-- Content Wrapper. Contains page content -->
 
 		<!-- Main content -->
@@ -25,7 +25,7 @@
           <div class="small-box bg-primary">
            <div class="inner" id="noweducationactive">
       <h3>${educationCount }건</h3>
-      <p>고객상담</p>
+      <p class="info_text" style="font-size:1.4rem;">고객상담</p>
     </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -36,7 +36,7 @@
           <div class="small-box bg-primary">
             <div class="inner" id="noweducationfuture">
               <h3>${lifereportCount }건</h3>
-      <p>건강상태</p>
+      <p class="info_text" style="font-size:1.4rem;">건강상태</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -47,7 +47,7 @@
           <div class="small-box bg-primary">
             <div class="inner" id="noweducationclear">
                <h3>${falsereportCount }건</h3>
-      <p>서비스취소</p>
+      <p class="info_text" style="font-size:1.4rem;">서비스취소</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -58,7 +58,7 @@
           <div class="small-box bg-primary">
             <div class="inner" id="noweducationmiss">
                <h3>${longreportCount }건</h3>
-              <p>장기부재</p>
+              <p class="info_text" style="font-size:1.4rem;">장기부재</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -69,7 +69,7 @@
           <div class="small-box bg-primary">
             <div class="inner" id="noweducationclear">
                <h3>${devilreportCount }건</h3>
-      <p>악성대상자</p>
+      <p class="info_text" style="font-size:1.4rem;">악성대상자</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -88,17 +88,16 @@
 		<div class="category_date_menubar">
   <div class="search_bar search_bar_main flex mb-5">
  <div class="search_bar mb-2 flex">
-  <select class="keywordoption"name="searchType" id="searchType" style="border:1px solid black;border-radius:5px;">
-   <option value="" disabled>검 색</option>
-<option value="all" ${cri.searchType eq 'all' ? 'selected':'' }>전체</option>
-<option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
-<option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
-<option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>활동여부</option>
-<option value="rd" ${cri.searchType eq 'rd' ? 'selected':'' }>남은정기상담일</option>
-  </select>
-<div class="search_container flex items-center">
-  <input class="searchinput w-full" autocomplete="false" type="text" name="keyword" required="required" value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
-  <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="button" data-card-widget="search" onclick="list_go(1);">
+ <select class="keywordoption mr-2" name="searchType" id="searchType">
+  <option value="" disabled selected>검색</option>
+  <option value="all" ${cri.searchType eq 'all' ? 'selected':'' }>전체</option>
+  <option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
+  <option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
+  <option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>활동여부</option>
+</select>
+<div class="search_container flex items-center border border-gray-300 rounded-md overflow-hidden">
+  <input class="searchinput w-full py-2 px-4 pr-10" autocomplete="off" type="text" name="keyword" required value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
+  <button type="button" class="absolute right-0 top-0 bottom-0 p-2" id="button" data-card-widget="search" onclick="list_go(1);">
     <i class="fa fa-search"></i>
   </button>
 </div>
@@ -112,9 +111,10 @@
 <div class="row">
 <div class="col-12">
 <div class="mt-2 mb-2 button buttens">
-<button type="button" class="btn btn-lg btn-dark regist backbtn" onclick="history.back();">뒤로가기</button>
-<button type="submit" class="btn btn-danger btn-md ml-2" onclick="deleteSelectedMembers();">삭제</button>
-
+ <button class="btn btn-danger btn-layer-3_4" onclick="deleteSelectedMembers();">
+        삭제
+        <i class="fa fa-check"></i>
+    </button>
 </div>
 </div>
 </div>
@@ -124,7 +124,7 @@
 <table class="tg memberlistable " style="width:100%;">
 <thead>
   <tr>
-    <th class="check_box"><input type="checkbox" id="selectAll" class="text-center  checkbox">
+    <th class="check_box tg-nqa4"><input type="checkbox" id="selectAll" class="text-center  checkbox">
       전체선택</th>
     <th class="tg-nqa4">번호</th>
     <th class="tg-nqa4">사진</th>
@@ -136,38 +136,38 @@
 <c:forEach items="${memberList }" var="member" >
 <tbody>
   <tr>
-     <td class=""> <input type="checkbox" class="text-center check_box checkbox" name="selectedMembers" value="${member.RNo}"/></td>
-    <td class="">${member.RNo }</td>
-    <td class="">
+     <td class="tg-73oq"> <input type="checkbox" class="text-center check_box checkbox" name="selectedMembers" value="${member.RNo}"/></td>
+    <td class="tg-73oq">${member.RNo}</td>
+    <td class="tg-73oq">
     <span class="manPicture" data-id="${member.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
     </td>
-    <td class="" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">${member.name }</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">${member.name }</td>
   <c:if test="${member.reType == 1 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">응급상황</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">응급상황</td>
   </c:if>
    <c:if test="${member.reType == 2 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">고객면담</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">고객면담</td>
   </c:if>
    <c:if test="${member.reType == 3 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">건강상태</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">건강상태</td>
   </c:if>
    <c:if test="${member.reType == 4 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">서비스취소</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">서비스취소</td>
   </c:if>
    <c:if test="${member.reType == 5 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">장기부재</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">장기부재</td>
   </c:if>
    <c:if test="${member.reType == 6 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">악성대상자신고</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">악성대상자신고</td>
   </c:if>
    <c:if test="${member.reType == 7 }">
-    <td class="" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">장비점검</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">장비점검</td>
   </c:if>
    <c:if test="${member.viewCheck == 0}">
-    <td class="">미열람</td>
+    <td class="tg-73oq">미열람</td>
    </c:if>
      <c:if test="${member.viewCheck == 1}">
-    <td class="">열람</td>
+    <td class="tg-73oq">열람</td>
    </c:if>
   </tr>
   
@@ -238,7 +238,7 @@ function deleteSelectedMembers() {
   // Create a form dynamically
   var form = document.createElement('form');
   form.method = 'POST';
-  form.action = '/ers/lsupporter/remove';
+  form.action = '/ers/lsupporter/nowreportListremove';
 
   // Add hidden input fields for each selected report number
   for (var j = 0; j < selectedMembers.length; j++) {

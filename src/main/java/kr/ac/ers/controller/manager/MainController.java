@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.ers.command.MemberSearchCriteria;
+import kr.ac.ers.dto.ManagerMachineVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReportVO;
+import kr.ac.ers.service.ManagerMachineService;
 import kr.ac.ers.service.ManagerReportSerivce;
 import kr.ac.ers.service.MemberService;
 
@@ -26,14 +28,19 @@ public class MainController {
 	private ManagerReportSerivce managerReportService;
 
 	
+	@Autowired 
+	private ManagerMachineService selectAsDongCount;
+	
 	@GetMapping("ers/manager/main")
 	public ModelAndView root(ModelAndView mnv, MemberSearchCriteria cri) {
 		String url = "manager/index";
 		
+		ManagerMachineVO asCount = selectAsDongCount.getMachineAsGuCount();
 		List<NoticeVO> noticeList = memberService.getNoticeListToMangerMain();
 		List<MemberVO> memberList = memberService.getMemberListToMain();
 		List<ReportVO> reportList = managerReportService.getReportListToManagerMain();
 		
+		mnv.addObject("asCount",asCount);
 		mnv.addObject("reportList",reportList);
 		mnv.addObject("memberList",memberList);
 		mnv.addObject("noticeList",noticeList);

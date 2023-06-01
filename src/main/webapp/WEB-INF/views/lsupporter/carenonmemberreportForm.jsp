@@ -19,8 +19,8 @@
 <c:set var="ymd" value="<%=new java.util.Date()%>" />
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
-<button type="submit"  class="btn btn-primary btn-layer-3_1"  onclick="regist_go();">제출
-   <i class="fa fa-check"></i>
+<button type="submit" class="btn btn-primary btn-md"  onclick="regist_go();">제출
+    <i class="fa fa-check"></i>
 </button>
 </div>
 </div>
@@ -71,7 +71,7 @@
       </div>
       <div class="card-body" style="display: none;" >
         <div class="form-group">
-          <form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
+          <form action="carenonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
         <div class="report-content">
             <table>
                 <tr>
@@ -129,7 +129,7 @@
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm2">
+<form action="carenonmemberreportregist" name="form" method="post" role="form" id="sendForm2">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
@@ -179,7 +179,7 @@
 </div>
 <div class="card-body" style="display: none;" >
 <div class="form-group">
-	<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
+	<form action="carenonmemberreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
 	<input type="hidden" name="wCode" value="${wCode}">
 	<input type="hidden" name="id" value="">
     <input type="hidden" name="sCode" value="">
@@ -226,7 +226,7 @@
 </div>
 <div class="card-body"  style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm4">
+<form action="carenonmemberreportregist" name="form" method="post" role="form" id="sendForm4">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
 <input type="hidden" name="wCode" value="${wCode}">
@@ -275,7 +275,7 @@
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
+<form action="carenonmemberreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
@@ -302,7 +302,7 @@
   <tr>
     <th>사건내용</th>
     <td>
-      <textarea name="content" rows="3" id="content"></textarea>
+      <textarea name="content" id="content" rows="3"></textarea>
     </td>
   </tr>
     <tr>
@@ -466,6 +466,12 @@ $(document).ready(function() {
 
 
 
+<script>
+window.onload=function(){
+		summernote_go($('#content'),'<%=request.getContextPath()%>');
+	}
+</script>
+
 <Script>
 $(document).ready(function() {
 	  var cardHeader = $('.card-header');
@@ -512,43 +518,32 @@ function closeWindow(memberId, memberSCode) {
 }
 </script>
 <script>
-// Get all occurTime input elements
-var occurTimeInputs = document.querySelectorAll("input[name='occurTime']");
+// Get the occurTime input element
+var occurTimeInput = document.querySelector("input[name='occurTime']");
 
-// Add event listener for date change to each input
-occurTimeInputs.forEach(function(occurTimeInput) {
-  occurTimeInput.addEventListener('change', function() {
-    // Get the selected date from the input
-    var selectedDate = new Date(occurTimeInput.value);
+// Add event listener for date change
+occurTimeInput.addEventListener('change', function() {
+  // Get the selected date from the input
+  var selectedDate = new Date(occurTimeInput.value);
 
-    // Get the current date
-    var currentDate = new Date();
+  // Get the current date
+  var currentDate = new Date();
 
-    // Set the current date and selected date to the same day at midnight
-    currentDate.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
-
-    // Compare the selected date with the current date
-    if (selectedDate > currentDate) {
-      // Display warning message using Swal
-      Swal.fire({
-        title: '경고',
-        text: '당일또는 이전날짜로 선택바랍니다.',
-        icon: 'warning',
-        confirmButtonText: '확인'
-      });
-
-      // Reset the date input value
-      occurTimeInput.value = "";
-    }
-  });
+  // Compare the selected date with the current date
+  if (selectedDate > currentDate) {
+    // Display warning message using Swal
+    Swal.fire({
+      title: '경고',
+      text: '날짜를 다시 선택해주세요.',
+      icon: 'warning',
+      confirmButtonText: '확인'
+    });
+    
+    // Reset the date input value
+    occurTimeInput.value = "";
+  }
 });
 </script>
-
-
-
-
-
 
 <div style="height:300px;"></div>
 

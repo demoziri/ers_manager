@@ -2,9 +2,7 @@ package kr.ac.ers.controller.lsupporter;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,7 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -28,8 +25,10 @@ import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
+import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
+import kr.ac.ers.utils.MakeFileName;
 
 @Controller
 public class LsupporterController {
@@ -106,6 +105,28 @@ public class LsupporterController {
 		 return "lsupporter/memberdetail";
 	}
 	
+	@RequestMapping("/ers/lsupporter/lifemodifyForm")
+	public String Showlifeupdate(String id,HttpSession session, HttpServletRequest request, Model model) {
+		 session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 MemberReportLsupporterVO lifereport = lsupporterService.getlifemodifyForm(id,loginUser.getWCode());
+			MemberDetailVO memberdetail = lsupporterService.getMemberDetail(loginUser.getWid(),id);
+		 model.addAttribute("memberdetail", memberdetail);
+		 model.addAttribute("lifereport", lifereport);
+		 
+		return "lsupporter/lifemodifyForm";
+	}
+	
+	@PostMapping("/ers/lsupporter/lifemodify")
+	   public String lifemodify(String orgdisease, String drug, String mentalstatus,String allergy,String id,HttpSession session, HttpServletRequest request) throws Exception {
+		String url = "redirect:/ers/lsupporter/memberdetail?id="+id;
+	 	 session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+	      lsupporterService.getlifemodify(orgdisease,drug,mentalstatus,allergy,id,loginUser.getWid());
+	      return url;
+	      }
+
+	
 	@RequestMapping("/ers/lsupporter/idcheckForm")
 	public String ShowidcheckForm() {
 		return "lsupporter/idcheckForm";
@@ -125,24 +146,81 @@ public class LsupporterController {
 	    return "lsupporter/lsupporterstatus";
 	}
 	
-	 @GetMapping("/ers/lsupporter/getLsuppPicture")
-     @ResponseBody
-     public byte[] getPicture(String wid)throws Exception{
-    	 LsupporterStatusVO lsupporterstatus = lsupporterService.selectlsupporterStatus(wid);
-    	 if(lsupporterstatus ==null)
-    		 return null;
-    	 
-    	 String picture = lsupporterstatus.getPicture();
-    	 String imaPath = this.lsuppPicturePath;
-    	 InputStream in = new FileInputStream(new File(imaPath, picture));
-    			 return IOUtils.toByteArray(in);
-     }
+	/*
+	 * @GetMapping("/ers/lsupporter/getLsuppPicture")
+	 * 
+	 * @ResponseBody public byte[] getPicture(String wid)throws Exception{
+	 * LsupporterStatusVO lsupporterstatus =
+	 * lsupporterService.selectlsupporterStatus(wid); if(lsupporterstatus ==null)
+	 * return null;
+	 * 
+	 * String picture = lsupporterstatus.getPicture(); String imaPath =
+	 * this.lsupporterpicturePath; InputStream in = new FileInputStream(new
+	 * File(imaPath, picture)); return IOUtils.toByteArray(in); }
+	 */
 	
-	@GetMapping("/ers/lsupporter/lsupporterstatusForm")
-	public String showLsupporterStatus() {
-		
-	    return "lsupporter/lsupporterstatusForm";
+	@GetMapping("/ers/lsupporter/lsupporterstatusModifyForm")
+	public String showLsupporterStatusModifyForm(Model model, HttpSession session, HttpServletRequest request) {
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 LsupporterStatusVO lsupporter = lsupporterService.selectlsupporterStatus(loginUser.getWid());
+		 model.addAttribute("lsupporter", lsupporter);
+	    return "lsupporter/lsupporterstatusModifyForm";
 	}
+	
+	/*
+	 * @PostMapping(value= "/ers/lsupporter/statusmodify",
+	 * produces="text/plain;charset=utf-8") public String modify(LsupporterStatusVO
+	 * lsupporter,HttpSession session)throws Exception{ String
+	 * url="redirect:/ers/lsupporter/lsupporterstatus?id="+lsupporter.getWid();
+	 * String wid = lsupporter.getWid(); String oldPicture =
+	 * lsupporterService.selectlsupporterStatus(wid); if(lsupporter.getPicture() !=
+	 * null && lsupporter.getPicture().getSize()>0) { String fileName =
+	 * savePicture(oldPicture, lsupporter.getPicture());
+	 * lsupporter.setPicture(fileName); }else { lsupporter.setPicture(oldPicture); }
+	 * lsupporterService.LsupporterModify(lsupporter); LsupporterVO loginUser =
+	 * (LsupporterVO) session.getAttribute("loginUser"); if(loginUser != null &&
+	 * lsupporter.getId().equals(loginUser.getWid())) {
+	 * session.setAttribute("loginUser",
+	 * lsupporterService.getLsupporter(lsupporter.getWid()));
+	 * 
+	 * } return url; }
+	 */
+	
+	public String savePicture(String oldPicture, MultipartFile multi) throws Exception {
+
+        String fileName = "";
+
+        /* 파일저장폴더설정 */
+        String uploadPath = this.lsuppPicturePath;
+
+        /* 파일유뮤확인 */
+        if (!(multi == null || multi.isEmpty() || multi.getSize() > 1024 * 1024 * 1)) {
+
+           fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
+           File storeFile = new File(uploadPath, fileName);
+
+           // 파일경로 생성
+           storeFile.mkdirs();
+
+           // local HDD에 저장
+           multi.transferTo(storeFile);
+
+        }
+
+        // 기존파일 삭제
+        if (oldPicture != null && !oldPicture.isEmpty()) {
+
+           File oldFile = new File(uploadPath, oldPicture);
+           if (oldFile.exists()) {
+              oldFile.delete();
+           }
+
+        }
+
+        return fileName;
+
+     }
 	
 	
 	@RequestMapping("/ers/lsupporter/emergancydetail")
@@ -323,7 +401,7 @@ public class LsupporterController {
 	      case 0: //로그인 성공
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
-				/* session.setMaxInactiveInterval(600 * 30); */
+			session.setMaxInactiveInterval(600 * 30); 
 	         return url;
 	      case 1: //아이디 불일치
 	         url="redirect:/ers/lsupporter/loginForm";

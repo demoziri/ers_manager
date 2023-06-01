@@ -57,7 +57,6 @@
         <div id="memList">
           <table class="table table-bordered border-2 mt-1 text-center mem_table">
             <thead style="background-color:#dfdfdf;">
-
               <tr>
                 <th>대상자구분</th>
                 <th>대상자명</th>
@@ -68,6 +67,11 @@
               </tr>
               <thead>
               <tbody class="table-group-divider">
+              <c:if test="${empty memberList}">
+				<tr>
+					<td colspan="6">조회된 대상자가 없습니다.</td>
+				</tr>
+			  </c:if>
                 <c:forEach var="member" items="${memberList }">
                   <fmt:formatDate value="${member.regDate }" pattern="yyyy-MM-dd" var="regDate" />
                   <tr onclick="memDetail_go(${member.id});">
@@ -104,6 +108,7 @@
                     </c:if>
                   </tr>
                 </c:forEach>
+             
               </tbody>
           </table>
         </div>
@@ -533,12 +538,8 @@
     	  success:function(data){
     		  
     		  if(data==''){
-    			  $('#report_list').html("<div class='h-100 d-flex justify-content-center align-items-center' style='background-color:#dfdfdf;'>등록된 보고서가 없습니다.</div>"); 
+    			  $('#report-list-template').html("<tr><td colspan='4'>조회된 보고서가 없습니다.</td></tr>"); 
     		  }
-    		  
-    		  
-    		  
-    		 
     		  data.forEach(function(item) {
     	            var date = new Date(item.regDate);
     	            var year = date.getFullYear();
@@ -588,7 +589,10 @@
     		  
     	
     		  let template = Handlebars.compile($('#report-list-template').html());
+    		
+    		  
   	       	  let html = template(data);
+    		  
   	       	  	$('#report_list').html(html);
   	       	  	
   	       	  
@@ -626,6 +630,89 @@
           $('#modalBox3').modal('show');
          
           $('#regEcallBtn').on('click', function() {
+        	  
+        	 
+	         
+	      	    if(!$('#e_name_id_1').val()){
+	    			alert("모든 정보를 입력해주세요.");
+	    			$('#e_name_id_1').focus();
+	    			return;
+	    		}
+	      		if(!$('#rel_1').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#rel_1').focus();
+	      			return;
+	      		}
+	      		if(!$('#e_phone1_1').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone1_1').focus();
+	      			return;
+	      		} 
+	      		if(!$('#e_phone1_2').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone1_2').focus();
+	      			return;
+	      		} 
+	      		if(!$('#e_phone1_3').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone1_3').focus();
+	      			return;
+	      		} 
+        	  
+	      	    if(!$('#e_name_id_2').val()){
+	    			alert("모든 정보를 입력해주세요.");
+	    			$('#e_name_id_2').focus();
+	    			return;
+	    		}
+	      		if(!$('#rel_2').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#rel_2').focus();
+	      			return;
+	      		}
+	      		if(!$('#e_phone2_1').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone2_1').focus();
+	      			return;
+	      		} 
+	      		if(!$('#e_phone2_2').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone2_2').focus();
+	      			return;
+	      		} 
+	      		if(!$('#e_phone2_3').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone2_3').focus();
+	      			return;
+	      		} 
+        	  
+	      	    if(!$('#e_name_id_3').val()){
+	    			alert("모든 정보를 입력해주세요.");
+	    			$('#e_name_id_3').focus();
+	    			return;
+	    		}
+	      		if(!$('#rel_3').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#rel_3').focus();
+	      			return;
+	      		}
+	      		if(!$('#e_phone3_1').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone3_1').focus();
+	      			return;
+	      		} 
+	      		if(!$('#e_phone3_2').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone3_2').focus();
+	      			return;
+	      		} 
+	      		if(!$('#e_phone3_3').val()){
+	      			alert("모든 정보를 입력해주세요.");
+	      			$('#e_phone3_3').focus();
+	      			return;
+	      		} 
+        	  
+        	  
+        	  
             alert("비상연락망을 등록했습니다.");
             $('#ecallCount').html("등록완료");
             $('#modalBox3').modal('hide');

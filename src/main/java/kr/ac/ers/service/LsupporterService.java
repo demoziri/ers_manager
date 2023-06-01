@@ -1,7 +1,6 @@
 package kr.ac.ers.service;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.command.SearchCriteria;
@@ -195,8 +195,9 @@ public class LsupporterService {
 	}
 
 	public MemberDetailVO getMemberDetail(String wid, String id) {
-
+		 
 		return lsupportMapper.selectMemberDetail(wid, id);
+				
 	}
 
 	public List<MemberDetailVO> getMemberEcall(String wid, String id) {
@@ -273,11 +274,11 @@ public class LsupporterService {
 	}
 
 	public void remove(int rNo) {
-	    lsupportMapper.remove(rNo);
-	    List<ReportFileVO> reportfiles = reportFileMapper.selectReportFileByrNo(rNo);
+		List<ReportFileVO> reportfiles = reportFileMapper.selectReportFileByrNo(rNo);
 	    if (reportfiles != null && !reportfiles.isEmpty()) {
-	        reportFileMapper.remove(reportfiles.get(0).getRNo());
+	    	reportFileMapper.remove(reportfiles.get(0).getRNo());
 	    }
+	    lsupportMapper.remove(rNo);
 	}
 
 	public MemberVO getmemById(String id) {
@@ -345,5 +346,16 @@ public class LsupporterService {
 
 		return dataMap;
 	}
+
+
+	public MemberReportLsupporterVO getlifemodifyForm(String id,int wCode) {
+		MemberReportLsupporterVO report = lsupportMapper.selectlifemodifyForm(id, wCode);
+		return report;
+	}
+
+	public void getlifemodify(String orgdisease, String drug, String mentalstatus, String allergy, String id, String wid) {
+		lsupportMapper.lifemodify(orgdisease,drug,mentalstatus,allergy,id,wid);
+	}
+
 
 }

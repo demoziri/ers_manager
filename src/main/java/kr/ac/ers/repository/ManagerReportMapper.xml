@@ -33,9 +33,9 @@
 	</select>
 
 	<select id="selectReportByRno" resultType="ReportVO">
-		select r.*, f.name, f.wtype
-		from report r, fieldstaff f  
-		where r.wcode = f.wcode
+		select r.*, f.name, f.wtype, m.name as m_name
+		from report r, fieldstaff f , member m
+		where r.wcode = f.wcode and r.id = m.id
         and rno=#{rno}
 	</select>
 
@@ -79,11 +79,11 @@
 		from report r, fieldstaff f
 		where
 		r.wcode = f.wcode
-		<if test="reType != null and reType != ''.toString()">
-		and reType=#{reType}
+		<if test="cri.reType != null and cri.reType != ''.toString()">
+		and reType=#{cri.reType}
 		</if>
-		<if test="start_day != null and start_day != ''.toString()"> 
-		and regDate between TO_DATE(#{start_day}, 'YYYY-MM-DD') and TO_DATE(#{end_day}, 'YYYY-MM-DD')
+		<if test="cri.start_day != null and cri.start_day != ''.toString()"> 
+		and regDate between TO_DATE(#{cri.start_day}, 'YYYY-MM-DD') and TO_DATE(#{cri.end_day}, 'YYYY-MM-DD')
 		</if>
 		<if test="viewcheck != null and viewcheck != ''.toString()">
 		and viewcheck=#{viewcheck}
@@ -92,7 +92,7 @@
 	</select>
 	
 	
-	<select  id="selectReportByViewCheck" resultType="ReportVO">
+	<!-- <select  id="selectReportByViewCheck" resultType="ReportVO">
 		select r.*, f.name, f.wtype
 		from report r, fieldstaff f
 		where
@@ -107,7 +107,7 @@
 		and viewcheck=#{viewcheck}
 		</if>
 		order by regDate desc
-	</select>
+	</select> -->
 	
 	
 	

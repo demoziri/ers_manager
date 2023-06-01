@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/resources/lsupporter/css/mypage.css">
 
 <!-- Main content -->
-<section class="content-header" style="height: 1100px;">
+<section class="content-header" style="height: 800px;">
 		<div class="container-fluid">
 				<div class="row title">
 

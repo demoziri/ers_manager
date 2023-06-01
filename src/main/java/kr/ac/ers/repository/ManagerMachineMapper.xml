@@ -112,4 +112,14 @@
 
 
 
+	<select id="selectAsGuCount" resultType="ManagerMachineVO">
+		select count(case when assend is not null and lnum='L01' then 1 end) as joongcount,
+		count(case when assend is not null and lnum='L02' then 1 end) as seocount,
+		count(case when assend is not null and lnum='L03' then 1 end) as dongcount,
+		count(case when assend is not null and lnum='L04' then 1 end) as ucount,
+		count(case when assend is not null and lnum='L01' then 1 end) as deacount
+		from machine
+	</select>
+
+
 </mapper>

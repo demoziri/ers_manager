@@ -32,7 +32,7 @@ public class ManagerReportSerivce {
 		  
 		
 		 
-		 List<ReportVO> reportList = managerReportMapper.selectReportListToReportMain(cri);
+		 List<ReportVO> reportList = managerReportMapper.selectReportListToReportMain(cri,viewcheck);
 			
 		 return reportList;
 		 

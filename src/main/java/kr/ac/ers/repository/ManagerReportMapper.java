@@ -16,7 +16,7 @@ public interface ManagerReportMapper {
 
 	List<ReportVO> selectReportByCriteria(ManagerReportSearchCriteria cri, RowBounds rowbounds);
 	
-	List<ReportVO> selectReportListToReportMain(ManagerReportSearchCriteria cri);
+	List<ReportVO> selectReportListToReportMain(ManagerReportSearchCriteria cri, String viewcheck);
 	
 
 	int selectSearchMemberReportCount(ManagerReportSearchCriteria cri);
@@ -34,5 +34,7 @@ public interface ManagerReportMapper {
 	int selectMachineReportCount();
 	
 	
-	List<ReportVO> selectReportByViewCheck(String reType, String start_day, String end_day, String viewcheck);
+	//List<ReportVO> selectReportByViewCheck(String reType, String start_day, String end_day, String viewcheck);
+
+	
 }

@@ -10,25 +10,13 @@ public class LsupporterStatusVO {
 		private String name;
 		private String birth;
 		private String address;
-		private String picture;
+		private	String picture;	
 		private String phone;
 		private String wid;
 		private String pwd;
 		private String email;
 		private String id;
-		private String gender;
+		private String oldPicture;
 
-		public LsupporterStatusVO toLsupporterStatusVO() {
-			//MemberVO setting
-			LsupporterStatusVO lsupporter = new LsupporterStatusVO();
-			lsupporter.setWid(this.wid);
-			lsupporter.setPwd(this.pwd);
-			lsupporter.setName(this.name);
-			lsupporter.setPhone(this.phone.replace("-", ""));
-			lsupporter.setEmail(this.email);
-			lsupporter.setPicture(this.picture);
-			
-			return lsupporter;
-		
-		}
+	
 }

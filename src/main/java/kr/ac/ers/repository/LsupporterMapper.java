@@ -130,5 +130,9 @@ public interface LsupporterMapper {
 
 	int devilreportCount(String wid);
 
+	MemberReportLsupporterVO selectlifemodifyForm(String id, int wCode);
+
+	void lifemodify(String orgdisease, String drug, String mentalstatus, String allergy, String id, String wid);
+
 
 }

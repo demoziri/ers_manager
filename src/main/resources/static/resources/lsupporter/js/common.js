@@ -24,34 +24,6 @@ function list_go(page,url){
 	}).submit();
 }
 
-function emergancylist_go(page,url){
-	
-	$("form#jobForm input[name='page']").val(page);
-	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
-	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
-	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
-	
-	$('form#jobForm').attr({
-		action:url,
-		method:'get'
-	}).submit();
-}
-
-function reportlist_go(page,url){
-	
-	
-	$("form#jobForm input[name='page']").val(page);
-	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
-	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
-	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
-	
-	$('form#jobForm').attr({
-		action:url,
-		method:'get'
-	}).submit();
-}
-
-
 
 
 //팝업창 닫기
@@ -61,17 +33,6 @@ function CloseWindow(parentURL){
 	window.close();
 }
 
-//사진출력
-function MemberPictureThumb(contextPath){
-	 for(var target of document.querySelectorAll('.manPicture')){	
-		 var id = target.getAttribute('data-id');
-		 
-		target.style.backgroundImage="url('"+contextPath+"/member/getPicture?id="+id+"')";				
-		target.style.backgroundPosition="center";
-		target.style.backgroundRepeat="no-repeat";
-		target.style.backgroundSize="cover";
-	 }
-}
   function MemberPictureThumb(contextPath) {
     for (var target of document.querySelectorAll('.manPicture')) {
       var id = target.getAttribute('data-id');

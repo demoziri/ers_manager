@@ -25,5 +25,7 @@ public interface ManagerMachineMapper {
 	
 	List<ManagerMachineVO> selectMachineListByMcode(String mcode);
 	
+	ManagerMachineVO selectAsGuCount();
+	
 	
 }

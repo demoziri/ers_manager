@@ -128,8 +128,8 @@ h4 {
 }
 
 .bt_sen {
-	width:115px;
-	height:115px;
+	width:122px;
+	height:122px;
 	border-radius:15px;
 	display: flex;
     align-items: center;
@@ -293,23 +293,23 @@ h4 {
 }
 </style>
 
-<div class="nav" style="position:relative;">
+<div class="nav" style="position:relative; margin-bottom:100px; padding:10px 0">
 	<div style="text-align:right;" >
-		<div class="nav-name">김보건 님</div>
-		<div class="nav-log">로그아웃</div>
+		<div class="nav-name"></div>
+		<div class="nav-log"></div>
 	</div>
-	<div class="logo">응급안심안전서비스</div>
+	<div class="logo" style="font-weight:700;">응급안심안전서비스</div>
 </div>
     			
-	<div style="width:900px; text-align:center; display:inline-block; position:absolute; top:120px; left:50px;">
+	<div style="width:900px; text-align:center; display:inline-block; position:absolute; top:120px; left:50px; margin-top:100px">
 		<div id="current_date"></div>
 		<h1 id="clock"></h1>
    		<script src="clock.js"></script>
 		
 		<div style="display:flex; justify-content:space-around; margin-top:60px;"> 
-			<button class="bt bt_119" type="button" id="modal_open_btn_119">119</button>
-			<button class="bt bt_call" type="button" id="modal_open_btn_call"><p class="bt_p" >응 급<br>호 출</p></button>
-			<button class="bt bt_telephone" type="button" id="modal_open_btn_telephone"><p class="bt_p">전 화<br>연 결</p></button>
+			<button class="bt bt_119" type="button" id="modal_open_btn_119" style="color:black;">119</button>
+			<button class="bt bt_call" type="button" id="modal_open_btn_call" style="color:black;"><p>응 호 </p><p>급 출 </p></button>
+			<button class="bt bt_telephone" type="button" id="modal_open_btn_telephone" style="color:black;"><p>전 연 </p><p>화 결 </p></button>
 		</div>
 	</div>
 	
@@ -325,14 +325,14 @@ h4 {
 			<h4>출입문감지센서 : <span class="out home">${sensorck.outconfirm eq 'N' ? '재실' : '외출' }</span> / <span id="outtime"><fmt:formatDate value="${sensorck.outtime}" pattern="HH시 MM분"/></span></h4>
 		</div>
 		<div class="sen_div">
-			<button id="bt_sen1"class="bt_sen1 bt_sen" type="button">
-				<p style="margin-left:25px;">화 재<br>감 지</p>
+			<button id="bt_sen1"class="bt_sen1 bt_sen" type="button" style="color:black;">
+				화재 감지
 			</button>
-			<button id="bt_sen2" class="bt_sen2 bt_sen" type="button" onclick="changeActivetime_go();">
-				<p style="margin-left:17px;">활동량<br>감 지</p>
+			<button id="bt_sen2" class="bt_sen2 bt_sen" type="button" style="color:black;" onclick="changeActivetime_go();">
+				<div>활동량감지</div>
 			</button>
-			<button id="bt_sen3" class="bt_sen3 bt_sen" type="button" onclick="changeOutconfirm_go();">
-				<p style="margin-left:17px;">출입문<br>감 지</p>
+			<button id="bt_sen3" class="bt_sen3 bt_sen" type="button" style="color:black;" onclick="changeOutconfirm_go();">
+				<div>출입문감지</div>
 			</button>
 		</div>
 	</div>

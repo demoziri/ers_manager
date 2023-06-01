@@ -27,6 +27,12 @@ public class ManagerMachineVO {
 	private Date regDate;
 	private int asRequestCnt;
 	private int totalCount;
+	private String joongcount;
+	private String seocount;
+	private String dongcount;
+	private String ucount;
+	private String deacount;
+	
 	
 	
 	

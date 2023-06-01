@@ -18,7 +18,7 @@
              style="border: 1px solid green; height: 180px; width: 140px; margin: 0 auto; margin-bottom: 5px;"></div>
           <div class="input-group input-group-sm" >
              <label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">사진변경</label>
-             <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled value="${member.picture.split("\\$\\$")[1]}" style="width:30px;"/>
+             <input id="inputFileName" class="form-control" type="text" name="tempPicture" disabled value="${member.picture}" style="width:30px;"/>
              <input name="uploadPicture" class="form-control" type="hidden" id="picture" />
           </div>
        </div>

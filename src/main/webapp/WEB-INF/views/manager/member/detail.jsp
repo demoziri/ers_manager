@@ -61,6 +61,9 @@
                   <th>고위험도</th>
                   <td>${member.caution }</td>
                   <th>상태</th>
+                  <c:if test="${empty member.wid && member.machineCk eq 4 || empty member.wid && member.machineCk ne 4}">
+                  <td>등록 진행중</td>
+                  </c:if>
                   <c:if test="${member.status eq 1}">
                   <td>서비스 이용중</td>
                   </c:if>
@@ -74,7 +77,13 @@
                 <tr>
                   <th>신청서</th>
                   <td>${member.applyfile.filename.split("\\$\\$")[1]}
-                  <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/manager/member/getFile?id=${member.applyfile.id }'"></i>
+                   <c:if test="${not empty member.applyfile }">
+			        <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/lsupporter/getFile?sfNo=${report.reportfile.sfNo }'"></i>
+			        </c:if>
+			        <c:if test="${empty member.applyfile }">
+			        <i class="bi bi-file-earmark-text-fill" ></i>
+			        </c:if>
+                  
                   </td>
                   <th>생활지원사</th>
                   <td id="lsName" style="text-align:center;">

@@ -22,6 +22,7 @@ public class ReportVO {
 	private String id;
 	private int wCode;
 	private String reDone;
+	private String m_name;
 	private String viewCheck;
 	private String reType;
 	private String wType;

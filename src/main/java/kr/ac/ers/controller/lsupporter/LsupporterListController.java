@@ -1,7 +1,6 @@
 package kr.ac.ers.controller.lsupporter;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class LsupporterListController {
 	 @RequestMapping("/ers/lsupporter/nowreportList")
 		public String Shownowcare(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
 		 SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -47,7 +46,7 @@ public class LsupporterListController {
 		@RequestMapping("/ers/lsupporter/carelist")
 		public String Showcarelist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -63,9 +62,9 @@ public class LsupporterListController {
 		}
 		
 		@RequestMapping("/ers/lsupporter/reportlist")
-		public String Showreportlist(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session,String startday, String endday, HttpServletRequest request) {
+		public String Showreportlist(String searchType, String keyword, String perPageNum, String page,String startday, String endday, Model model, HttpSession session,HttpServletRequest request) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -91,7 +90,7 @@ public class LsupporterListController {
 		@RequestMapping("/ers/lsupporter/emergencylist")
 		public String Showemergancylist(String searchType, String keyword, String perPageNum, String page,Model model,String startday, String endday, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";

@@ -39,8 +39,13 @@
         <td>
         ${report.reportfile.filename.split("\\$\\$")[1]}
         
-        
-        <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/lsupporter/getFile?sfNo=${report.reportfile.sfNo }'"></i></td>
+        <c:if test="${not empty report.reportfile }">
+        <i class="bi bi-file-earmark-text-fill" onclick="location.href='<%=request.getContextPath() %>/ers/lsupporter/getFile?sfNo=${report.reportfile.sfNo }'"></i>
+        </c:if>
+        <c:if test="${empty report.reportfile }">
+        <i class="bi bi-file-earmark-text-fill" ></i>
+        </c:if>
+        </td>
         <th>비고</th>
         <td>-</td>
       </tr>
