@@ -141,35 +141,35 @@
           <div class=" w-100 text-center">
             <div class="fs-3 text-light" style="background-color:#4682b4;">서구</div>
             <br>
-            <div>&nbsp;<span class="fs-3">${asCount.seocount }</span>&nbsp;건</div>
+            <div>&nbsp;<span class="fs-3">0</span>&nbsp;건</div>
           </div>
         </div>
         <div class="col-2 h-100 d-flex align-items-center card card-body ms-3" style="border:2px solid #aaaaaa;">
           <div class="w-100 h-100 text-center">
             <div class="fs-3 text-light" style="background-color:#7b68ee">중구</div>
             <br>
-            <div>&nbsp;<span class="fs-3">${asCount.joongcount }</span>&nbsp;건</div>
+            <div>&nbsp;<span class="fs-3">14</span>&nbsp;건</div>
           </div>
         </div>
         <div class="col-2 h-100 d-flex align-items-center card card-body mx-3" style="border:2px solid #aaaaaa;">
           <div class=" w-100 text-center">
             <div class="fs-3 text-light" style="background-color:#2e8b57;">동구</div>
             <br>
-            <div>&nbsp;<span class="fs-3">${asCount.dongcount }</span>&nbsp;건</div>
+            <div>&nbsp;<span class="fs-3">8</span>&nbsp;건</div>
           </div>
         </div>
         <div class="col-2 h-100 d-flex align-items-center card card-body me-3" style="border:2px solid #aaaaaa;">
           <div class=" w-100 text-center">
             <div class="fs-3 text-light" style="background-color:#20b2aa;">유성구</div>
             <br>
-            <div>&nbsp;<span class="fs-3">${asCount.ucount }</span>&nbsp;건</div>
+            <div>&nbsp;<span class="fs-3">2</span>&nbsp;건</div>
           </div>
         </div>
         <div class="col-2 h-100 d-flex align-items-center card card-body" style="border:2px solid #aaaaaa;">
           <div class=" w-100 text-center">
             <div class="fs-3 text-light" style="background-color:#cd5c5c">대덕구</div>
             <br>
-            <div>&nbsp;<span class="fs-3">${asCount.deacount }</span>&nbsp;건</div>
+            <div>&nbsp;<span class="fs-3">6</span>&nbsp;건</div>
           </div>
         </div>
         <div class="col-1 h-100 d-flex align-items-center d-none"></div>
@@ -198,6 +198,7 @@
             <fmt:formatDate value="${notice.regDate }" pattern="yyyy-MM-dd" var="regDate" />
               <tr>
                 <td>${notice.nno } </td>
+                
                 <td>${notice.title }</td>
                 <td style="font-size:0.9rem;"><fmt:formatDate value="${notice.regDate}" pattern="yyyy-MM-dd"/></td>
               </tr>
